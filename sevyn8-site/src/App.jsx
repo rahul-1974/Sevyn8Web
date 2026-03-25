@@ -147,7 +147,7 @@ function Home(p){
       </div>
     </section>
 
-    <section style={{borderTop:"1px solid "+BD,background:B2}}><div style={{maxWidth:1100,margin:"0 auto",padding:"56px 40px"}}><Rv><div style={{textAlign:"center",marginBottom:40}}><Tg>What changes</Tg><h2 style={{...hd,fontSize:34,fontWeight:700}}>Before Sevyn8 vs. after.</h2></div></Rv>
+    <section style={{borderTop:"1px solid "+BD,background:B2}}><div style={{maxWidth:1100,margin:"0 auto",padding:"56px 40px"}}><Rv><div style={{textAlign:"center",marginBottom:40}}><Tg>What changes</Tg><h2 style={{...hd,fontSize:34,fontWeight:700}}>Before Sevyn8 vs. After</h2></div></Rv>
       <Outcomes go={go} />
     </div></section>
 
