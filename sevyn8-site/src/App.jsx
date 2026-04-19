@@ -89,7 +89,7 @@ function BoxSchematic(){
     <div><div style={{background:B2,border:"2px solid "+T+"35",borderRadius:20,overflow:"hidden",boxShadow:"0 0 80px "+T+"0C,0 20px 60px rgba(0,0,0,.4)"}}>
       <div style={{background:"linear-gradient(180deg,"+T+"12,transparent)",padding:"24px 24px 16px",borderBottom:"1px solid "+BD}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:18,fontWeight:700,color:T,letterSpacing:1.5}}>EDGE AI BOX</div><div style={{fontSize:12,color:DM,marginTop:2}}>Sevyn8 Platform Device</div></div><div style={{display:"flex",gap:4}}>{[T,BL,V].map(function(c,i){return <div key={i} style={{width:8,height:8,borderRadius:"50%",background:c,opacity:pp[0]===i?1:.25,transition:"opacity .4s",boxShadow:pp[0]===i?"0 0 8px "+c:"none"}} />})}</div></div></div>
       <div style={{padding:"16px 20px"}}>{layers.map(function(la,i){var isA=pp[0]===i;return <div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 12px",marginBottom:4,borderRadius:8,background:isA?la.c+"12":"transparent",borderLeft:"3px solid "+(isA?la.c:la.c+"30"),transition:"all .4s"}}><div style={{width:6,height:6,borderRadius:"50%",background:la.c,boxShadow:isA?"0 0 8px "+la.c:"none"}} /><span style={{fontSize:13,fontWeight:isA?600:500,color:isA?la.c:DM}}>{la.n}</span>{isA&&<div style={{marginLeft:"auto",fontSize:10,color:la.c,fontWeight:600}}>ACTIVE</div>}</div>})}</div>
-      <div style={{padding:"12px 20px 16px",borderTop:"1px solid "+BD,display:"flex",gap:20,justifyContent:"center"}}>{[{l:"100 TOPS",s:"AI Compute"},{l:"<100ms",s:"Latency"},{l:"<2W",s:"Power"},{l:"Offline",s:"Mode"}].map(function(s,i){return <div key={i} style={{textAlign:"center"}}><div style={{fontSize:14,fontWeight:700,color:[T,BL,V,AM][i]}}>{s.l}</div><div style={{fontSize:9,color:DM,marginTop:1}}>{s.s}</div></div>})}</div>
+      <div style={{padding:"12px 20px 16px",borderTop:"1px solid "+BD,display:"flex",gap:20,justifyContent:"center"}}>{[{l:"100 TOPS",s:"AI Compute"},{l:"<100ms",s:"Latency"},{l:"~15W",s:"AI load"},{l:"Offline",s:"Mode"}].map(function(s,i){return <div key={i} style={{textAlign:"center"}}><div style={{fontSize:14,fontWeight:700,color:[T,BL,V,AM][i]}}>{s.l}</div><div style={{fontSize:9,color:DM,marginTop:1}}>{s.s}</div></div>})}</div>
       <div style={{padding:"0 20px 16px",display:"flex",gap:6,justifyContent:"center"}}>{["WiFi 6","LTE","BLE 5.4","Thread"].map(function(c){return <span key={c} style={{fontSize:10,padding:"3px 10px",borderRadius:4,border:"1px solid "+BD,color:DM}}>{c}</span>})}</div>
     </div><div style={{display:"flex",justifyContent:"center",gap:28,marginTop:16}}>{[{l:"PoE In",c:T},{l:"USB 3.0",c:BL},{l:"HDMI",c:V}].map(function(port,i){return <div key={i} style={{display:"flex",alignItems:"center",gap:6}}><div style={{width:10,height:10,borderRadius:2,border:"1.5px solid "+port.c,background:port.c+"15"}} /><span style={{fontSize:11,color:DM}}>{port.l}</span></div>})}</div></div>
     <div style={{display:"flex",flexDirection:"column",gap:8}}><div style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:4,fontWeight:500}}>Platform layers</div>{layers.map(function(la,i){var active=a===i;return <div key={i} onClick={function(){al[1](active?null:i)}} style={{padding:"14px 18px",borderRadius:10,background:active?BG:B3,border:"1.5px solid "+(active?la.c+"55":BD),borderLeft:"4px solid "+la.c,cursor:"pointer",transition:"all .3s"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:15,fontWeight:600,color:active?TX:MT}}>{la.n}</span><span style={{fontSize:18,color:la.c,transition:"transform .3s",transform:active?"rotate(45deg)":"none",lineHeight:1}}>+</span></div>{active&&<p style={{fontSize:14,color:MT,lineHeight:1.7,marginTop:10}}>{la.sub}</p>}</div>})}</div>
@@ -309,7 +309,110 @@ function PlatPg(p){
   </div>;
 }
 
-function BoxPg(p){return <div style={{paddingTop:80}}><Sc><Rv><Tg c={BL}>Product</Tg><h1 style={{...hd,fontSize:46,fontWeight:700,marginBottom:18}}>Edge AI Box</h1><p style={{fontSize:18,color:MT,lineHeight:1.8,maxWidth:540}}>The entire Sevyn8 platform in one device. Any camera. Any SoC. Four industries.</p></Rv></Sc><Sc bg={B2} bt><Rv><BoxSchematic /></Rv></Sc><Sc><Rv><h3 style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:14}}>Connects to</h3><p style={{fontSize:16,color:MT,lineHeight:1.85}}>Fixed Box IP Camera &middot; Dome Camera &middot; Bullet Camera &middot; PTZ Camera &middot; Fisheye Panoramic &middot; Thermal LWIR &middot; ANPR Camera &middot; In-Cab IR Camera &middot; Shelf-Edge Camera &middot; WiFi Consumer Camera &middot; Video Doorbell &middot; IoT Sensor Nodes &middot; BLE Beacons &middot; RFID Readers</p></Rv></Sc><Sc bg={B2} bt><Rv><h3 style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:22}}>Specifications</h3></Rv><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>{[{k:"AI compute",v:"Up to 100 TOPS"},{k:"Inference",v:"Under 100ms"},{k:"Power",v:"Under 2 watts"},{k:"Connectivity",v:"WiFi 6, LTE, BLE 5.4, Thread"},{k:"SoC",v:"ARM & x86 families supported"},{k:"Security",v:"STQC ER-1 through ER-5"},{k:"Compliance",v:"BIS CRS, DPDP, HIPAA"},{k:"Updates",v:"Encrypted OTA fleet-wide"}].map(function(s,i){return <Rv key={i} d={i*.04}><div style={{padding:"18px 20px",borderRadius:8,border:"1px solid "+BD,background:BG}}><div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>{s.k}</div><div style={{fontSize:16,fontWeight:500}}>{s.v}</div></div></Rv>})}</div></Sc><Sc bt><Rv><div style={{textAlign:"center"}}><button style={bn} onClick={function(){p.go("contact")}}>Request evaluation unit</button></div></Rv></Sc></div>}
+function BoxPg(p){
+  var tiers=[
+    {c:T,n:"Nano",tag:"Edge AI Box \u00B7 Nano",tops:"67 TOPS",use:"Mid-density retail, smart home, cold rooms, and edge IoT gateways.",rows:[
+      ["Platform","NVIDIA Jetson Orin Nano Super module"],
+      ["CPU","6-core Arm Cortex-A78AE v8.2, 64-bit \u00B7 1.5 MB L2 + 4 MB L3"],
+      ["GPU","1024-core NVIDIA Ampere, 32 Tensor cores (8 GB) \u00B7 512-core, 16 Tensor cores (4 GB)"],
+      ["Memory","4 GB or 8 GB LPDDR5"],
+      ["AI compute","Up to 67 TOPS (INT8)"]
+    ]},
+    {c:BL,n:"Pro",tag:"Edge AI Box \u00B7 Pro",tops:"Up to 100 TOPS",use:"High-density retail fleets, logistics hubs, multi-line cold chain, reinsurance ingestion.",rows:[
+      ["Platform","NVIDIA Jetson Orin NX Series module"],
+      ["CPU","8-core Arm Cortex-A78AE v8.2, 64-bit"],
+      ["GPU","1024-core NVIDIA Ampere, 32 Tensor cores"],
+      ["Memory","8 GB or 16 GB LPDDR5"],
+      ["AI compute","Up to 100 TOPS (INT8)"]
+    ]}
+  ];
+  var compare=[
+    ["AI compute","67 TOPS","Up to 100 TOPS"],
+    ["Module","Jetson Orin Nano Super","Jetson Orin NX"],
+    ["CPU cores","6 \u00D7 Cortex-A78AE","8 \u00D7 Cortex-A78AE"],
+    ["GPU / Tensor cores","1024 / 32 (8 GB) \u00B7 512 / 16 (4 GB)","1024 / 32"],
+    ["Memory","4 GB or 8 GB LPDDR5","8 GB or 16 GB LPDDR5"]
+  ];
+  var shared=[
+    {k:"I/O",v:"1\u00D7 GbE \u00B7 3\u00D7 USB 3.2 Gen 2 \u00B7 HDMI 4K@60 \u00B7 OTG Micro USB"},
+    {k:"Expansion",v:"M.2 E-key (WiFi + BT) \u00B7 M.2 B-key (LTE/5G) \u00B7 40-pin GPIO \u00B7 CAN \u00B7 dual-HDMI option"},
+    {k:"Storage",v:"M.2 2280 NVMe (PCIe x4) + Micro SD"},
+    {k:"Power",v:"12 V / 5 A DC \u00B7 ~15 W typical under AI load"},
+    {k:"Operating temperature",v:"\u221210 \u00B0C to +60 \u00B0C"},
+    {k:"Humidity",v:"95% non-condensing @ 40 \u00B0C"},
+    {k:"Vibration / shock",v:"3 Grms @ 5\u2013500 Hz \u00B7 10 G / 11 ms"},
+    {k:"Dimensions",v:"120 \u00D7 90 \u00D7 65 mm \u00B7 1.2 kg"},
+    {k:"BSP",v:"NVIDIA JetPack 6.2+ on Ubuntu 22.04"},
+    {k:"Security & compliance",v:"STQC-aligned \u00B7 BIS CRS \u00B7 DPDP \u00B7 encrypted OTA fleet-wide"}
+  ];
+  return <div style={{paddingTop:80}}>
+    <Sc><Rv>
+      <Tg c={BL}>Product</Tg>
+      <h1 style={{...hd,fontSize:46,fontWeight:700,lineHeight:1.06,marginBottom:20}}>Edge AI Box</h1>
+      <p style={{fontSize:18,color:MT,lineHeight:1.85,maxWidth:640}}>The Cortex platform in one rugged device. Two configurations, one footprint — so every site runs the same integration regardless of the AI load it needs.</p>
+    </Rv></Sc>
+
+    <Sc bg={B2} bt><Rv><BoxSchematic /></Rv></Sc>
+
+    <Sc bt><Rv>
+      <Tg c={T}>Two configurations</Tg>
+      <h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>Nano for most sites. Pro for workloads that need more.</h2>
+      <p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Both boxes share the same 120 × 90 × 65 mm chassis, I/O, and environmental envelope. A site that starts on Nano can move to Pro without re-cabling or re-integration.</p>
+    </Rv>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>{tiers.map(function(t,i){return <Rv key={i} d={i*.1}><div style={{padding:28,borderRadius:14,border:"1.5px solid "+t.c+"40",background:t.c+"06",borderLeft:"5px solid "+t.c,height:"100%"}}>
+        <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between",marginBottom:14}}>
+          <span style={{fontSize:11,textTransform:"uppercase",letterSpacing:2.5,color:t.c,fontWeight:700}}>{t.n}</span>
+          <span style={{fontSize:13,color:t.c,fontWeight:600,...hd}}>{t.tops}</span>
+        </div>
+        <h3 style={{fontSize:20,fontWeight:700,marginBottom:8}}>{t.tag}</h3>
+        <p style={{fontSize:14,color:MT,lineHeight:1.7,marginBottom:18}}>{t.use}</p>
+        <div style={{borderTop:"1px solid "+BD,paddingTop:14,display:"flex",flexDirection:"column",gap:10}}>{t.rows.map(function(r,j){return <div key={j} style={{display:"grid",gridTemplateColumns:"120px 1fr",gap:12}}>
+          <span style={{fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:DM,fontWeight:600,paddingTop:2}}>{r[0]}</span>
+          <span style={{fontSize:14,color:TX,lineHeight:1.55}}>{r[1]}</span>
+        </div>})}</div>
+      </div></Rv>})}</div>
+    </Sc>
+
+    <Sc bg={B2} bt><Rv>
+      <Tg>Specification comparison</Tg>
+      <h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:24}}>Pick the tier that matches the workload.</h2>
+    </Rv>
+      <div style={{border:"1px solid "+BD,borderRadius:10,overflow:"hidden"}}>
+        <div style={{display:"grid",gridTemplateColumns:"1.2fr 1fr 1fr",background:B3,padding:"14px 20px",fontSize:11,textTransform:"uppercase",letterSpacing:2,color:DM,fontWeight:600}}>
+          <span>Spec</span><span style={{color:T}}>Nano</span><span style={{color:BL}}>Pro</span>
+        </div>
+        {compare.map(function(r,i){return <Rv key={i} d={i*.04}><div style={{display:"grid",gridTemplateColumns:"1.2fr 1fr 1fr",padding:"16px 20px",borderTop:"1px solid "+BD,fontSize:14,color:TX,alignItems:"start"}}>
+          <span style={{color:MT}}>{r[0]}</span><span>{r[1]}</span><span>{r[2]}</span>
+        </div></Rv>})}
+      </div>
+    </Sc>
+
+    <Sc bt><Rv>
+      <Tg c={AM}>Shared across both tiers</Tg>
+      <h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>The same box, hardened for the field.</h2>
+      <p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Everything downstream of compute — I/O, power, thermals, storage, BSP — is identical across Nano and Pro, so your integration playbook is the same on either tier.</p>
+    </Rv>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",gap:10}}>{shared.map(function(s,i){return <Rv key={i} d={i*.04}><div style={{padding:"18px 20px",borderRadius:8,border:"1px solid "+BD,background:BG,height:"100%"}}>
+        <div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6,fontWeight:600}}>{s.k}</div>
+        <div style={{fontSize:14,color:TX,lineHeight:1.6}}>{s.v}</div>
+      </div></Rv>})}</div>
+    </Sc>
+
+    <Sc bg={B2} bt><Rv>
+      <h3 style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:14}}>Connects to</h3>
+      <p style={{fontSize:16,color:MT,lineHeight:1.85}}>Fixed Box IP Camera &middot; Dome Camera &middot; Bullet Camera &middot; PTZ Camera &middot; Fisheye Panoramic &middot; Thermal LWIR &middot; ANPR Camera &middot; In-Cab IR Camera &middot; Shelf-Edge Camera &middot; WiFi Consumer Camera &middot; Video Doorbell &middot; IoT Sensor Nodes &middot; BLE Beacons &middot; RFID Readers</p>
+    </Rv></Sc>
+
+    <Sc bt><Rv><div style={{textAlign:"center"}}>
+      <h2 style={{...hd,fontSize:28,fontWeight:700,marginBottom:14}}>Evaluate on your site.</h2>
+      <p style={{fontSize:16,color:MT,marginBottom:24,maxWidth:460,margin:"0 auto 24px"}}>Request a Nano or Pro evaluation unit. 60-day POC. Your cameras, your KPIs.</p>
+      <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+        <button style={bn} onClick={function(){p.go("contact")}}>Request evaluation unit</button>
+        <button style={b2} onClick={function(){p.go("platform")}}>Explore Cortex {"\u2192"}</button>
+      </div>
+    </div></Rv></Sc>
+  </div>;
+}
 
 function SolPg(p){var s=p.s,sc2=useState(0),sci=sc2[0];
   useEffect(function(){if(!s.scn)return;var id=setInterval(function(){sc2[1](function(v){return(v+1)%s.scn.length})},6000);return function(){clearInterval(id)}},[s.scn]);
