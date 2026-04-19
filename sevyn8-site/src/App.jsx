@@ -165,7 +165,7 @@ function Home(p){
           <h1 style={{...hd,fontSize:52,lineHeight:1.06,fontWeight:700,marginBottom:18}}>Intelligence at the edge.</h1>
           <p style={{fontSize:18,color:TX,lineHeight:1.8,marginBottom:24,maxWidth:440}}>90 daily alerts become 3 genuine decisions. Shrinkage drops 40-60%. Cold chain breaches predicted 30 minutes early. Fleet incidents cut by 60%.</p>
           <p style={{fontSize:15,color:DM,lineHeight:1.75,marginBottom:32,maxWidth:420}}>Deploy new intelligent devices with AI built in — or make your existing infrastructure smarter with one box. Under 100ms. Fully offline. No cloud.</p>
-          <div style={{display:"flex",gap:12}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("platform")}}>See the technology</button></div>
+          <div style={{display:"flex",gap:12}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("platform")}}>Explore Cortex</button></div>
         </div>
         <div style={{position:"relative",height:480,opacity:ld?1:0,transition:"opacity 1.2s ease .6s"}}><HeroAnim /></div>
       </div>
@@ -192,6 +192,30 @@ function Home(p){
       </div>
       <Rv d={0.2}><div style={{textAlign:"center",padding:"24px 0",borderTop:"1px solid "+BD}}><p style={{fontSize:16,color:MT}}>Both paths converge on the same platform. Same AI engine. Same contextual decisioning. Same fleet-wide learning. Same dashboard.</p></div></Rv>
     </Sc>
+
+    <Sc bt><Rv><Tg c={V}>Meet Cortex</Tg><h2 style={{...hd,fontSize:34,fontWeight:700,marginBottom:10}}>One platform. Every industry.</h2><p style={{fontSize:17,color:MT,marginBottom:34,maxWidth:720}}>Cortex is the industry-agnostic edge AI platform behind every Sevyn8 deployment. Hardware-agnostic. Privacy by architecture. Every deployment makes every other deployment smarter.</p></Rv>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:16,marginBottom:26}}>
+        {[
+          {c:T,t:"Industry-agnostic",h:"Retail, cold chain, logistics, reinsurance, smart home.",b:"Same decisioning substrate. Different verticals, different decisions. One R&D stack behind many markets."},
+          {c:BL,t:"Hardware-agnostic",h:"Jetson, Ambarella, Qualcomm, Hailo, Rockchip.",b:"HAL normalises across SoC families. Keep existing cameras or deploy new ones. No BOM lock-in, no rip-and-replace."},
+          {c:AM,t:"Compounding learning",h:"Every deployment teaches every other.",b:"System-wide observations feed back into every device via OTA. The 500th deployment is measurably smarter than the 1st."}
+        ].map(function(v,i){return <Rv key={i} d={i*.08}><div style={{padding:24,borderRadius:12,border:"1.5px solid "+v.c+"30",background:v.c+"06",height:"100%"}}>
+          <div style={{fontSize:11,textTransform:"uppercase",letterSpacing:2,color:v.c,fontWeight:600,marginBottom:10}}>{v.t}</div>
+          <h3 style={{fontSize:17,fontWeight:700,marginBottom:8,lineHeight:1.4}}>{v.h}</h3>
+          <p style={{fontSize:14,color:MT,lineHeight:1.7}}>{v.b}</p>
+        </div></Rv>})}
+      </div>
+      <Rv d={.24}><div style={{display:"flex",flexWrap:"wrap",alignItems:"center",justifyContent:"space-between",gap:16,padding:"18px 22px",borderRadius:10,border:"1px solid "+BD,background:B2}}>
+        <div style={{display:"flex",flexWrap:"wrap",gap:20,fontSize:13,color:MT}}>
+          <span><span style={{color:T,fontWeight:600}}>MCP-native</span> architecture</span>
+          <span><span style={{color:T,fontWeight:600}}>DPDP + GDPR</span> by design</span>
+          <span><span style={{color:T,fontWeight:600}}>STQC</span>-aligned</span>
+          <span><span style={{color:T,fontWeight:600}}>DPIIT</span>-recognised</span>
+        </div>
+        <button style={b2} onClick={function(){go("platform")}}>Explore Cortex {"→"}</button>
+      </div></Rv>
+    </Sc>
+
     <Sc bg={B2} bt><Rv><Tg c={V}>The intelligence</Tg><h2 style={{...hd,fontSize:34,fontWeight:700,marginBottom:10}}>Devices generate data. Sevyn8 creates understanding.</h2><p style={{fontSize:17,color:MT,marginBottom:34}}>Whether AI runs on the device itself or on a Sevyn8 box nearby — camera feeds, thermal readings, IoT signals, and RFID events fuse into one context engine. Same event, different context, different decision.</p></Rv><Rv d={.12}><Ctx /></Rv></Sc>
     <Sc bt><Rv><Tg>Your industry</Tg><h2 style={{...hd,fontSize:34,fontWeight:700,marginBottom:12}}>Find your problem. See the outcome.</h2><p style={{fontSize:17,color:MT,marginBottom:40}}>Click into your industry. Fresh deployment or existing infrastructure — same outcomes.</p></Rv>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
@@ -213,10 +237,77 @@ function Home(p){
 
     <section style={{borderTop:"1px solid "+BD,background:B2}}><div style={{maxWidth:1100,margin:"0 auto",padding:"40px",display:"flex",alignItems:"center",justifyContent:"center",gap:48,flexWrap:"wrap"}}><span style={{fontSize:12,textTransform:"uppercase",letterSpacing:2,color:DM}}>Deployed at</span>{["Global ESL Leader","Premium Fashion Retailer"].map(function(n,i){return <div key={i} style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:8,height:8,borderRadius:"50%",background:AM}} /><span style={{fontSize:14,fontWeight:600,color:MT}}>{n}</span></div>})}</div></section>
 
-    <Sc><Rv><div style={{textAlign:"center"}}><h2 style={{...hd,fontSize:34,fontWeight:700,marginBottom:14}}>New devices or existing infrastructure. See it work in 60 days.</h2><p style={{fontSize:17,color:MT,marginBottom:30,maxWidth:480,margin:"0 auto 30px"}}>Deploy purpose-built intelligent devices or make your existing infrastructure smarter. Same platform, same AI, same results. 60-day POC.</p><div style={{display:"flex",gap:12,justifyContent:"center"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("platform")}}>See the technology</button></div></div></Rv></Sc>
+    <Sc><Rv><div style={{textAlign:"center"}}><h2 style={{...hd,fontSize:34,fontWeight:700,marginBottom:14}}>New devices or existing infrastructure. See it work in 60 days.</h2><p style={{fontSize:17,color:MT,marginBottom:30,maxWidth:480,margin:"0 auto 30px"}}>Deploy purpose-built intelligent devices or make your existing infrastructure smarter. Same platform, same AI, same results. 60-day POC.</p><div style={{display:"flex",gap:12,justifyContent:"center"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("platform")}}>Explore Cortex</button></div></div></Rv></Sc>
   </div>)}
 
-function PlatPg(p){return <div style={{paddingTop:80}}><Sc><Rv><Tg>Platform</Tg><h1 style={{...hd,fontSize:46,fontWeight:700,marginBottom:18}}>Six layers. One intelligence substrate.</h1><p style={{fontSize:18,color:MT,lineHeight:1.8,maxWidth:500}}>System-Wide Learning at the apex. Compounding intelligence pushed to every device via OTA.</p></Rv></Sc><Sc bg={B2} bt><Rv><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:30}}>Inference pipeline</h2></Rv><Rv d={.1}><Pipe /></Rv></Sc><Sc><Rv><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:30}}>Contextual decisioning</h2></Rv><Rv d={.1}><Ctx /></Rv></Sc><Sc bg={B2} bt><Rv><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:30}}>Fleet intelligence</h2></Rv><Rv d={.1}><Fleet /></Rv></Sc><Sc bt><Rv><div style={{textAlign:"center"}}><button style={bn} onClick={function(){p.go("box")}}>Edge AI Box {"→"}</button></div></Rv></Sc></div>}
+function PlatPg(p){
+  var verticals=[
+    {c:T,n:"Retail",sig:"CCTV, ESL, RFID, shelf-edge sensors",dec:"Concealment patterns · planogram compliance · queue breach · zone-level footfall",out:"40-60% shrinkage reduction · 98%+ footfall accuracy"},
+    {c:V,n:"Cold chain & food",sig:"Thermal cameras, temperature probes, humidity, door sensors",dec:"Breach prediction · PPE verification · FIFO compliance · contamination detection",out:"Breaches predicted 15-30 min early · FSSAI automated"},
+    {c:AM,n:"Fleet & logistics",sig:"Dashcams, in-cab IR, BLE proximity, facility cameras",dec:"Fatigue and distraction · PPE on the floor · near-miss tracking · predictive maintenance",out:"60% fewer incidents · continuous compliance"},
+    {c:BL,n:"Smart home",sig:"IP cameras, doorbells, motion + door sensors, smoke detectors",dec:"Household recognition · anomaly vs. routine · fall and gait detection",out:"3-5 decisions a day · zero data to cloud"},
+    {c:PK,n:"Reinsurance intelligence",sig:"Bordereaux, SOVs, claim feeds, external accumulation signals",dec:"Canonical mapping · cross-cedant entity resolution · accumulation monitoring",out:"Same asset resolved across multiple cedants and formats — in hours, not weeks"}
+  ];
+  var arch=[
+    {k:"MCP-native",v:"Three Model Context Protocol servers — Cortex Core, Edge, Admin/Ops — expose the platform to agents and external systems without custom glue."},
+    {k:"Cloud-agnostic",v:"Deploys on GCP, AWS, or Azure — same platform, same guarantees. Managed SQL, warehouse, object store, and event bus on whichever cloud you standardise on. Multi-tenant and white-label ready."},
+    {k:"Bi-temporal data model",v:"PostgreSQL 15+ with bi-temporal columns on every table. Every fact is queryable at any point in time. Row-level security scopes every tenant."},
+    {k:"DIS ingestion pipeline",v:"Bronze / Silver / Gold medallion architecture. 7 stages, 10-state machine. Never silently ingest bad data, never silently reject files."},
+    {k:"Edge inference",v:"INT8-quantised vision and sensor-fusion models. Under 100ms, under 2W, fully offline. HAL abstracts ARM and x86 SoC families."},
+    {k:"Compliance",v:"DPDP + GDPR by architecture. STQC-aligned. Consent-based data flows. Privacy by design, not by policy."}
+  ];
+  var businessLines=[
+    "Plug into what you already have — cameras, sensors, POS, WMS, ESL.",
+    "Pick the outcomes your operation cares about. The decisioning layer is the same across verticals.",
+    "60-day proof of concept on your real data, at your site.",
+    "As your fleet grows, every new site inherits the learning of every previous one."
+  ];
+  return <div style={{paddingTop:80}}>
+    <Sc><Rv>
+      <Tg c={T}>Cortex platform</Tg>
+      <h1 style={{...hd,fontSize:46,fontWeight:700,lineHeight:1.06,marginBottom:22,maxWidth:680}}>Cortex. The industry-agnostic edge AI platform.</h1>
+      <p style={{fontSize:18,color:MT,lineHeight:1.85,maxWidth:640}}>One decisioning substrate across retail, cold chain, logistics, smart home, and reinsurance. Edge inference under 100ms. Cloud intelligence that compounds across every deployment. Hardware-agnostic by construction.</p>
+    </Rv></Sc>
+
+    <Sc bg={B2} bt>
+      <Rv><Tg c={V}>Why industry-agnostic matters</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>One platform. Different verticals. Same core loop.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:680,marginBottom:30}}>The signals change. The decisioning substrate does not. Every vertical runs the same ingest, identity, context, decide, act, compound pipeline — with a vertical-specific model pack on top.</p></Rv>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>{verticals.map(function(v,i){return <Rv key={i} d={i*.05}><div style={{display:"grid",gridTemplateColumns:"180px 1fr 1fr 1fr",gap:20,padding:"20px 22px",borderRadius:10,border:"1px solid "+BD,background:BG,borderLeft:"4px solid "+v.c,alignItems:"start"}}>
+        <div><div style={{fontSize:11,textTransform:"uppercase",letterSpacing:2,color:v.c,fontWeight:600,marginBottom:4}}>Vertical</div><div style={{fontSize:17,fontWeight:700}}>{v.n}</div></div>
+        <div><div style={{fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:DM,fontWeight:600,marginBottom:4}}>Signals</div><div style={{fontSize:14,color:MT,lineHeight:1.6}}>{v.sig}</div></div>
+        <div><div style={{fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:DM,fontWeight:600,marginBottom:4}}>Decisions</div><div style={{fontSize:14,color:MT,lineHeight:1.6}}>{v.dec}</div></div>
+        <div><div style={{fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:DM,fontWeight:600,marginBottom:4}}>Outcome</div><div style={{fontSize:14,color:TX,fontWeight:500,lineHeight:1.6}}>{v.out}</div></div>
+      </div></Rv>})}</div>
+    </Sc>
+
+    <Sc bt><Rv><Tg c={T}>The Cortex loop</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>Ingest. Decide. Act. Compound.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Every event follows the same path, from edge capture to fleet-wide learning. Each step is inspectable, each layer is replaceable.</p></Rv><Rv d={.1}><Pipe /></Rv></Sc>
+
+    <Sc bg={B2} bt><Rv><Tg c={V}>Contextual decisioning</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>Same event. Different context. Different decision.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Raw detections are cheap. Decisions are the product. Cortex fuses camera, sensor, and system-of-record signals against learned baselines before anything reaches a human.</p></Rv><Rv d={.1}><Ctx /></Rv></Sc>
+
+    <Sc bt><Rv><Tg c={AM}>Fleet intelligence</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>Every deployment teaches every other deployment.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Observations from every edge node feed a shared learning plane. Improvements are pushed back to every device via encrypted OTA. This is the moat — and it widens every day.</p></Rv><Rv d={.1}><Fleet /></Rv></Sc>
+
+    <Sc bg={B2} bt><Rv><Tg>Architecture</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>Built for enterprise. Designed for the edge.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>A cloud-agnostic intelligence plane paired with edge inference that runs offline. Deploys on GCP, AWS, or Azure. Multi-tenant, bi-temporal, and MCP-native from day one.</p></Rv>
+      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(260px,1fr))",gap:12}}>{arch.map(function(a,i){return <Rv key={i} d={i*.05}><div style={{padding:"20px 22px",borderRadius:10,border:"1px solid "+BD,background:BG,height:"100%"}}>
+        <div style={{fontSize:11,textTransform:"uppercase",letterSpacing:2,color:T,fontWeight:600,marginBottom:8}}>{a.k}</div>
+        <p style={{fontSize:14,color:MT,lineHeight:1.7}}>{a.v}</p>
+      </div></Rv>})}</div>
+    </Sc>
+
+    <Sc bt><Rv><Tg c={PK}>What this means for you</Tg><h2 style={{...hd,fontSize:32,fontWeight:700,marginBottom:12}}>A platform you can run on your own data.</h2><p style={{fontSize:16,color:MT,lineHeight:1.8,maxWidth:640,marginBottom:30}}>Same decisioning substrate, shaped to your operation and your KPIs — not a rebuild.</p></Rv>
+      <Rv d={.1}><div style={{padding:28,borderRadius:14,border:"1.5px solid "+T+"35",background:T+"06",maxWidth:720}}>
+        <ul style={{listStyle:"none",padding:0,margin:0,display:"flex",flexDirection:"column",gap:14}}>{businessLines.map(function(l,j){return <li key={j} style={{display:"flex",gap:12,fontSize:16,color:TX,lineHeight:1.65}}><span style={{color:T,flexShrink:0,marginTop:7}}>■</span><span>{l}</span></li>})}</ul>
+      </div></Rv>
+    </Sc>
+
+    <Sc bg={B2} bt><Rv><div style={{textAlign:"center"}}>
+      <h2 style={{...hd,fontSize:28,fontWeight:700,marginBottom:14}}>See Cortex run on your data.</h2>
+      <p style={{fontSize:16,color:MT,marginBottom:24,maxWidth:460,margin:"0 auto 24px"}}>60-day proof of concept. Your site, your signals, your KPIs. We bring the platform.</p>
+      <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+        <button style={bn} onClick={function(){p.go("contact")}}>Book a 60-day POC</button>
+        <button style={b2} onClick={function(){p.go("box")}}>See the Edge AI Box {"→"}</button>
+      </div>
+    </div></Rv></Sc>
+  </div>;
+}
 
 function BoxPg(p){return <div style={{paddingTop:80}}><Sc><Rv><Tg c={BL}>Product</Tg><h1 style={{...hd,fontSize:46,fontWeight:700,marginBottom:18}}>Edge AI Box</h1><p style={{fontSize:18,color:MT,lineHeight:1.8,maxWidth:540}}>The entire Sevyn8 platform in one device. Any camera. Any SoC. Four industries.</p></Rv></Sc><Sc bg={B2} bt><Rv><BoxSchematic /></Rv></Sc><Sc><Rv><h3 style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:14}}>Connects to</h3><p style={{fontSize:16,color:MT,lineHeight:1.85}}>Fixed Box IP Camera &middot; Dome Camera &middot; Bullet Camera &middot; PTZ Camera &middot; Fisheye Panoramic &middot; Thermal LWIR &middot; ANPR Camera &middot; In-Cab IR Camera &middot; Shelf-Edge Camera &middot; WiFi Consumer Camera &middot; Video Doorbell &middot; IoT Sensor Nodes &middot; BLE Beacons &middot; RFID Readers</p></Rv></Sc><Sc bg={B2} bt><Rv><h3 style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:DM,marginBottom:22}}>Specifications</h3></Rv><div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>{[{k:"AI compute",v:"Up to 100 TOPS"},{k:"Inference",v:"Under 100ms"},{k:"Power",v:"Under 2 watts"},{k:"Connectivity",v:"WiFi 6, LTE, BLE 5.4, Thread"},{k:"SoC",v:"ARM & x86 families supported"},{k:"Security",v:"STQC ER-1 through ER-5"},{k:"Compliance",v:"BIS CRS, DPDP, HIPAA"},{k:"Updates",v:"Encrypted OTA fleet-wide"}].map(function(s,i){return <Rv key={i} d={i*.04}><div style={{padding:"18px 20px",borderRadius:8,border:"1px solid "+BD,background:BG}}><div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>{s.k}</div><div style={{fontSize:16,fontWeight:500}}>{s.v}</div></div></Rv>})}</div></Sc><Sc bt><Rv><div style={{textAlign:"center"}}><button style={bn} onClick={function(){p.go("contact")}}>Request evaluation unit</button></div></Rv></Sc></div>}
 
@@ -307,10 +398,46 @@ function ContactPg(){var t2=useState("enterprise"),ty=t2[0],is2={fontFamily:"inh
   var ph=ty==="enterprise"?"Tell us about your deployment needs, store/site count, and current camera infrastructure...":ty==="oem"?"Tell us about your product line, annual shipment volume, and target AI features...":"How can we help?";
   return <div style={{paddingTop:80}}><Sc><Rv><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"start"}}><div><Tg>Contact</Tg><h1 style={{...hd,fontSize:44,fontWeight:700,marginBottom:18}}>Start the conversation.</h1><p style={{fontSize:17,color:MT,lineHeight:1.8,marginBottom:36}}>Enterprise deployment. OEM integration. Platform evaluation.</p><div style={{fontSize:16,color:MT,lineHeight:1.8}}><div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Email</div><div style={{color:TX,fontWeight:500}}>hello@sevyn8.com</div><div style={{marginTop:18,fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Location</div><div>New Delhi, India</div></div></div><div><div style={{display:"flex",gap:6,marginBottom:18}}>{[["enterprise","Enterprise"],["oem","OEM Partner"],["general","General"]].map(function(x){return <button key={x[0]} onClick={function(){t2[1](x[0])}} style={{padding:"8px 18px",borderRadius:6,fontSize:14,fontWeight:500,fontFamily:"inherit",border:"1px solid "+(ty===x[0]?T:BD),background:ty===x[0]?T+"12":"transparent",color:ty===x[0]?T:MT,cursor:"pointer"}}>{x[1]}</button>})}</div><div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><input placeholder="Name" style={is2} /><input placeholder="Email" style={is2} /></div><input placeholder="Company" style={is2} />{ty==="enterprise"&&<input placeholder="Industry (Smart Home, Retail, Fleet, Food & Cold Storage)" style={is2} />}{ty==="oem"&&<input placeholder="Annual device volume" style={is2} />}<textarea placeholder={ph} rows={4} style={{...is2,resize:"vertical"}} /><button style={{...bn,alignSelf:"flex-start"}}>Send message {"→"}</button></div></div></div></Rv></Sc></div>}
 
-function Nav(p){var pg=p.pg,go=p.go,s2=useState(false),d2=useState(null);
+function Nav(p){
+  var pg=p.pg,go=p.go,s2=useState(false),d2=useState(null),mo=useState(false);
   useEffect(function(){var h=function(){s2[1](window.scrollY>40)};window.addEventListener("scroll",h);return function(){window.removeEventListener("scroll",h)}},[]);
+  useEffect(function(){document.body.style.overflow=mo[0]?"hidden":"";return function(){document.body.style.overflow=""}},[mo[0]]);
+  var goc=function(t){mo[1](false);go(t)};
   var nl=function(l,t){return <span onClick={function(){go(t)}} style={{fontSize:14,fontWeight:500,color:pg===t?T:MT,cursor:"pointer"}}>{l}</span>};
-  return <nav style={{position:"fixed",top:0,left:0,right:0,zIndex:999,padding:"0 40px",background:s2[0]?"rgba(6,8,16,.94)":"transparent",backdropFilter:s2[0]?"blur(20px)":"none",borderBottom:s2[0]?"1px solid "+BD:"none",transition:"all .3s"}}><div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:60}}><div onClick={function(){go("home")}} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:8}}><div style={{width:26,height:26,borderRadius:5,background:"linear-gradient(135deg,"+T+","+BL+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:BG}}>S8</div><span style={{fontSize:16,fontWeight:800,letterSpacing:2}}>SEVYN8</span></div><div style={{display:"flex",alignItems:"center",gap:26}}>{nl("Platform","platform")}{nl("Edge AI Box","box")}<div style={{position:"relative"}} onMouseEnter={function(){d2[1]("s")}} onMouseLeave={function(){d2[1](null)}}><span style={{fontSize:14,fontWeight:500,color:pg.startsWith("sol-")?T:MT,cursor:"pointer",padding:"8px 0"}}>Solutions &#9662;</span>{d2[0]==="s"&&<div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:280,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{SOL.map(function(s){return <div key={s.id} onClick={function(){go("sol-"+s.id)}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{s.n}<br/><span style={{fontSize:12,color:DM}}>{s.ln}</span></div>})}</div></div>}</div>{nl("Partners","partners")}<div style={{position:"relative"}} onMouseEnter={function(){d2[1]("c")}} onMouseLeave={function(){d2[1](null)}}><span style={{fontSize:14,fontWeight:500,color:["about","contact"].includes(pg)?T:MT,cursor:"pointer",padding:"8px 0"}}>Our Story &#9662;</span>{d2[0]==="c"&&<div style={{position:"absolute",top:"100%",right:0,paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:150,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{[["Our Story","about"],["Contact","contact"]].map(function(x){return <div key={x[0]} onClick={function(){go(x[1])}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{x[0]}</div>})}</div></div>}</div><button style={{...bn,padding:"8px 20px",fontSize:13}} onClick={function(){go("contact")}}>Contact</button></div></div></nav>}
+  var mrow=function(l,t,sub){var act=pg===t;return <div key={t} onClick={function(){goc(t)}} style={{padding:"16px 22px",borderBottom:"1px solid "+BD,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+    <div><div style={{fontSize:17,fontWeight:600,color:act?T:TX}}>{l}</div>{sub&&<div style={{fontSize:13,color:DM,marginTop:3,lineHeight:1.4}}>{sub}</div>}</div>
+    <span style={{color:act?T:DM,fontSize:18,marginLeft:12}}>{"\u203A"}</span>
+  </div>};
+  return <><nav style={{position:"fixed",top:0,left:0,right:0,zIndex:999,padding:"0 40px",background:s2[0]||mo[0]?"rgba(6,8,16,.96)":"transparent",backdropFilter:s2[0]||mo[0]?"blur(20px)":"none",borderBottom:s2[0]||mo[0]?"1px solid "+BD:"none",transition:"all .3s"}}>
+    <div style={{maxWidth:1200,margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between",height:60}}>
+      <div onClick={function(){goc("home")}} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:8}}><div style={{width:26,height:26,borderRadius:5,background:"linear-gradient(135deg,"+T+","+BL+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,fontWeight:800,color:BG}}>S8</div><span style={{fontSize:16,fontWeight:800,letterSpacing:2}}>SEVYN8</span></div>
+      <div style={{display:"flex",alignItems:"center",gap:26}}>
+        {nl("Cortex","platform")}{nl("Edge AI Box","box")}
+        <div style={{position:"relative"}} onMouseEnter={function(){d2[1]("s")}} onMouseLeave={function(){d2[1](null)}}><span style={{fontSize:14,fontWeight:500,color:pg.startsWith("sol-")?T:MT,cursor:"pointer",padding:"8px 0"}}>Solutions &#9662;</span>{d2[0]==="s"&&<div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:280,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{SOL.map(function(s){return <div key={s.id} onClick={function(){go("sol-"+s.id)}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{s.n}<br/><span style={{fontSize:12,color:DM}}>{s.ln}</span></div>})}</div></div>}</div>
+        {nl("Partners","partners")}
+        <div style={{position:"relative"}} onMouseEnter={function(){d2[1]("c")}} onMouseLeave={function(){d2[1](null)}}><span style={{fontSize:14,fontWeight:500,color:["about","contact"].includes(pg)?T:MT,cursor:"pointer",padding:"8px 0"}}>Our Story &#9662;</span>{d2[0]==="c"&&<div style={{position:"absolute",top:"100%",right:0,paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:150,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{[["Our Story","about"],["Contact","contact"]].map(function(x){return <div key={x[0]} onClick={function(){go(x[1])}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{x[0]}</div>})}</div></div>}</div>
+        <button style={{...bn,padding:"8px 20px",fontSize:13}} onClick={function(){go("contact")}}>Contact</button>
+        <button className="nav-burger" aria-label={mo[0]?"Close menu":"Open menu"} onClick={function(){mo[1](!mo[0])}} style={{display:"none",alignItems:"center",justifyContent:"center",width:40,height:40,background:"transparent",border:"1px solid "+BD,borderRadius:8,cursor:"pointer",color:TX,padding:0}}>
+          {mo[0]
+            ? <span style={{fontSize:22,lineHeight:1,fontWeight:300}}>{"\u00D7"}</span>
+            : <div style={{display:"flex",flexDirection:"column",gap:4}}><div style={{width:18,height:2,background:TX,borderRadius:1}} /><div style={{width:18,height:2,background:TX,borderRadius:1}} /><div style={{width:18,height:2,background:TX,borderRadius:1}} /></div>}
+        </button>
+      </div>
+    </div>
+  </nav>
+  {mo[0] && <div className="nav-panel" style={{position:"fixed",top:60,left:0,right:0,bottom:0,background:BG,borderTop:"1px solid "+BD,overflowY:"auto",zIndex:998,WebkitOverflowScrolling:"touch"}}>
+    {mrow("Home","home")}
+    {mrow("Cortex","platform","The industry-agnostic edge AI platform")}
+    {mrow("Edge AI Box","box","The device")}
+    <div style={{padding:"18px 22px 6px",fontSize:11,textTransform:"uppercase",letterSpacing:2.5,color:DM,fontWeight:600}}>Solutions</div>
+    {SOL.map(function(s){return mrow(s.n,"sol-"+s.id,s.ln)})}
+    {mrow("Partners","partners")}
+    {mrow("Our Story","about")}
+    {mrow("Contact","contact")}
+    <div style={{padding:"30px 22px 60px"}}><button style={{...bn,width:"100%",justifyContent:"center",padding:"14px 20px"}} onClick={function(){goc("contact")}}>Book a 60-day POC {"\u2192"}</button></div>
+  </div>}
+  </>;
+}
 
 function Ft(){return <footer style={{borderTop:"1px solid "+BD,background:B2,padding:"36px 40px"}}><div style={{maxWidth:1200,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:13,color:DM,flexWrap:"wrap",gap:12}}><div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:20,height:20,borderRadius:4,background:"linear-gradient(135deg,"+T+","+BL+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:9,fontWeight:800,color:BG}}>S8</div><span style={{fontWeight:800,letterSpacing:2}}>SEVYN8</span></div><span>2026 Sevyn8 Private Limited &middot; New Delhi &middot; DPIIT Recognised</span></div></footer>}
 
@@ -318,11 +445,11 @@ export default function App(){
   var p2=useState("home"),pg=p2[0];
   useEffect(function(){var id="G-XXXXXXXXXX";var s=document.createElement("script");s.src="https://www.googletagmanager.com/gtag/js?id="+id;s.async=true;document.head.appendChild(s);window.dataLayer=window.dataLayer||[];function gtag(){window.dataLayer.push(arguments)}window.gtag=gtag;gtag("js",new Date());gtag("config",id)},[]);
   useEffect(function(){if(window.gtag)window.gtag("event","page_view",{page_title:pg,page_path:"/"+pg})},[pg]);
-  useEffect(function(){document.title="Sevyn8 | AI at Edge Platform";[{name:"description",content:"Sevyn8 is an AI at Edge Platform. SoC-agnostic. Under 100ms inference, fully offline. Smart Home, Retail, Fleet, Cold Storage."},{name:"keywords",content:"edge AI, AI platform, edge computing, SoC agnostic, HAL, on-device AI, computer vision, IoT, fleet intelligence, OEM licensing, cold chain, food safety, smart home, retail analytics"},{property:"og:title",content:"Sevyn8 | Intelligence at the Edge"},{property:"og:description",content:"The AI at Edge Platform. Six layers. One device. Four industries."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"},{name:"robots",content:"index, follow"}].forEach(function(m){var el=document.createElement("meta");if(m.name)el.name=m.name;if(m.property)el.setAttribute("property",m.property);el.content=m.content;document.head.appendChild(el)})},[]);
+  useEffect(function(){document.title="Sevyn8 | Cortex — the industry-agnostic edge AI platform";[{name:"description",content:"Cortex is Sevyn8's industry-agnostic edge AI platform. Hardware-agnostic. Under 100ms edge inference, fully offline. Retail, cold chain, logistics, smart home, reinsurance — one platform, every industry."},{name:"keywords",content:"Cortex, Sevyn8, edge AI, AI platform, edge computing, SoC agnostic, HAL, on-device AI, computer vision, IoT, fleet intelligence, OEM licensing, cold chain, food safety, smart home, retail analytics, reinsurance, MCP"},{property:"og:title",content:"Sevyn8 | Cortex — one edge AI platform, every industry"},{property:"og:description",content:"Cortex: the industry-agnostic edge AI platform. Hardware-agnostic. Compounding across every deployment."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"},{name:"robots",content:"index, follow"}].forEach(function(m){var el=document.createElement("meta");if(m.name)el.name=m.name;if(m.property)el.setAttribute("property",m.property);el.content=m.content;document.head.appendChild(el)})},[]);
   var go=useCallback(function(p){p2[1](p);window.scrollTo({top:0,behavior:"instant"})},[]);
   var C;if(pg==="home")C=<Home go={go}/>;else if(pg==="platform")C=<PlatPg go={go}/>;else if(pg==="box")C=<BoxPg go={go}/>;else if(pg==="partners")C=<PartPg go={go}/>;else if(pg==="about")C=<AboutPg />;else if(pg==="contact")C=<ContactPg />;else if(pg.indexOf("sol-")===0){var s=SOL.find(function(x){return "sol-"+x.id===pg});C=s?<SolPg s={s} go={go}/>:<Home go={go}/>}else C=<Home go={go}/>;
   return <div style={{minHeight:"100vh",background:BG,fontFamily:"'DM Sans',system-ui,sans-serif",WebkitFontSmoothing:"antialiased",color:TX,fontSize:16,lineHeight:1.65}}>
-    <style dangerouslySetInnerHTML={{__html:"@import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/outfit/index.min.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/400.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/500.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/700.css');*{margin:0;padding:0;box-sizing:border-box}::selection{background:#00D4AA;color:#060810}html{scroll-behavior:smooth}"}} />
+    <style dangerouslySetInnerHTML={{__html:"@import url('https://cdn.jsdelivr.net/npm/@fontsource-variable/outfit/index.min.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/400.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/500.css');@import url('https://cdn.jsdelivr.net/npm/@fontsource/dm-sans@5.0.3/700.css');*{margin:0;padding:0;box-sizing:border-box}::selection{background:#00D4AA;color:#060810}html{scroll-behavior:smooth}img,canvas,svg{max-width:100%}@media (max-width:768px){[style*=\"1fr 1fr\"]{grid-template-columns:1fr !important}[style*=\"repeat(3,\"],[style*=\"repeat(3, \"]{grid-template-columns:1fr !important}[style*=\"repeat(4,\"],[style*=\"repeat(4, \"]{grid-template-columns:repeat(2,1fr) !important}main section[style*=\"100vh\"]{min-height:auto !important;padding:84px 20px 32px !important}main section[style*=\"100vh\"] > div{gap:32px !important}main section[style*=\"100vh\"] > div > div[style*=\"height:480\"],main section[style*=\"100vh\"] > div > div[style*=\"height: 480\"]{height:320px !important}section > div{padding-left:20px !important;padding-right:20px !important;padding-top:48px !important;padding-bottom:48px !important}h1{font-size:32px !important;line-height:1.1 !important}h2{font-size:24px !important;line-height:1.2 !important}h3{font-size:18px !important}nav > div{padding:0 14px !important}nav > div > div:last-child{gap:8px !important}nav > div > div:last-child > span,nav > div > div:last-child > div{display:none !important}nav > div > div:last-child > button{display:inline-flex !important;padding:7px 14px !important;font-size:12px !important}nav button.nav-burger{display:inline-flex !important;width:40px !important;height:40px !important;padding:0 !important}}@media (max-width:480px){h1{font-size:28px !important}h2{font-size:22px !important}main section[style*=\"100vh\"] > div > div[style*=\"height:480\"],main section[style*=\"100vh\"] > div > div[style*=\"height: 480\"]{height:260px !important}}"}} />
     <Nav pg={pg} go={go}/><main key={pg}>{C}</main><Ft />
   </div>;
 }
