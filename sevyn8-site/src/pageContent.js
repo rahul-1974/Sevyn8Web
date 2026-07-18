@@ -14,26 +14,23 @@ export const HOME = `<div class="wrap">
         </div>
       </div>
 
-      <div class="flowwrap" id="flowwrap">
-        <div class="tier floor">
-          <div class="tier-label">On the floor &middot; what you see</div>
-          <div class="floor-row">
-            <div class="event-box" id="fEvent">A customer waits in an unattended aisle</div>
-            <div class="earn-box" id="fEarn"><span class="eb-k">Earn</span><span class="eb-t" id="fEarnT">a sale that won't walk out</span></div>
+      <div class="flow2" id="flow2">
+        <div class="flow2-cap">One engine. Point it at any problem.</div>
+        <div class="flow2-row">
+          <div class="fx-card fx-see">
+            <div class="fx-eyebrow">What you see</div>
+            <div class="fx-text" id="fxSee">A customer waits in an unattended aisle</div>
           </div>
-        </div>
-        <div class="connectors">
-          <div class="conn down" id="fDown"><span>notices</span><svg viewBox="0 0 15 32" aria-hidden="true"><line x1="7.5" y1="0" x2="7.5" y2="25"/><path d="M3 20 L7.5 29 L12 20"/></svg></div>
-          <div class="conn up" id="fUp"><svg viewBox="0 0 15 32" aria-hidden="true"><line x1="7.5" y1="7" x2="7.5" y2="32"/><path d="M3 12 L7.5 3 L12 12"/></svg><span>sends help</span></div>
-        </div>
-        <div class="tier under">
-          <div class="tier-label">What SEVYN8 runs underneath &middot; on your own hardware</div>
-          <div class="under-row">
-            <div class="stagecard know" id="fKnow"><div class="sc-k">Know</div><div class="sc-h">Sensing</div><div class="sc-p" id="fKnowP">Sees a customer waiting, no staff near</div></div>
-            <div class="sc-arrow">&rarr;</div>
-            <div class="stagecard decide" id="fDecide"><div class="sc-k">Decide</div><div class="sc-h">Cortex AI</div><div class="sc-p" id="fDecideP">Works out who is free and nearest</div></div>
-            <div class="sc-arrow">&rarr;</div>
-            <div class="stagecard act" id="fAct"><div class="sc-k">Act</div><div class="sc-h">Actuation</div><div class="sc-p" id="fActP">The nearest associate is sent over</div></div>
+          <div class="fx-link" aria-hidden="true"><svg viewBox="0 0 40 24"><line x1="2" y1="12" x2="30" y2="12"/><path d="M26 6 L34 12 L26 18"/></svg></div>
+          <div class="fx-card fx-engine">
+            <div class="fx-eyebrow">SEVYN8</div>
+            <div class="fx-steps"><span class="fx-step">senses</span><span class="fx-dot">&middot;</span><span class="fx-step">decides</span><span class="fx-dot">&middot;</span><span class="fx-step">acts</span></div>
+            <div class="fx-sub">on hardware you already own</div>
+          </div>
+          <div class="fx-link" aria-hidden="true"><svg viewBox="0 0 40 24"><line x1="2" y1="12" x2="30" y2="12"/><path d="M26 6 L34 12 L26 18"/></svg></div>
+          <div class="fx-card fx-earn" id="fxEarnCard">
+            <div class="fx-eyebrow">What you earn</div>
+            <div class="fx-text" id="fxEarn">a sale that won't walk out</div>
           </div>
         </div>
       </div>
