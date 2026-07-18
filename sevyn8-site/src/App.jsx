@@ -203,26 +203,27 @@ function Page(p){return <div className="page active" dangerouslySetInnerHTML={{_
 function wireBehaviors(){
   var timers=[];
   (function(){
-    var flow=document.getElementById("flowwrap"); if(!flow) return;
+    var root=document.getElementById("flow2"); if(!root) return;
+    var seeEl=document.getElementById("fxSee"), earnEl=document.getElementById("fxEarn"), earnCard=document.getElementById("fxEarnCard");
+    var steps=root.querySelectorAll(".fx-step"), links=root.querySelectorAll(".fx-link");
     var scen=[
-      {ev:"A customer waits in an unattended aisle",k:"Sees a customer waiting, no staff near",d:"Works out who is free and nearest",a:"The nearest associate is sent over",e:"a sale that won't walk out"},
-      {ev:"A whole floor sits empty after hours",k:"Occupancy on level 3 drops to zero",d:"Sets back HVAC and lighting to match",a:"Building systems dial themselves down",e:"energy and carbon you don't spend"}
+      {see:"A customer waits in an unattended aisle", earn:"a sale that won't walk out"},
+      {see:"A whole floor sits empty after hours", earn:"energy and carbon you don't spend"},
+      {see:"A top seller runs empty on the shelf", earn:"the restock before it costs a sale"},
+      {see:"A checkout line is backing up", earn:"a queue that keeps moving"},
+      {see:"A zone runs cold and overcooled", earn:"the overspend you cut"}
     ];
-    var fEvent=document.getElementById("fEvent"),fEarn=document.getElementById("fEarn"),fEarnT=document.getElementById("fEarnT"),fKnowP=document.getElementById("fKnowP"),fDecideP=document.getElementById("fDecideP"),fActP=document.getElementById("fActP");
-    var fKnow=document.getElementById("fKnow"),fDecide=document.getElementById("fDecide"),fAct=document.getElementById("fAct"),fDown=document.getElementById("fDown"),fUp=document.getElementById("fUp");
-    var all=[fEvent,fEarn,fKnow,fDecide,fAct,fDown,fUp];
-    function setScen(x){var s2=scen[x];fEvent.textContent=s2.ev;fKnowP.textContent=s2.k;fDecideP.textContent=s2.d;fActP.textContent=s2.a;fEarnT.textContent=s2.e;}
-    var si=0,beat=0;
-    function fstep(){
-      if(beat===0){all.forEach(function(el){el.classList.remove("on");});setScen(si);fEvent.classList.add("on");}
-      else if(beat===1){fDown.classList.add("on");fKnow.classList.add("on");}
-      else if(beat===2){fDecide.classList.add("on");}
-      else if(beat===3){fAct.classList.add("on");}
-      else if(beat===4){fUp.classList.add("on");fEarn.classList.add("on");}
-      beat++;if(beat>5){beat=0;si=(si+1)%scen.length;}
-    }
-    if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){setScen(0);all.forEach(function(el){el.classList.add("on");});}
-    else{setScen(0);fstep();timers.push(setInterval(fstep,1250));}
+    function paint(k){ if(seeEl)seeEl.textContent=scen[k].see; if(earnEl)earnEl.textContent=scen[k].earn; }
+    var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    paint(0);
+    if(reduce){ steps.forEach(function(x){x.classList.add("on");}); links.forEach(function(l){l.classList.add("on");}); return; }
+    var s=0;
+    function tick(){ steps.forEach(function(el,k){el.classList.toggle("on",k===s);}); links.forEach(function(l){l.classList.toggle("on", s>0 && s<steps.length);}); s=(s+1)%(steps.length+1); }
+    tick(); timers.push(setInterval(tick,700));
+    var i=0;
+    function swap(){ i=(i+1)%scen.length; if(seeEl)seeEl.classList.add("swap"); if(earnEl)earnEl.classList.add("swap");
+      setTimeout(function(){ paint(i); if(seeEl)seeEl.classList.remove("swap"); if(earnEl)earnEl.classList.remove("swap"); if(earnCard){earnCard.classList.add("pop"); setTimeout(function(){earnCard.classList.remove("pop");},950);} },260); }
+    timers.push(setInterval(swap,3200));
   })();
   (function(){
     var snodes=document.querySelectorAll(".snode"); if(!snodes.length) return;

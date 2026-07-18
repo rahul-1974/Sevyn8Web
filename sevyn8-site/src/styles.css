@@ -298,3 +298,33 @@
 .legal strong{color:var(--ink);font-weight:600}
 .legal em{color:var(--ink-soft);font-style:italic}
 .legal code{font-family:"IBM Plex Mono",monospace;font-size:.92em;background:var(--paper-3);padding:1px 6px;border-radius:5px;color:var(--ink)}
+
+
+/* ---- hero flow: see to earn spine (cycling) ---- */
+.flow2{margin-top:40px}
+.flow2-cap{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--muted);text-align:center;margin-bottom:20px}
+.flow2-row{display:flex;align-items:stretch;gap:10px;justify-content:center}
+.fx-card{flex:1;min-width:0;background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center;min-height:128px;transition:background .4s,border-color .4s,box-shadow .4s,transform .4s}
+.fx-see{border-left:3px solid var(--cyan)}
+.fx-engine{flex:1.05;border-left:3px solid var(--ion)}
+.fx-earn{border-left:3px solid var(--magenta)}
+.fx-eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.fx-see .fx-eyebrow{color:var(--cyan-deep)}
+.fx-engine .fx-eyebrow{color:var(--ion)}
+.fx-earn .fx-eyebrow{color:var(--magenta-deep)}
+.fx-text{font-size:1.14rem;font-weight:600;line-height:1.32;color:var(--ink);min-height:2.6em;display:flex;align-items:center;transition:opacity .28s ease}
+.fx-earn .fx-text{color:var(--ink)}
+.fx-text.swap{opacity:0}
+.fx-steps{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.fx-step{font-size:1.05rem;font-weight:600;color:var(--muted);transition:color .3s}
+.fx-step.on{color:var(--ion)}
+.fx-dot{color:var(--rail)}
+.fx-sub{font-size:.9rem;color:var(--ink-soft)}
+.fx-earn.pop{background:color-mix(in srgb,var(--magenta) 8%,var(--paper-2));border-color:var(--magenta);box-shadow:0 12px 30px color-mix(in srgb,var(--magenta) 20%,transparent);transform:translateY(-3px)}
+.fx-link{display:flex;align-items:center;color:var(--rail);flex:none;transition:color .3s}
+.fx-link.on{color:var(--ion)}
+.fx-link svg{width:34px;height:22px}
+.fx-link svg line,.fx-link svg path{stroke:currentColor;stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+[data-theme="dark"] .fx-see .fx-eyebrow{color:var(--cyan)}
+[data-theme="dark"] .fx-earn .fx-eyebrow{color:var(--magenta)}
+@media (max-width:760px){.flow2-row{flex-wrap:wrap}.fx-link{display:none}.fx-card{flex:1 1 100%;min-height:0}.fx-text{min-height:0}}
