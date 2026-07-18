@@ -1,6 +1,17 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/industries/retail", "destination": "/retail", "permanent": true },
+    { "source": "/industries", "destination": "/retail", "permanent": true },
+    { "source": "/industries/cold-chain", "destination": "/", "permanent": true },
+    { "source": "/industries/logistics", "destination": "/", "permanent": true },
+    { "source": "/industries/smart-home", "destination": "/", "permanent": true },
+    { "source": "/ai-hardware", "destination": "/cortex-ai", "permanent": true },
+    { "source": "/company/our-story", "destination": "/company", "permanent": true },
+    { "source": "/company/partners", "destination": "/company", "permanent": true },
+    { "source": "/proof", "destination": "/", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -8,14 +19,12 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" }
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
       ]
     },
     {
       "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
+      "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ]
     }
   ]
 }

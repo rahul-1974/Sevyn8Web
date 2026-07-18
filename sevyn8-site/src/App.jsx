@@ -1,8 +1,10 @@
 import {useState, useEffect, useRef} from "react";
 import {useNavigate, useLocation, Outlet, Link} from "react-router-dom";
 import {Head} from "vite-react-ssg";
+import "./styles.css";
+import {HOME, HOW, CORTEX, RETAIL, REALESTATE, COMPANY, CONTACT} from "./pageContent.js";
 
-// values mirror brand-assets/tokens.json (v4); tokens.css is canonical
+/* ---- design tokens + helpers (carried from prior build) ---- */
 var T="#414BF5", ION_H="#2F38D6", CY="#19D3E0", MG="#E63DCB", I3="#8E97F8", I7="#232BAA", SL="#5A6275", WN="#FFB020";
 var BG="#0B0D14", B2="#181C28", B3="#272D3B", TX="#E7EAF1", MT="#5A6275", DM="#3C4354", BD="rgba(140,160,200,0.07)", N3="#AEB5C6";
 var MW=1280; // page container max-width
@@ -13,397 +15,28 @@ function Sc(p){return <section style={{borderTop:p.bt?"1px solid "+BD:"none",bac
 function Tg(p){return <div style={{fontSize:11,textTransform:"uppercase",letterSpacing:3,color:p.c||T,marginBottom:12,fontWeight:500,fontFamily:"'IBM Plex Mono',monospace"}}>{p.children}</div>}
 function Brand(p){var s=p.size,mk=p.mark||s,gp=(p.gap!=null?p.gap:10);return <div style={{display:"flex",alignItems:"center",gap:gp}}><img src={p.animated?"/sevyn8-mark-animated.svg":"/sevyn8-mark.svg"} alt="" style={{height:mk,width:"auto",display:"block"}} /><span style={{fontFamily:"'IBM Plex Sans',system-ui,sans-serif",fontWeight:600,color:TX,letterSpacing:"-.01em",fontSize:s*.6}}>Sevyn8</span></div>}
 function Rv(p){var r=useRef(null),v=useState(false);useEffect(function(){var el=r.current;if(!el)return;var o=new IntersectionObserver(function(e){if(e[0].isIntersecting){v[1](true);o.disconnect()}},{threshold:0.08});o.observe(el);return function(){o.disconnect()}},[]);return <div ref={r} style={{opacity:v[0]?1:0,transform:v[0]?"none":"translateY(24px)",transition:"all .7s cubic-bezier(.22,1,.36,1) "+(p.d||0)+"s"}}>{p.children}</div>}
-
-function PartPg(p){var cats=[{t:"Silicon Partners (ARM & x86)",i:[["Tier-1 Mobile SoC Provider","Leading ARM-based application processor with dedicated NPU delivering up to 8 TOPS. WiFi 6E integrated. Primary SoC for the Edge AI Box. Design Partnership Agreement signed.","ARM SoC"],["Vision-Grade SoC Provider","4 TOPS dedicated vision processor with 4K ISP. Camera-optimised silicon. STQC ER-5 certified, US-origin. Ideal for surveillance and smart city deployments.","ARM SoC"],["Low-Power IoT SoC Provider","LTE-M/NB-IoT cellular SoC for IoT gateways and BLE 5.4 SoC for ESL and sensor mesh networks. Ultra-low power for battery-operated edge nodes.","IoT SoC"]]},{t:"Security Silicon",i:[["Hardware Security Partner","TPM 2.0 for hardware root of trust. Dedicated secure element for device identity provisioning at scale. Secure MCU for isolated cryptographic operations. DPA signed.","Security"]]},{t:"Sensor & Module Partners",i:[["Global Image Sensor Leader","Industry-leading image sensor family for camera modules. High dynamic range and low-light performance optimised specifically for on-device edge AI inference.","Sensor"],["Pre-Certified Module Provider","Pre-certified LTE Cat1bis, WiFi 6, and secure MCU modules with WPC ETA certification. Saves each OEM partner significant per-SKU compliance cost and time.","Module"],["WiFi 6E Module Specialist","Pre-certified WiFi 6E modules for camera and gateway integration. Regulatory approvals included, accelerating OEM time-to-market.","Module"]]},{t:"Design Partners",i:[["Concept-to-product design","Industrial design, mechanical engineering, thermal management, and design-for-manufacturing for Edge AI Box and Hub hardware.","Design"],["System integration","Full AI-at-Edge stack deployment combining vision, IoT sensors, and edge compute into unified customer solutions.","Integration"]]}];
-  return <div style={{paddingTop:80}}><Sc><Rv><Tg>Partners</Tg><h1 style={{...hd,fontSize:44,fontWeight:600,marginBottom:18,maxWidth:500}}>Technology partners. Intelligence infrastructure.</h1><p style={{fontSize:18,color:N3,lineHeight:1.8,maxWidth:540}}>Sevyn8 partners with world-class silicon, sensor, and design firms to build the most capable edge AI platform on the market. We work with the largest ARM and x86 SoC providers, leading global and niche sensor companies, and specialist design houses.</p></Rv></Sc>
-    <Sc bg={B2} bt><Rv><Tg>OEM licensing model</Tg></Rv><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12}}>{[["01","Embed","Sevyn8 platform — HAL, firmware, AI models, decisioning — integrates into your hardware at factory level"],["02","Ship","Your brand, your distribution, your customers. The intelligence inside is Sevyn8 — invisible platform, visible value"],["03","Monetise","One-time hardware sale becomes recurring SaaS revenue. Cloud AI upsell converts device buyers into subscribers"],["04","Compound","Fleet learning improves every device you ship. Your 100,000th unit outperforms your competitor's latest launch"]].map(function(s,i){return <Rv key={i} d={i*.08}><div style={{padding:22,borderRadius:10,border:"1px solid "+BD,background:BG,height:"100%"}}><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,color:T}}>{s[0]}</span><h4 style={{fontSize:17,fontWeight:600,margin:"8px 0 5px"}}>{s[1]}</h4><p style={{fontSize:14,color:MT,lineHeight:1.7}}>{s[2]}</p></div></Rv>})}</div></Sc>
-    {cats.map(function(cat,ci){return <Sc key={ci} bg={ci%2===0?undefined:B2} bt><Rv><Tg>{cat.t}</Tg></Rv><div style={{display:"grid",gridTemplateColumns:cat.i.length>1?"1fr 1fr":"1fr",gap:12}}>{cat.i.map(function(q,j){return <Rv key={j} d={j*.06}><div style={{padding:22,borderRadius:10,border:"1px solid "+BD,background:ci%2===0?B2:BG,height:"100%"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:17,fontWeight:600}}>{q[0]}</span><span style={{fontSize:11,color:T,padding:"4px 12px",border:"1px solid "+T+"25",borderRadius:5}}>{q[2]}</span></div><p style={{fontSize:15,color:MT,lineHeight:1.7}}>{q[1]}</p></div></Rv>})}</div></Sc>})}
-    <Sc bg={B2} bt><Rv><Tg>Current customers</Tg><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}><Rv d={0}><div style={{padding:24,borderRadius:12,border:"1px solid "+BD,background:BG,height:"100%"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><span style={{fontSize:18,fontWeight:600}}>Global ESL Leader</span><span style={{fontSize:10,color:I3,padding:"3px 10px",border:"1px solid "+I3+"25",borderRadius:4,fontWeight:500}}>Enterprise</span></div><p style={{fontSize:15,color:MT,lineHeight:1.75}}>One of the world's largest Electronic Shelf Label companies. Sevyn8 platform deployed across their AI-at-Edge retail infrastructure combining ESL, RFID, and camera intelligence into a unified solution.</p></div></Rv><Rv d={0.08}><div style={{padding:24,borderRadius:12,border:"1px solid "+BD,background:BG,height:"100%"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><span style={{fontSize:18,fontWeight:600}}>Premium Fashion Retailer</span><span style={{fontSize:10,color:I3,padding:"3px 10px",border:"1px solid "+I3+"25",borderRadius:4,fontWeight:500}}>Enterprise</span></div><p style={{fontSize:15,color:MT,lineHeight:1.75}}>A global-scale premium fashion retail brand. Sevyn8 powers in-store analytics including footfall, conversion tracking, and loss prevention across their retail network.</p></div></Rv></div></Rv></Sc>
-    <Sc bt><Rv><div style={{textAlign:"center"}}><button style={bn} onClick={function(){p.go("contact")}}>Become a partner {"→"}</button></div></Rv></Sc></div>}
-
-function AboutPg(){return <div style={{paddingTop:80}}>
-  <Sc><Rv><Tg>Our Story</Tg><h1 style={{...hd,fontSize:46,fontWeight:600,lineHeight:1.06,marginBottom:22,maxWidth:560}}>Seven capabilities. The eighth is infinity.</h1><p style={{fontSize:18,color:N3,lineHeight:1.85,maxWidth:560}}>The name encodes the thesis. Seven platform capabilities no single competitor holds. An eighth element &mdash; system-wide learning &mdash; that ensures the gap only widens.</p></Rv></Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={T}>The sevyn</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,marginBottom:20}}>The full stack. All seven.</h2></Rv>
-    <Rv d={0.1}><p style={{fontSize:17,color:N3,lineHeight:1.85,marginBottom:20,maxWidth:640}}>Edge AI needs seven capabilities at once, wired into one platform: a hardware abstraction layer, SoC-agnostic silicon support, universal data ingestion, quantised AI on the endpoint, industry vocabulary, fleet learning, and embedded privacy &amp; auth. Chip firms own silicon but can't build products; ODMs manufacture but can't write AI; software startups have models but no hardware DNA. Sevyn8 holds the whole stack &mdash; and orchestrates manufacturing through ODM partners rather than running fabs, so hardware is never a lock-in.</p></Rv>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(125px,1fr))",gap:8}}>{["HAL","SoC-agnostic","Universal data ingestion","Quantised AI on endpoints","Industry vocabulary","Fleet learning","Privacy & auth"].map(function(f,i){return <Rv key={i} d={.05+i*.04}><div style={{padding:14,borderRadius:7,border:"1px solid "+(i===5?MG:T)+"25",background:(i===5?MG:T)+"08",textAlign:"center",fontSize:14,fontWeight:500,color:i===5?MG:T,height:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>{f}</div></Rv>})}</div>
-  </Sc>
-
-  <Sc bt><Rv><Tg c={CY}>The origin</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,marginBottom:20}}>Forged at Motorola.</h2></Rv>
-    <Rv d={0.1}><p style={{fontSize:17,color:N3,lineHeight:1.85,marginBottom:18,maxWidth:640}}>The conviction that you need all seven didn't come from a whiteboard. It came from scars. The founding team met in the Motorola trenches &mdash; building Motorola India into the number two mobile brand. That era was a masterclass in full-stack ownership: hardware, software, supply chain, GTM, and ecosystem held together.</p></Rv>
-    <Rv d={0.15}><p style={{fontSize:17,color:N3,lineHeight:1.85,maxWidth:640}}>They also watched what happened when the stack fragmented. When brilliant technology died in the gap between "it works in the lab" and "it ships at scale." That experience became the founding DNA. You cannot half-build an edge platform. You either hold all seven, or you're building on someone else's foundation.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={MG}>The eight</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,marginBottom:20}}>The compounding layer.</h2></Rv>
-    <Rv d={0.1}><p style={{fontSize:17,color:N3,lineHeight:1.85,marginBottom:18,maxWidth:640}}>Seven capabilities across the platform. The eighth is what transforms Sevyn8 from a product into a platform: System-Wide Learning. It observes outcomes across every device, every customer, every vertical. The 500th device deployed is genuinely smarter than the 1st. Not better hardware &mdash; more knowledge.</p></Rv>
-    <Rv d={0.15}><p style={{fontSize:17,color:N3,lineHeight:1.85,maxWidth:640}}>The "8" is also, visually, an infinity loop turned upright &mdash; &#8734;. Competitors improve per device. Sevyn8 improves per system. The gap widens with every deployment. It never stops.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>The team</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,marginBottom:20}}>Built across two decades. Not assembled.</h2></Rv>
-    <Rv d={0.1}><p style={{fontSize:17,color:N3,lineHeight:1.85,marginBottom:20,maxWidth:640}}>The founding team brings combined experience from Intel, Motorola, Qualcomm, OnePlus, Sony, Honeywell, ABB, IBM, and Micron. Over &#8377;500 Cr in hardware categories built, launched, and scaled. The leadership spans SoC architecture, firmware engineering, AI/ML research, vision science, go-to-market, and ecosystem partnerships &mdash; each person mapped to a layer of the stack.</p></Rv>
-    <Rv d={0.15}><p style={{fontSize:17,color:TX,fontWeight:500}}>Skills can be hired. Years of scars and playbooks can only be earned.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><div style={{textAlign:"center",padding:"20px 0"}}><div style={{fontSize:12,textTransform:"uppercase",letterSpacing:3,color:T,fontWeight:600,marginBottom:14}}>The brand truth</div><p style={{...hd,fontSize:28,fontWeight:600}}>Sevyn is the full stack. <span style={{color:T}}>8 is what makes it compound.</span></p></div></Rv></Sc>
-
-  <Sc bt><div style={{display:"flex",gap:48,flexWrap:"wrap",fontSize:16}}>{[{k:"Entity",v:"Sevyn8 Private Limited"},{k:"HQ",v:"New Delhi, India"}].map(function(i){return <div key={i.k}><div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:4}}>{i.k}</div><div style={{fontWeight:500}}>{i.v}</div></div>})}</div></Sc>
-</div>}
-
-function ContactPg(){var t2=useState("enterprise"),ty=t2[0],is2={fontFamily:"inherit",fontSize:16,padding:"14px 18px",background:B2,border:"1px solid "+BD,borderRadius:7,color:TX,outline:"none",width:"100%"};
-  var ph=ty==="enterprise"?"Tell us about your deployment needs, store/site count, and current camera infrastructure...":ty==="oem"?"Tell us about your product line, annual shipment volume, and target AI features...":"How can we help?";
-  return <div style={{paddingTop:80}}><Sc><Rv><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:60,alignItems:"start"}}><div><Tg>Contact</Tg><h1 style={{...hd,fontSize:44,fontWeight:600,marginBottom:18}}>Start the conversation.</h1><p style={{fontSize:17,color:N3,lineHeight:1.8,marginBottom:36}}>Enterprise deployment. OEM integration. Platform evaluation.</p><div style={{fontSize:16,color:MT,lineHeight:1.8}}><div style={{fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Email</div><div style={{color:TX,fontWeight:500}}>hello@sevyn8.com</div><div style={{marginTop:18,fontSize:11,color:DM,textTransform:"uppercase",letterSpacing:1,marginBottom:5}}>Location</div><div>New Delhi, India</div></div></div><div><div style={{display:"flex",gap:6,marginBottom:18}}>{[["enterprise","Enterprise"],["oem","OEM Partner"],["general","General"]].map(function(x){return <button key={x[0]} onClick={function(){t2[1](x[0])}} style={{padding:"8px 18px",borderRadius:6,fontSize:14,fontWeight:500,fontFamily:"inherit",border:"1px solid "+(ty===x[0]?T:BD),background:ty===x[0]?T+"12":"transparent",color:ty===x[0]?T:MT,cursor:"pointer"}}>{x[1]}</button>})}</div><div style={{display:"flex",flexDirection:"column",gap:10}}><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}><input placeholder="Name" style={is2} /><input placeholder="Email" style={is2} /></div><input placeholder="Company" style={is2} />{ty==="enterprise"&&<input placeholder="Industry (Smart Home, Retail, Fleet, Food & Cold Storage)" style={is2} />}{ty==="oem"&&<input placeholder="Annual device volume" style={is2} />}<textarea placeholder={ph} rows={4} style={{...is2,resize:"vertical"}} /><button style={{...bn,alignSelf:"flex-start"}}>Send message {"→"}</button></div></div></div></Rv></Sc></div>}
-
 var mono={fontFamily:"'IBM Plex Mono',monospace"};
-var cR={ion:"65,75,245",cy:"25,211,224",mg:"230,61,203",neu:"90,98,117"}; // canvas rgb forms
-var RMQ="(prefers-reduced-motion: reduce)";
-var CAP7=[
-{n:"HAL",tag:"one API, any board",d:"A hardware abstraction layer normalises across boards — so new silicon is a supply decision, not an engineering rewrite."},
-{n:"SoC-agnostic",tag:"ARM · x86",d:"Runs across ARM and x86 NPU families — Jetson, Hailo, and beyond. Never locked to one vendor's roadmap or pricing."},
-{n:"Universal data ingestion",tag:"any sensor, fused",d:"Cameras, thermal, IoT, RFID, ESL — every feed flows into one pipeline and fuses into a single situation, on the device."},
-{n:"Quantised AI on endpoints",tag:"< 100ms · offline",d:"INT8-quantised vision and sensor-fusion models decide on the endpoint itself — under 100ms, low-power, and fully offline."},
-{n:"Industry vocabulary",tag:"speaks your domain",d:"The same platform understands shrinkage, cold-chain breach, PPE compliance, or a fall — each industry in its own language."},
-{n:"Fleet learning",tag:"every device, OTA",d:"Every deployment's outcomes feed back to every device over the air. The whole fleet gets smarter with scale."},
-{n:"Privacy & auth",tag:"by architecture",d:"Nothing leaves the device, and identity and access are built in. Privacy and authentication are the foundation, not add-ons."}
-];
-function SevenCapSection(){
-  var motion=useMotion();var s2=useState(0),step=s2[0];
-  useEffect(function(){if(!motion){s2[1](-1);return}var id=setInterval(function(){s2[1](function(s){return (s+1)%7})},2600);return function(){clearInterval(id)}},[motion]);
-  var cur=step<0?0:step;
-  return (<section style={{borderTop:"1px solid "+BD,background:B2}}>
-    <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}>
-      <div className="cx-grid2">
-        <div>
-          <Tg>Seven capabilities · one system</Tg>
-          <h2 style={{...hd,fontSize:38,fontWeight:600,lineHeight:1.1,margin:"0 0 16px"}}>Cortex runs all seven capabilities<br/>as one system, on the device.</h2>
-          <p style={{fontSize:16.5,lineHeight:1.7,color:N3,maxWidth:440,margin:"0 0 26px"}}>Sensing, understanding, deciding, and learning — together, on the endpoint. That's what Cortex does, and it's what makes physical AI actually deliver.</p>
-          <div style={{borderLeft:"2px solid "+CY,paddingLeft:16,minHeight:92}}>
-            <div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:CY,marginBottom:7}}>{("0"+(cur+1))+" · "+CAP7[cur].n}</div>
-            <p style={{fontSize:15,lineHeight:1.6,color:TX,margin:0}}>{CAP7[cur].d}</p>
-          </div>
-        </div>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
-          {CAP7.map(function(c,i){var on=i===step;return <div key={c.n} style={{display:"flex",alignItems:"center",gap:14,padding:"13px 16px",borderRadius:10,background:on?"rgba("+cR.cy+",.07)":BG,border:"1px solid "+(on?"rgba("+cR.cy+",.5)":BD),boxShadow:on?"0 0 18px rgba("+cR.cy+",.12)":"none",transition:"all .5s"}}>
-            <span style={{...mono,fontSize:12,fontWeight:600,color:on?CY:MT,minWidth:20,transition:"color .4s"}}>{"0"+(i+1)}</span>
-            <span style={{fontSize:15,fontWeight:600,color:on?TX:N3,flex:1,transition:"color .4s"}}>{c.n}</span>
-            <span style={{...mono,fontSize:10.5,textTransform:"uppercase",letterSpacing:".06em",color:MT,whiteSpace:"nowrap"}}>{c.tag}</span>
-          </div>})}
-        </div>
-      </div>
-      <Rv d={0.1}><div style={{marginTop:36,padding:"22px 26px",borderRadius:14,background:"rgba("+cR.mg+",.05)",border:"1px solid rgba("+cR.mg+",.22)",display:"flex",alignItems:"center",gap:20,flexWrap:"wrap"}}>
-        <span style={{...hd,fontSize:36,color:MG,fontWeight:600,lineHeight:1}}>∞</span>
-        <div style={{flex:1,minWidth:260}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:MG,marginBottom:5}}>The eighth — system-wide learning</div><span style={{fontSize:15.5,color:TX,lineHeight:1.6}}>Beyond the seven: every deployment teaches every other over the air. The fleet compounds — the part a competitor can't copy with faster hardware.</span></div>
-      </div></Rv>
-    </div>
-  </section>);
-}
-function CxPipe(){var s2=useState(0),st=s2[0];useEffect(function(){var id=setInterval(function(){s2[1](function(s){return(s+1)%5})},2400);return function(){clearInterval(id)}},[]);
-  var S=[{l:"Raw feed",c:DM,d:"4K video, thermal, IoT, and sensor streams enter on the device."},{l:"HAL",c:T,d:"The Hardware Abstraction Layer normalises across ARM and x86 SoC families. SoC-agnostic by design."},{l:"AI Engine",c:CY,d:"Quantised vision + sensor-fusion models, on-device. Under 100ms, under 2W. Fully offline."},{l:"Decisioning",c:I7,d:"The context engine applies learned routines. A person at 3 AM differs from 3 PM."},{l:"Action",c:I3,d:"Alert sent. Compliance logged. Dashboard updated. OTA improvement queued fleet-wide."}];
-  return (<div><div style={{display:"flex",alignItems:"center",marginBottom:22}}>{S.map(function(s,i){return <div key={i} style={{flex:1,display:"flex",alignItems:"center",cursor:"pointer"}} onClick={function(){s2[1](i)}}><div style={{flex:"0 0 auto",width:80,padding:"12px 0",borderRadius:8,background:st===i?s.c+"15":"transparent",border:"1.5px solid "+(st>=i?s.c+"55":BD),textAlign:"center",transition:"all .4s",boxShadow:st===i?"0 0 16px "+s.c+"22":"none"}}><div style={{width:8,height:8,borderRadius:"50%",margin:"0 auto 6px",background:st>=i?s.c:DM,boxShadow:st===i?"0 0 12px "+s.c:"none"}} /><div style={{fontSize:11,fontWeight:600,color:st>=i?TX:DM}}>{s.l}</div></div>{i<4&&<div style={{flex:1,height:2,position:"relative",margin:"0 -1px"}}><div style={{position:"absolute",inset:0,background:BD}} /><div style={{position:"absolute",top:0,left:0,height:"100%",width:st>i?"100%":st===i?"50%":"0%",background:"linear-gradient(90deg,"+S[i].c+","+S[Math.min(i+1,4)].c+")",transition:"width .5s"}} /></div>}</div>})}</div><div style={{background:B2,border:"1px solid "+S[st].c+"25",borderRadius:10,padding:"20px 24px",borderLeft:"3px solid "+S[st].c}}><div style={{fontSize:16,fontWeight:600,color:S[st].c,marginBottom:6}}>{S[st].l}</div><div style={{fontSize:15.5,color:MT,lineHeight:1.75}}>{S[st].d}</div></div></div>)}
-function CxCtx(){var s2=useState(0),sc=s2[0];useEffect(function(){var id=setInterval(function(){s2[1](function(s){return(s+1)%6})},3000);return function(){clearInterval(id)}},[]);
-  var S=[{t:"Person at door — 3:17 AM",x:"Unknown face · Unusual hour",dc:"⚠ Alert homeowner",c:WN},{t:"Door open + motion + face match",x:"Known delivery · Package expected · Camera + door + IoT",dc:"✓ Log silently, no alert",c:T},{t:"Person near shelf 4+ min",x:"Repeated reach · No basket",dc:"⚠ Concealment alert",c:WN},{t:"Cold room: temp rising + door open 4 min",x:"Thermal + door sensor + no pick order",dc:"⚠ Breach in 15 min — alert ops",c:WN},{t:"Driver eyes closed 3+ sec",x:"Highway · Night shift · 6 hrs in",dc:"⚠ In-cab alert + fleet",c:WN},{t:"Forklift + BLE beacon + no hard hat",x:"Camera + proximity sensor + PPE check fused",dc:"⚠ Zone violation + PPE alert",c:WN}],s=S[sc];
-  return (<div style={{maxWidth:680}}><div style={{display:"flex",gap:4,marginBottom:18}}>{S.map(function(z,i){return <div key={i} onClick={function(){s2[1](i)}} style={{flex:1,height:4,borderRadius:2,cursor:"pointer",background:i===sc?CY:BD}} />})}</div>{[{l:"Detection",v:s.t},{l:"Context",v:s.x},{l:"Decision",v:s.dc}].map(function(r,i){return <div key={sc+"-"+i} style={{display:"flex",gap:18,alignItems:"center",padding:"16px 22px",marginBottom:6,background:i===2?s.c+"0D":B2,border:"1.5px solid "+(i===2?s.c+"44":BD),borderRadius:10}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:1.5,color:MT,minWidth:68,fontWeight:600}}>{r.l}</div><div style={{width:1,height:20,background:BD}} /><div style={{fontSize:16,color:i===0?MT:s.c,fontWeight:i===2?600:400}}>{r.v}</div></div>})}</div>)}
-var CXHOW=[
-{n:"Sense",c:CY,d:"Every camera, thermal, and sensor feed is ingested on the device — vision, heat, presence, sound, location — fused into one situation."},
-{n:"Understand",c:CY,d:"Quantised models read the scene in context: who, what, where, and whether it matters — against learned baselines, in under 100ms."},
-{n:"Decide",c:T,d:"Industry vocabulary turns detections into decisions — shrinkage, breach, proximity, fall — the call a human would make, made instantly."},
-{n:"Act",c:T,d:"Alert staff, open a counter, slow a forklift, log compliance — the right action fires on-device, with no cloud round-trip."},
-{n:"Learn",c:MG,d:"Every outcome feeds system-wide learning and returns to every device over the air. The fleet gets smarter with each deployment."}
-];
-var CXARCH=[
-{k:"MCP-native",v:"Three Model Context Protocol servers — Cortex Core, Edge, Admin/Ops — expose the platform to agents and external systems without custom glue."},
-{k:"Cloud-agnostic",v:"Deploys on GCP, AWS, or Azure — same platform, same guarantees. Managed SQL, warehouse, object store, and event bus on whichever cloud you standardise on."},
-{k:"Bi-temporal data model",v:"PostgreSQL 15+ with bi-temporal columns on every table. Every fact is queryable at any point in time — a complete, auditable history."},
-{k:"RBAC & multi-tenant",v:"Row-level security scopes every tenant; role-based access controls every action. Multi-tenant and white-label ready across the fleet."},
-{k:"Edge inference",v:"INT8-quantised vision and sensor-fusion models. Under 100ms, under 2W, fully offline. HAL abstracts ARM and x86 SoC families."},
-{k:"Compliance",v:"DPDP + GDPR by architecture. STQC-aligned. Consent-based data flows. Privacy by design, not by policy."}
-];
-function CortexPage(p){
-  var go=p.go;var scrollTo=function(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth"})};
-  
-  return (<div style={{paddingTop:80}}>
-    <section style={{maxWidth:MW,margin:"0 auto",padding:"56px 40px 92px"}}>
-      <div className="cx-grid2">
-        <div>
-          <Tg>The Physical AI platform</Tg>
-          <h1 style={{...hd,fontSize:56,fontWeight:600,lineHeight:1.05,margin:"0 0 24px"}}><span style={{color:T}}>Cortex.</span><br/>The Physical AI platform.</h1>
-          <p style={{fontSize:19,lineHeight:1.6,color:N3,maxWidth:480,margin:"0 0 18px"}}>The on-device intelligence behind every Sevyn8 deployment. It senses, understands, decides, and acts in under 100ms — fully offline — then learns across the whole fleet.</p>
-          <p style={{fontSize:16,lineHeight:1.65,color:MT,maxWidth:480,margin:"0 0 34px"}}>One platform across retail, cold chain, logistics, and the home. Seven capabilities run as one system on the device, on any silicon.</p>
-          <div style={{display:"flex",gap:12,flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){scrollTo("how")}}>See how it works</button></div>
-        </div>
-        <div><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:MT,marginBottom:14}}>Same event · different decision</div><CxCtx /></div>
-      </div>
-    </section>
-    <section id="how" style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}>
-        <Rv><Tg c={CY}>How Cortex works</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,lineHeight:1.1,margin:"0 0 14px"}}>Sense. Understand. Decide. Act. Learn.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:640,margin:"0 0 40px"}}>Every event runs the same loop on the device — from raw signal to decision in under 100ms, then back to the whole fleet as learning.</p></Rv>
-        <Rv d={0.05}><div style={{marginBottom:36}}><CxPipe /></div></Rv>
-        <div className="cx-how">{CXHOW.map(function(s,i){return <Rv key={s.n} d={i*0.05}><div style={{padding:"22px 20px",borderRadius:12,background:BG,border:"1px solid "+BD,borderTop:"2px solid "+s.c,height:"100%"}}><div style={{...hd,fontSize:26,fontWeight:600,color:s.c,lineHeight:1,marginBottom:12}}>{("0"+(i+1)).slice(-2)}</div><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".12em",color:s.c,marginBottom:8}}>{s.n}</div><p style={{fontSize:13.5,lineHeight:1.6,color:N3,margin:0}}>{s.d}</p></div></Rv>})}</div>
-      </div>
-    </section>
-    <SevenCapSection />
-    <section style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}>
-        <Rv><Tg c={MG}>Enterprise & governance</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,lineHeight:1.1,margin:"0 0 14px"}}>Easy governance, by architecture.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:640,margin:"0 0 40px"}}>The platform a security and compliance team can sign off on — MCP-native, cloud-agnostic, multi-tenant, and auditable end to end.</p></Rv>
-        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>{CXARCH.map(function(a,i){return <Rv key={a.k} d={(i%3)*0.06}><div style={{padding:"22px 24px",borderRadius:12,border:"1px solid "+BD,background:BG,height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".1em",color:T,marginBottom:10}}>{a.k}</div><p style={{fontSize:14.5,lineHeight:1.7,color:N3,margin:0}}>{a.v}</p></div></Rv>})}</div>
-      </div>
-    </section>
-    <section id="cta" style={{borderTop:"1px solid "+BD,background:BG}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"100px 40px",textAlign:"center"}}><Rv><h2 style={{...hd,fontSize:46,fontWeight:600,lineHeight:1.05,margin:"0 0 18px"}}>See Cortex run on your hardware.</h2><p style={{fontSize:18,lineHeight:1.6,color:N3,maxWidth:560,margin:"0 auto 36px"}}>New devices or existing infrastructure — same platform, same AI. Measurable results in 60 days.</p><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("contact")}}>Talk to the team</button></div></Rv></div>
-    </section>
-  </div>);
-}
-/* ════════ Phase 1 ported pages (Home2 / Hardware / Solutions) ════════ */
-/* shared edge-AI page kit */
-function useMotion(){var m2=useState(true);useEffect(function(){m2[1](!window.matchMedia(RMQ).matches)},[]);return m2[0]}
-var crgb=function(c){return c===CY?cR.cy:c===MG?cR.mg:cR.ion};
-var HOUS="#232A3A", EDGE="#3A4256", DET="#5A6275", GLASS="#0B0D14";
-var ACC={cam:CY,thermal:MG,box:T,esl:CY,env:CY,airq:CY,mmwave:CY,acoustic:CY,tag:CY};
-function DevicePaths(p){var a=ACC[p.type];switch(p.type){
-  case "cam": return (<g><rect x="42" y="68" width="14" height="10" rx="2" fill={HOUS} stroke={EDGE} /><rect x="47" y="56" width="4" height="13" fill={HOUS} stroke={EDGE} /><rect x="12" y="32" width="60" height="28" rx="14" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="16" y="35" width="48" height="8" rx="4" fill="#fff" opacity="0.05" /><circle cx="64" cy="46" r="16" fill={a} opacity="0.13" /><circle cx="64" cy="46" r="13" fill={GLASS} stroke={a} strokeWidth="2.4" /><circle cx="64" cy="46" r="6.5" fill={a} opacity="0.28" /><circle cx="64" cy="46" r="2.6" fill={a} /><circle cx="23" cy="39" r="2.2" fill={a} /></g>);
-  case "thermal": return (<g><rect x="42" y="68" width="14" height="10" rx="2" fill={HOUS} stroke={EDGE} /><rect x="47" y="56" width="4" height="13" fill={HOUS} stroke={EDGE} /><rect x="12" y="32" width="60" height="28" rx="8" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="16" y="35" width="40" height="8" rx="4" fill="#fff" opacity="0.05" /><rect x="50" y="35" width="22" height="22" rx="3" fill={GLASS} stroke={MG} strokeWidth="2" /><rect x="52.5" y="37.5" width="8" height="8" fill={MG} opacity="0.75" /><rect x="61.5" y="37.5" width="8" height="8" fill={T} opacity="0.6" /><rect x="52.5" y="46.5" width="8" height="8" fill={T} opacity="0.5" /><rect x="61.5" y="46.5" width="8" height="8" fill={MG} opacity="0.5" /><circle cx="23" cy="39" r="2.2" fill={MG} /></g>);
-  case "box": return (<g><rect x="20" y="22" width="56" height="52" rx="7" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="24" y="26" width="48" height="9" rx="3" fill="#fff" opacity="0.05" /><rect x="34" y="40" width="22" height="17" rx="2" fill="none" stroke={a} strokeWidth="1.4" opacity="0.7" /><path d="M40 40v-3M48 40v-3M40 57v3M48 57v3" stroke={a} strokeWidth="1.2" opacity="0.6" /><circle cx="66" cy="45" r="3.6" fill={a} opacity="0.22" /><circle cx="66" cy="45" r="2" fill={a} /><rect x="27" y="61" width="12" height="8" rx="1.5" fill={GLASS} stroke={DET} /><rect x="42" y="61" width="8" height="8" rx="1.5" fill={GLASS} stroke={DET} /><rect x="53" y="61" width="8" height="8" rx="1.5" fill={GLASS} stroke={DET} /></g>);
-  case "esl": return (<g><rect x="13" y="40" width="9" height="16" rx="2" fill={HOUS} stroke={EDGE} /><rect x="20" y="29" width="60" height="38" rx="4" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="25" y="34" width="50" height="28" rx="2" fill="#E7EAF1" opacity="0.92" /><text x="30" y="52" fill="#0B0D14" style={{...mono}} fontSize="15" fontWeight="600">₹149</text><g stroke="#0B0D14" strokeWidth="1">{[30,33,37,40,44,48,52,56,60,64,68].map(function(bx){return <line key={bx} x1={bx} y1="56" x2={bx} y2="60" opacity={bx%3?0.8:0.4} />})}</g><circle cx="73" cy="38" r="2" fill={a} /></g>);
-  case "env": return (<g><rect x="26" y="20" width="44" height="56" rx="13" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="30" y="24" width="36" height="9" rx="4" fill="#fff" opacity="0.05" /><path d="M40 64h16M40 68h16" stroke={DET} strokeWidth="2" strokeLinecap="round" /><path d="M42 38v9" stroke={a} strokeWidth="2.4" strokeLinecap="round" /><circle cx="42" cy="49" r="3.4" fill={a} /><path d="M56 40c-3 4-4 5.5-4 7.5a4 4 0 008 0c0-2-1-3.5-4-7.5z" fill="none" stroke={a} strokeWidth="1.8" /></g>);
-  case "airq": return (<g><rect x="26" y="20" width="44" height="56" rx="13" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="30" y="24" width="36" height="9" rx="4" fill="#fff" opacity="0.05" /><g fill={DET}>{[0,1,2,3,4,5,6,7].map(function(i){var an=(i/8)*6.283;return <circle key={i} cx={48+Math.cos(an)*11} cy={42+Math.sin(an)*11} r="1.6" />})}<circle cx="48" cy="42" r="1.6" /></g><g stroke={a} strokeWidth="1.6" fill="none"><circle cx="42" cy="64" r="3" /><circle cx="54" cy="64" r="3" /><line x1="45" y1="64" x2="51" y2="64" /></g></g>);
-  case "mmwave": return (<g><rect x="30" y="18" width="36" height="18" rx="5" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="33" y="21" width="30" height="6" rx="3" fill="#fff" opacity="0.05" /><circle cx="48" cy="27" r="2.6" fill={a} /><path d="M40 44 A 13 13 0 0 0 56 44" fill="none" stroke={a} strokeWidth="1.8" opacity="0.85" /><path d="M34 53 A 22 22 0 0 0 62 53" fill="none" stroke={a} strokeWidth="1.6" opacity="0.55" /><path d="M28 62 A 31 31 0 0 0 68 62" fill="none" stroke={a} strokeWidth="1.5" opacity="0.32" /><circle cx="53" cy="66" r="2.6" fill={MG} /></g>);
-  case "acoustic": return (<g><rect x="28" y="24" width="32" height="48" rx="15" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><g fill={DET}>{[0,1,2].map(function(r){return [0,1,2].map(function(c2){return <circle key={r+""+c2} cx={38+c2*6} cy={34+r*6} r="1.4" />})})}</g><circle cx="44" cy="52" r="6" fill="none" stroke={a} strokeWidth="2" /><circle cx="44" cy="52" r="2" fill={a} /><path d="M68 40 a 9 9 0 0 1 0 18" fill="none" stroke={a} strokeWidth="1.8" /><path d="M74 34 a 15 15 0 0 1 0 30" fill="none" stroke={a} strokeWidth="1.6" opacity="0.5" /></g>);
-  case "tag": return (<g><path d="M30 28 h26 l18 20 -18 20 H30 a5 5 0 0 1 -5 -5 V33 a5 5 0 0 1 5 -5z" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><circle cx="37" cy="40" r="3.4" fill="none" stroke={DET} strokeWidth="1.6" /><circle cx="50" cy="50" r="3" fill={a} /><path d="M70 40 a 9 9 0 0 1 0 18" fill="none" stroke={a} strokeWidth="1.8" /><path d="M76 34 a 15 15 0 0 1 0 30" fill="none" stroke={a} strokeWidth="1.6" opacity="0.5" /></g>);
-  default: return null;
-}}
-function Device(p){var size=p.size||80;return <svg viewBox="0 0 96 96" width={size} height={size} aria-hidden="true" style={{display:"block"}}><DevicePaths type={p.type} /></svg>}
-var epStroke=function(id){return id==="box"?T:id==="thermal"?MG:"rgba("+cR.cy+",.5)"};
 
-/* ── Home (home2) ── */
-function HmFigure(p){var c=p.c||"#9AA3B5",x=p.x||0,y=p.y||0;if(p.down)return <g transform={"translate("+x+","+y+")"} fill={c}><circle cx="20" cy="-6" r="7" /><rect x="-12" y="-11" width="32" height="10" rx="5" /></g>;return <g transform={"translate("+x+","+y+")"} fill={c}><circle cx="0" cy="-44" r="7" /><path d="M-9,0 L-7,-30 Q0,-38 7,-30 L9,0 Z" /></g>}
-function HmBracket(p){var X=+p.x,Y=+p.y,W=+p.w,H=+p.h,c=p.c,L=11;var d=["M"+X+","+(Y+L)+" L"+X+","+Y+" L"+(X+L)+","+Y,"M"+(X+W-L)+","+Y+" L"+(X+W)+","+Y+" L"+(X+W)+","+(Y+L),"M"+(X+W)+","+(Y+H-L)+" L"+(X+W)+","+(Y+H)+" L"+(X+W-L)+","+(Y+H),"M"+(X+L)+","+(Y+H)+" L"+X+","+(Y+H)+" L"+X+","+(Y+H-L)];return <g>{d.map(function(pp,i){return <path key={i} d={pp} fill="none" stroke={c} strokeWidth="2" strokeLinecap="square" />})}</g>}
-function HmChip(p){var x=p.x,y=p.y,label=p.label,c=p.c,sub=p.sub;return <g transform={"translate("+x+","+y+")"}><rect width={Math.max(label.length,(sub||"").length)*6.6+26} height={sub?40:24} rx="6" fill="rgba(8,10,16,.94)" stroke={"rgba("+crgb(c)+",.5)"} strokeWidth="1.2" /><circle cx="13" cy={sub?15:12} r="3" fill={c} /><text x="24" y={sub?19:16} fill={c} style={{...mono}} fontSize="12">{label}</text>{sub&&<text x="24" y="33" fill={N3} style={{...mono}} fontSize="10">{sub}</text>}</g>}
-function HmRetailScene(p){var step=p.step;return (<><line x1="0" y1="312" x2="560" y2="312" stroke={B3} strokeWidth="1.5" /><rect x="120" y="118" width="138" height="100" rx="8" fill={HOUS} stroke={EDGE} strokeWidth="1.5" /><rect x="174" y="218" width="30" height="94" fill={HOUS} stroke={EDGE} /><rect x="108" y="252" width="162" height="16" rx="4" fill={HOUS} stroke={EDGE} />{step<2?<text x="189" y="172" textAnchor="middle" fill={MT} style={{...mono}} fontSize="12">SELF-CHECKOUT</text>:<g key="scr" style={{animation:"wkfade .4s ease"}}><rect x="130" y="130" width="118" height="76" rx="4" fill="rgba(230,61,203,.1)" stroke={MG} /><text x="189" y="162" textAnchor="middle" fill={MG} style={{...hd}} fontSize="14" fontWeight="600">PLEASE</text><text x="189" y="184" textAnchor="middle" fill={MG} style={{...hd}} fontSize="14" fontWeight="600">SCAN ITEM</text></g>}<line x1="116" y1="245" x2="262" y2="245" stroke={"rgba("+cR.cy+","+(step>=1?0.7:0.25)+")"} strokeWidth="2" strokeDasharray="3 5" style={{transition:"stroke .5s"}} /><path d="M300,312 L295,256 L351,256 L346,312 Z" fill={HOUS} stroke={EDGE} /><rect x="176" y="42" width="30" height="15" rx="3" fill={HOUS} stroke={EDGE} /><circle cx="184" cy="49" r="2.6" fill={CY} />{step>=1&&<polygon points="191,57 256,254 128,254" fill={"rgba("+cR.cy+",0.06)"} className="wkfov" />}<HmFigure x={430} y={312} />{step===0&&<g key="item0"><rect width="24" height="20" rx="2" fill={HOUS} stroke={CY} strokeWidth="1.5"><animateMotion dur="2.4s" fill="freeze" path="M392,210 L360,150 L312,196" /></rect></g>}{step>=1&&<g key={"item"+step} style={{animation:"wkfade .4s ease"}}><rect x="311" y="256" width="24" height="20" rx="2" fill={HOUS} stroke={MG} strokeWidth="1.5" /><HmBracket x={304} y={249} w={38} h={34} c={MG} /></g>}{step===1&&<g key="hud" style={{animation:"wkfade .5s ease"}} transform="translate(360,74)"><rect width="190" height="62" rx="9" fill="rgba(8,10,16,.94)" stroke={"rgba("+cR.cy+",.4)"} /><text x="15" y="26" fill={CY} style={{...mono}} fontSize="12">CAMERA · bagged ✓</text><text x="15" y="47" fill={MG} style={{...mono}} fontSize="12">SCAN · no barcode ✗</text></g>}{step===2&&<g key="out"><HmChip x={372} y={78} label="STAFF ALERTED" c={MG} sub="aisle 4 · discreet nudge" /></g>}</>);}
-function HmColdScene(p){var step=p.step;var x0=300,x1=540,yTop=84,yBot=236,thr=132,nowX=392;return (<>{[40,92,144].map(function(x){return <g key={x}>{[0,1,2].map(function(r){return <rect key={r} x={x} y={250-r*30} width="40" height="26" rx="2" fill={HOUS} stroke={EDGE} />})}</g>})}<text x="40" y="300" fill={MT} style={{...mono}} fontSize="11">COLD STORE · 2°C</text>{step===0&&<g key="comp"><circle cx="150" cy="120" r="14" fill="none" stroke={"rgba("+cR.cy+",.5)"} /><circle cx="150" cy="120" r="14" fill="none" stroke={CY}><animate attributeName="r" values="14;22" dur="1.5s" repeatCount="indefinite" /><animate attributeName="opacity" values=".6;0" dur="1.5s" repeatCount="indefinite" /></circle><text x="150" y="148" textAnchor="middle" fill={MT} style={{...mono}} fontSize="9">compressor</text></g>}<rect x={x0-8} y={yTop-12} width={x1-x0+30} height={yBot-yTop+44} rx="10" fill="rgba(8,10,16,.5)" stroke={BD} />{[yTop+16,thr,yBot-14].map(function(gy,i){return <line key={i} x1={x0} y1={gy} x2={x1} y2={gy} stroke={BD} strokeWidth="1" />})}<line x1={x0} y1={thr} x2={x1} y2={thr} stroke={MG} strokeWidth="1.4" strokeDasharray="4 4" /><text x={x1-2} y={thr-6} textAnchor="end" fill={MG} style={{...mono}} fontSize="9">8°C limit</text><path d={"M"+x0+",212 L"+nowX+",206"} fill="none" stroke={CY} strokeWidth="2.4" strokeLinecap="round" /><circle cx={nowX} cy="206" r="4" fill={CY} /><line x1={nowX} y1={yTop} x2={nowX} y2={yBot} stroke={B3} strokeWidth="1" strokeDasharray="2 3" /><text x={nowX} y={yBot+16} textAnchor="middle" fill={MT} style={{...mono}} fontSize="9">now</text>{step>=1&&<g key={"proj"+step}><path d={"M"+nowX+",206 C440,200 470,150 512,120"} fill="none" stroke={MG} strokeWidth="2.2" strokeDasharray="220" strokeDashoffset={step===1?220:0} style={{transition:"stroke-dashoffset 1.5s ease"}} opacity=".9" /><circle cx="500" cy="126" r="4.5" fill={MG} /><circle cx="500" cy="126" r="4.5" fill="none" stroke={MG}><animate attributeName="r" values="4.5;12" dur="1.4s" repeatCount="indefinite" /><animate attributeName="opacity" values=".7;0" dur="1.4s" repeatCount="indefinite" /></circle></g>}{step===1&&<g key="pred"><HmChip x={360} y={40} label="BREACH PREDICTED" c={MG} sub="crosses 8°C in ~25 min" /></g>}{step===2&&<g key="fix"><HmChip x={312} y={40} label="SERVICE + REROUTE" c={T} sub="$800 fix · load saved" /><g transform="translate(470,250)"><circle r="11" fill="rgba(65,75,245,.12)" stroke={T} /><path d="M-5,0 L-1,4 L6,-5" fill="none" stroke={T} strokeWidth="2" /></g><text x="470" y="284" textAnchor="middle" fill={MT} style={{...mono}} fontSize="9">compliance logged</text></g>}</>);}
-function HmForklift(p){var x=p.x,y=p.y,c=p.c;return <g transform={"translate("+x+","+y+")"} stroke={c||EDGE} strokeWidth="1.8" fill={HOUS} style={{transition:"transform .6s ease"}}><rect x="-26" y="-38" width="34" height="30" rx="3" /><rect x="-30" y="-8" width="42" height="6" rx="1" /><circle cx="-18" cy="4" r="8" fill={BG} /><circle cx="4" cy="4" r="8" fill={BG} /><line x1="12" y1="-40" x2="12" y2="-4" /><path d="M12,-8 L34,-8 M12,-18 L34,-18" /></g>}
-function HmLogiScene(p){var step=p.step;var near=step>=1;return (<><line x1="0" y1="300" x2="560" y2="300" stroke={B3} strokeWidth="1.5" /><rect x="60" y="120" width="180" height="180" fill="none" stroke={"rgba("+cR.cy+",.18)"} strokeWidth="1.4" strokeDasharray="8 6" /><text x="70" y="140" fill={MT} style={{...mono}} fontSize="10">PEDESTRIAN</text>{[420,470,520].map(function(x){return <rect key={x} x={x} y="120" width="34" height="160" rx="2" fill={HOUS} stroke={EDGE} opacity=".7" />})}<rect x="276" y="40" width="30" height="15" rx="3" fill={HOUS} stroke={EDGE} /><circle cx="284" cy="47" r="2.6" fill={CY} />{step>=1&&<text x="312" y="50" fill={MT} style={{...mono}} fontSize="9">on-device · offline-safe</text>}<HmForklift x={320} y={step===2?232:near?250:150} c={step===2?T:near?MG:EDGE} /><HmFigure x={near?250:210} y={300} c="#9AA3B5" />{step===1&&<g key="zone"><ellipse cx="288" cy="270" rx="64" ry="30" fill={"rgba("+cR.mg+",.12)"} stroke={MG} strokeWidth="1.4"><animate attributeName="opacity" values=".5;1;.5" dur="1s" repeatCount="indefinite" /></ellipse><HmChip x={350} y={120} label="PROXIMITY BREACH" c={MG} sub="2.1 m · closing" /></g>}{step===2&&<g key="stop"><g transform="translate(322,196)"><rect x="-26" y="-16" width="52" height="26" rx="5" fill="rgba(65,75,245,.12)" stroke={T} /><text x="0" y="2" textAnchor="middle" fill={T} style={{...mono}} fontSize="12" fontWeight="600">STOP</text></g><HmChip x={350} y={120} label="INCIDENT PREVENTED" c={T} sub="slowdown · 0.3s" /></g>}</>);}
-function HmPointCloud(p){var cx=p.cx,cy=p.cy,c=p.c;var pts=p.fallen?[[0,0],[10,-2],[20,1],[30,-1],[40,2],[-10,1],[50,0],[25,-8],[15,6]]:[[0,0],[0,-14],[0,-28],[0,-42],[-8,-20],[8,-20],[-6,-50],[6,-50],[0,8]];return <g>{pts.map(function(pp,i){return <circle key={i} cx={cx+pp[0]} cy={cy+pp[1]} r="2.6" fill={c} style={{transition:"all .6s ease"}}><animate attributeName="opacity" values=".5;1;.5" dur="1.8s" begin={(i*0.12)+"s"} repeatCount="indefinite" /></circle>})}</g>}
-function HmHomeScene(p){var step=p.step;var fallen=step>=1;return (<><rect x="0" y="0" width="560" height="360" fill="rgba(8,10,16,0.5)" /><line x1="0" y1="300" x2="560" y2="300" stroke={B3} strokeWidth="1.5" /><rect x="60" y="232" width="70" height="40" rx="4" fill={HOUS} stroke={EDGE} /><ellipse cx="95" cy="244" rx="22" ry="6" fill="none" stroke={EDGE} /><text x="60" y="290" fill={MT} style={{...mono}} fontSize="9">bathroom · 02:14</text><rect x="470" y="150" width="50" height="150" rx="3" fill="none" stroke={EDGE} /><rect x="250" y="40" width="50" height="16" rx="5" fill={HOUS} stroke={EDGE} /><circle cx="275" cy="48" r="3" fill={CY} /><text x="312" y="52" fill={MT} style={{...mono}} fontSize="9">mmWave · no lens</text><path d="M250,72 A 28 28 0 0 0 300,72" fill="none" stroke={CY} strokeWidth="1.5" opacity=".55" /><path d="M232,90 A 48 48 0 0 0 318,90" fill="none" stroke={CY} strokeWidth="1.4" opacity=".3" /><circle cx="275" cy="48" r="10" fill="none" stroke={CY}><animate attributeName="r" values="10;70" dur="2.6s" repeatCount="indefinite" /><animate attributeName="opacity" values=".5;0" dur="2.6s" repeatCount="indefinite" /></circle><HmPointCloud cx={250} cy={fallen?286:256} fallen={fallen} c={fallen?MG:CY} /><g transform="translate(372,300)"><rect x="-10" y="-16" width="24" height="18" rx="3" fill="none" stroke={MT} /><circle cx="2" cy="-7" r="4" fill="none" stroke={MT} /><line x1="-12" y1="2" x2="16" y2="-20" stroke={MG} strokeWidth="1.6" /></g><text x="392" y="296" fill={MT} style={{...mono}} fontSize="9">no image captured</text>{step===1&&<g key="fall"><HmChip x={320} y={120} label="FALL DETECTED" c={MG} sub="posture + impact" /></g>}{step===2&&<g key="care"><HmChip x={320} y={120} label="CAREGIVER ALERTED" c={T} sub="4s · dignity intact" /></g>}</>);}
-var hmSCENES=[HmRetailScene,HmColdScene,HmLogiScene,HmHomeScene];
-var hmDUR=3600;
-var hmBEATS=[
-{ind:"Retail",env:"Store floor",accent:CY,title:"Fuller shelves, smarter layouts — more revenue per visit.",stat:"Out-of-stocks and planogram drift quietly cost retailers billions in lost sales, and a manual shelf-walk catches them hours too late.",steps:[["Situation","A best-seller sells out and a planogram slips out of compliance on a busy afternoon."],["Cortex sees","Shelf cameras read planogram compliance continuously and map shopper dwell into a live heat map."],["Outcome","Staff restock before sales are lost and slow zones get re-merchandised — revenue per visit climbs."]]},
-{ind:"Cold chain",env:"Cold store · reefer",accent:MG,title:"The breach, predicted before the loss.",stat:"~20% of vaccines and 14% of food are lost to cold-chain failures — and data loggers only tell you after it's spoiled.",steps:[["Situation","A reefer's temperature edges up; the compressor shows the first hint of wear."],["Cortex sees","On-device sensor fusion projects the curve past the safe limit — about 25 minutes early."],["Outcome","Service the part, reroute the load. An $800 fix instead of a $50k write-off. Compliance auto-logged."]]},
-{ind:"Logistics",env:"Warehouse · yard",accent:T,title:"The collision that never happens.",stat:"Forklifts cause ~101 deaths and 95,000 injuries a year — and most cameras only capture the aftermath.",steps:[["Situation","A forklift rounds the aisle as a worker steps into its path."],["Cortex sees","On existing cameras — even with the network down — it reads the proximity breach in real time."],["Outcome","Alert and slowdown fire instantly. The near-miss stays a near-miss."]]},
-{ind:"Smart home",env:"Aging in place",accent:CY,title:"Safety without the camera.",stat:"Falls are the leading cause of injury death over 65 — but cameras feel invasive and wearables come off.",steps:[["Situation","Late at night, alone, an elderly resident falls in the bathroom."],["Cortex sees","mmWave senses the fall through the dark — on the device, with no image ever captured."],["Outcome","A caregiver is alerted in seconds. Safety kept, dignity intact."]]}
-];
-function HmWalkthrough(){
-  var motion=useMotion();var p2=useState({ind:0,step:0}),pos=p2[0];var s2=useState(0),seed=s2[0];
-  useEffect(function(){if(!motion){p2[1]({ind:0,step:2});return}var id=setInterval(function(){p2[1](function(p){return p.step<2?{ind:p.ind,step:p.step+1}:{ind:(p.ind+1)%4,step:0}})},hmDUR);return function(){clearInterval(id)}},[motion,seed]);
-  var pick=function(i){p2[1]({ind:i,step:0});s2[1](function(s){return s+1})};
-  var B=hmBEATS[pos.ind],Scene=hmSCENES[pos.ind];
-  return (<div><div className="wk-tabs">{hmBEATS.map(function(b,i){return <button key={b.ind} onClick={function(){pick(i)}} style={{position:"relative",textAlign:"left",padding:"12px 4px 14px",background:"none",border:"none",borderTop:"2px solid "+(i===pos.ind?b.accent:"rgba(140,160,200,.12)"),cursor:"pointer",fontFamily:"inherit",transition:"border-color .3s",flex:1}}><div style={{...mono,fontSize:10,letterSpacing:".12em",textTransform:"uppercase",color:i===pos.ind?b.accent:MT,marginBottom:3}}>{"0"+(i+1)}</div><div style={{fontSize:14,fontWeight:600,color:i===pos.ind?TX:N3,letterSpacing:"-.01em"}}>{b.ind}</div>{i===pos.ind&&motion&&<div key={pos.ind+"-"+pos.step+"-"+seed} style={{position:"absolute",left:0,top:-2,height:2,background:b.accent,animation:"wkgrow "+hmDUR+"ms linear forwards"}} />}</button>})}</div>
-    <div className="wk-stage"><div style={{borderRadius:14,overflow:"hidden",border:"1px solid "+BD,background:"#0E1119"}}><div key={pos.ind} style={{animation:"wkscene .5s ease"}}><svg viewBox="0 0 560 360" aria-hidden="true" style={{width:"100%",height:"auto",display:"block"}}>{[60,120,180,240,300].map(function(y){return <line key={y} x1="0" x2="560" y1={y} y2={y} stroke="rgba(255,255,255,0.012)" strokeWidth="2" />})}<Scene step={pos.step} /></svg></div></div>
-    <div style={{display:"flex",flexDirection:"column"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".16em",color:B.accent,marginBottom:10}}>{B.ind} · {B.env}</div><h3 style={{...hd,fontSize:30,fontWeight:600,lineHeight:1.05,margin:"0 0 14px",letterSpacing:"-.02em"}}>{B.title}</h3><p style={{fontSize:14,lineHeight:1.6,color:MT,margin:"0 0 26px",borderLeft:"2px solid rgba(140,160,200,.18)",paddingLeft:14}}>{B.stat}</p><div style={{display:"flex",flexDirection:"column",gap:4}}>{B.steps.map(function(s,i){var active=i===pos.step,past=i<pos.step;return <div key={i} style={{display:"flex",gap:14,padding:"13px 0",opacity:active?1:past?0.5:0.32,transition:"opacity .4s",borderBottom:i<2?"1px solid "+BD:"none"}}><div style={{width:26,height:26,borderRadius:"50%",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center",...mono,fontSize:12,fontWeight:600,color:active?"#fff":MT,background:active?B.accent:"transparent",border:"1.5px solid "+(active?B.accent:"rgba(140,160,200,.2)"),transition:"all .4s"}}>{i+1}</div><div><div style={{...mono,fontSize:10.5,textTransform:"uppercase",letterSpacing:".12em",color:active?B.accent:MT,marginBottom:4,transition:"color .4s"}}>{s[0]}</div><div style={{fontSize:15,lineHeight:1.55,color:active?TX:N3,transition:"color .4s"}}>{s[1]}</div></div></div>})}</div></div></div></div>);
-}
-var hmSPINE=[
-{eb:"Platform",c:T,h:"Cortex — the brain.",d:"On-device intelligence with seven capabilities, run as one system on the device. Decides in under 100ms, fully offline.",cta:"Explore the platform",to:"cortex2"},
-{eb:"Hardware",c:CY,h:"Edge endpoints — the bodies.",d:"Cameras, thermal, sensors, presence, tags — nine endpoint classes on any silicon, certified with ODM partners. No lock-in.",cta:"See the endpoints",to:"hardware"},
-{eb:"Industries",c:MG,h:"By industry — the proof.",d:"Retail, cold chain, logistics, and the home. Same platform, shaped to each operation's outcomes and KPIs.",cta:"See industries",to:"solutions"}
-];
-function CapGlyph(p){var k=p.k,s={width:18,height:18,viewBox:"0 0 24 24",fill:"none",stroke:T,strokeWidth:1.6,strokeLinecap:"round",strokeLinejoin:"round","aria-hidden":"true",style:{display:"block",flexShrink:0}};
-  if(k==="endpoints")return <svg {...s}><rect x="3" y="4" width="8" height="6" rx="1"/><rect x="13" y="14" width="8" height="6" rx="1"/><path d="M7 10v4h10"/></svg>;
-  if(k==="chipsets")return <svg {...s}><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg>;
-  if(k==="edge")return <svg {...s}><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>;
-  if(k==="privacy")return <svg {...s}><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>;
-  return <svg {...s}><path d="M4 7h16M4 12h13M4 17h9"/><circle cx="18" cy="17" r="3.2"/><path d="M16.7 17l1 1 1.5-1.7"/></svg>;
-}
-function Home2Page(p){
-  var go=p.go;var scrollTo=function(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth"})};
-  
-  return (<div style={{paddingTop:80}}>
-    <section style={{maxWidth:980,margin:"0 auto",padding:"70px 40px 40px",textAlign:"center"}}>
-      <Rv><Tg>The Physical AI platform</Tg></Rv>
-      <Rv d={0.05}><h1 style={{...hd,fontSize:58,fontWeight:600,lineHeight:1.06,margin:"0 0 22px",letterSpacing:"-.035em"}}><span style={{color:T}}>Physical AI</span> that runs where your business happens.</h1></Rv>
-      <Rv d={0.1}><p style={{fontSize:20,lineHeight:1.6,color:N3,maxWidth:660,margin:"0 auto 26px"}}>On-device intelligence for retail, cold chain, logistics, and the home — turning what your cameras and sensors already see into decisions that grow revenue and cut operating cost, in real time.</p></Rv>
-      <Rv d={0.13}><div style={{display:"flex",flexWrap:"wrap",gap:10,justifyContent:"center",margin:"0 0 30px"}}>{[["endpoints","Intelligent Endpoints"],["chipsets","Multiple Chipsets"],["edge","AI @ Edge"],["privacy","Built for Privacy"],["governance","Easy Governance"]].map(function(c){return <div key={c[1]} style={{display:"inline-flex",alignItems:"center",gap:8,padding:"9px 16px",borderRadius:999,border:"1px solid "+BD,background:"rgba(255,255,255,0.02)"}}><CapGlyph k={c[0]} /><span style={{fontSize:13.5,fontWeight:500,color:N3}}>{c[1]}</span></div>})}</div></Rv>
-      <Rv d={0.16}><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){scrollTo("work")}}>See how it works</button></div></Rv>
-    </section>
-    <section id="work" style={{maxWidth:MW,margin:"0 auto",padding:"44px 40px 92px"}}>
-      <Rv><Tg c={MG}>Outcomes across four industries</Tg></Rv>
-      <Rv d={0.05}><h2 style={{...hd,fontSize:40,fontWeight:600,margin:"0 0 14px",lineHeight:1.08}}>Sevyn8 makes your physical<br/>operations think.</h2></Rv>
-      <Rv d={0.1}><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:620,margin:"0 0 44px"}}>Not just watching — understanding what's happening and acting on it, on the device, the moment it matters.</p></Rv>
-      <Rv d={0.15}><HmWalkthrough /></Rv>
-    </section>
-    <section style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}>
-        <Rv><Tg>Two paths. One platform.</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,lineHeight:1.1,margin:"0 0 14px"}}>New deployment or existing infrastructure. Same intelligence.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:640,margin:"0 0 40px"}}>Deploy purpose-built intelligent devices with AI on-board — or add a Sevyn8 box to the sensors you already have. Both paths run the same platform.</p></Rv>
-        <div className="sl-2col"><Rv><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.cy+",.32)",background:"rgba("+cR.cy+",.04)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:CY,marginBottom:10}}>New deployment</div><h4 style={{fontSize:18,fontWeight:600,margin:"0 0 8px"}}>Intelligent devices with AI built in</h4><p style={{fontSize:14.5,lineHeight:1.7,color:N3,margin:"0 0 16px"}}>Purpose-built cameras, sensors, and gateways with on-board NPU. Sevyn8 platform embedded at factory. AI runs natively on the device — no separate box needed.</p><div style={{display:"flex",flexWrap:"wrap",gap:6}}>{["On-board NPU/CPU","AI at the device","OEM white-label","Factory embedded"].map(function(t){return <span key={t} style={{...mono,fontSize:10.5,padding:"4px 10px",borderRadius:5,border:"1px solid rgba("+cR.cy+",.3)",color:CY}}>{t}</span>})}</div></div></Rv><Rv d={0.08}><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.ion+",.32)",background:"rgba("+cR.ion+",.04)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:T,marginBottom:10}}>Existing infrastructure</div><h4 style={{fontSize:18,fontWeight:600,margin:"0 0 8px"}}>Make your dumb devices intelligent</h4><p style={{fontSize:14.5,lineHeight:1.7,color:N3,margin:"0 0 16px"}}>Already have cameras, thermal sensors, IoT nodes, RFID readers installed? Add one Sevyn8 Hub or Edge AI Box to your network. It ingests feeds from every device and runs AI inference locally.</p><div style={{display:"flex",flexWrap:"wrap",gap:6}}>{["Any existing device","One box per site","No rip-and-replace","60-day results"].map(function(t){return <span key={t} style={{...mono,fontSize:10.5,padding:"4px 10px",borderRadius:5,border:"1px solid rgba("+cR.ion+",.3)",color:T}}>{t}</span>})}</div></div></Rv></div>
-      </div>
-    </section>
-    <section id="spine" style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}>
-        <Rv><Tg>One platform · many bodies · proven by industry</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,margin:"0 0 14px",lineHeight:1.1}}>One brain. Every body. Smarter together.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:620,margin:"0 0 44px"}}>The same intelligence runs on every endpoint, in every environment — and every deployment makes the next one sharper.</p></Rv>
-        <div className="hm-spine">{hmSPINE.map(function(s,i){return <Rv key={s.eb} d={i*0.08}><div style={{padding:"30px 26px",borderRadius:14,background:BG,border:"1px solid "+BD,borderTop:"2px solid "+s.c,height:"100%",display:"flex",flexDirection:"column"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".16em",color:s.c,marginBottom:14}}>{s.eb}</div><h3 style={{...hd,fontSize:23,fontWeight:600,margin:"0 0 12px",letterSpacing:"-.01em"}}>{s.h}</h3><p style={{fontSize:15,lineHeight:1.7,color:N3,margin:"0 0 24px",flex:1}}>{s.d}</p><span onClick={function(){go(s.to)}} style={{fontSize:14.5,fontWeight:600,color:s.c,cursor:"pointer"}}>{s.cta} →</span></div></Rv>})}</div>
-        <Rv d={0.2}><div style={{marginTop:24,padding:"22px 26px",borderRadius:14,background:"rgba("+cR.mg+",.05)",border:"1px solid rgba("+cR.mg+",.2)",display:"flex",alignItems:"center",gap:18,flexWrap:"wrap"}}><span style={{...hd,fontSize:34,color:MG,fontWeight:600}}>∞</span><span style={{fontSize:16.5,color:TX,lineHeight:1.6,flex:1,minWidth:260}}>The eighth capability: every deployment teaches every other. The 500th site ships smarter than the 1st — and improves it too. The part competitors can't copy with faster hardware.</span></div></Rv>
-      </div>
-    </section>
-    <section style={{borderTop:"1px solid "+BD,background:BG}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"60px 40px",textAlign:"center"}}>
-        <Rv><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".18em",color:MT,marginBottom:22}}>Deployed with</div><div style={{display:"flex",justifyContent:"center",gap:40,flexWrap:"wrap",fontSize:15,color:N3}}>{["A global ESL leader","A premium fashion retailer","Cold-chain operators"].map(function(pp){return <span key={pp} style={{fontWeight:500}}>{pp}</span>})}</div></Rv>
-      </div>
-    </section>
-    <section id="cta" style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"100px 40px",textAlign:"center"}}>
-        <Rv><h2 style={{...hd,fontSize:46,fontWeight:600,lineHeight:1.05,margin:"0 0 18px"}}>See it run on your site.</h2><p style={{fontSize:18,lineHeight:1.6,color:N3,maxWidth:560,margin:"0 auto 36px"}}>Tell us your environment and the outcomes you need. Measurable results in 60 days — on your hardware, on your data.</p><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("contact")}}>Talk to the team</button></div></Rv>
-      </div>
-    </section>
-  </div>);
-}
-
-/* ── Hardware (hardware) ── */
-var eeENDPOINTS=[
-{id:"cam",name:"NPU-led cameras",senses:"Vision",delivers:["Footfall & identity","Shrinkage & concealment","Planogram compliance","PPE & safety"]},
-{id:"thermal",name:"Thermal cameras",senses:"Heat · thermal",delivers:["Cold-chain equipment watch","Fever & heat anomalies","Low-light & smoke vision"]},
-{id:"box",name:"Edge Box",senses:"Compute hub",delivers:["Runs Cortex on-site","Aggregates every endpoint","Decides fully offline"]},
-{id:"esl",name:"Electronic shelf labels",senses:"Shelf & price",delivers:["Price integrity","Planogram truth","Camera–ESL cross-check"]},
-{id:"env",name:"Environmental sensors",senses:"Temp · humidity",delivers:["Cold-chain breach prediction","Compliance logging","Comfort & energy"]},
-{id:"airq",name:"Air-quality & gas sensors",senses:"Air · gas",delivers:["Refrigerant-leak detection","CO₂ & air quality","Safety thresholds"]},
-{id:"mmwave",name:"mmWave presence",senses:"Presence · motion",delivers:["Occupancy, no camera","Fall detection","Privacy-first zones"]},
-{id:"acoustic",name:"Acoustic sensors",senses:"Sound events",delivers:["Glass-break & aggression","Equipment anomalies","Leak signatures"]},
-{id:"tag",name:"Channel-Sounding tags",senses:"Location · proximity",delivers:["Asset & tote tracking","Dwell & flow","Loss prevention"]}
-];
-function DeviceLineup(){
-  return (<div className="hw-lineup">{eeENDPOINTS.map(function(ep){return <div key={ep.id} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:10,padding:"18px 8px",borderRadius:14,background:B2,border:"1px solid "+(ep.id==="box"?"rgba("+cR.ion+",.4)":ep.id==="thermal"?"rgba("+cR.mg+",.4)":"rgba("+cR.cy+",.3)")}}><Device type={ep.id} size={74} /><span style={{...mono,fontSize:9.5,letterSpacing:".03em",color:N3,textAlign:"center",lineHeight:1.25}}>{ep.name}</span></div>})}</div>);
-}
-function EndpointCards(){
-  return (<div className="ee-cards">{eeENDPOINTS.map(function(ep,i){return <Rv key={ep.id} d={(i%3)*0.05}><div style={{padding:"24px",borderRadius:12,background:BG,border:"1px solid "+BD,borderTop:"2px solid "+(ep.id==="box"?T:ep.id==="thermal"?MG:"rgba("+cR.cy+",.5)"),height:"100%"}}><div style={{display:"flex",alignItems:"center",gap:14,marginBottom:16}}><div style={{width:64,height:64,borderRadius:12,background:B2,border:"1px solid "+BD,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Device type={ep.id} size={56} /></div><div><div style={{fontSize:16.5,fontWeight:600,color:TX,lineHeight:1.2}}>{ep.name}</div><div style={{...mono,fontSize:10.5,textTransform:"uppercase",letterSpacing:".1em",color:ACC[ep.id],marginTop:3}}>{ep.senses}</div></div></div><div style={{...mono,fontSize:10,textTransform:"uppercase",letterSpacing:".12em",color:MT,marginBottom:10}}>Delivers</div><div style={{display:"flex",flexDirection:"column",gap:8}}>{ep.delivers.map(function(d){return <div key={d} style={{display:"flex",alignItems:"center",gap:9}}><span style={{width:5,height:5,borderRadius:"50%",background:ACC[ep.id],flexShrink:0}} /><span style={{fontSize:13.5,color:N3}}>{d}</span></div>})}</div></div></Rv>})}</div>);
-}
-var eeENVS=[
-{k:"Retail",use:["cam","esl","box","acoustic"],line:"Footfall, shrinkage, planogram, and queues — cameras and ESLs decided in the Edge Box, with acoustic watching for break-ins after hours."},
-{k:"Cold chain",use:["env","thermal","airq","box"],line:"Temperature, humidity, and refrigerant leaks caught before product is lost; thermal vision confirms equipment health."},
-{k:"Home",use:["mmwave","env","airq","acoustic"],line:"Presence and fall detection without a camera in private spaces; comfort, air quality, and safety from quiet sensing."},
-{k:"Logistics",use:["cam","tag","thermal","box"],line:"Assets and totes tracked through the yard; dwell, loss, and cold-load integrity flagged the moment they happen."}
-];
-function EnvComposer(){
-  var motion=useMotion();var e2=useState(0),env=e2[0];
-  useEffect(function(){if(!motion)return;var id=setInterval(function(){e2[1](function(e){return (e+1)%eeENVS.length})},3400);return function(){clearInterval(id)}},[motion]);
-  var E=eeENVS[env];
-  return (<div><div style={{display:"flex",gap:10,flexWrap:"wrap",marginBottom:30}}>{eeENVS.map(function(e,i){return <button key={e.k} onClick={function(){e2[1](i)}} style={{...mono,fontSize:13,letterSpacing:".04em",padding:"9px 18px",borderRadius:999,cursor:"pointer",fontFamily:"inherit",border:"1px solid "+(i===env?T:BD),background:i===env?"rgba("+cR.ion+",.12)":"transparent",color:i===env?TX:MT,transition:"all .3s"}}>{e.k}</button>})}</div><div className="ee-env-row">{eeENDPOINTS.map(function(ep){var on=E.use.indexOf(ep.id)>=0;return <div key={ep.id} style={{textAlign:"center",opacity:on?1:0.26,transition:"opacity .4s"}}><div style={{aspectRatio:"1",borderRadius:12,border:"1px solid "+(on?(ep.id==="box"?"rgba("+cR.ion+",.5)":ep.id==="thermal"?"rgba("+cR.mg+",.5)":"rgba("+cR.cy+",.5)"):BD),background:on?B2:"transparent",display:"flex",alignItems:"center",justifyContent:"center",transition:"all .4s"}}><Device type={ep.id} size={52} /></div><div style={{...mono,fontSize:8.5,color:on?N3:MT,marginTop:7,lineHeight:1.3}}>{ep.name.split(" ").slice(-1)[0]}</div></div>})}</div><p style={{fontSize:16,lineHeight:1.65,color:N3,margin:"24px 0 0",maxWidth:720,minHeight:52}}>{E.line}</p></div>);
-}
-function HardwarePage(p){
-  var go=p.go;var scrollTo=function(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:"smooth"})};
-  
-  return (<div style={{paddingTop:80}}>
-    <section style={{maxWidth:MW,margin:"0 auto",padding:"48px 40px 88px"}}>
-      <div className="cx-grid2"><div><Tg>Edge endpoints</Tg><h1 style={{...hd,fontSize:54,fontWeight:600,lineHeight:1.05,margin:"0 0 24px"}}>One platform.<br/>Every endpoint.<br/><span style={{color:T}}>Any silicon.</span></h1><p style={{fontSize:19,lineHeight:1.6,color:N3,maxWidth:480,margin:"0 0 18px"}}>Cameras, thermal, the Edge Box, shelf labels, environmental, air-quality, presence, acoustic, and asset tags — every Sevyn8 endpoint is a different body running the same brain. All speak HAL; all run Cortex.</p><p style={{fontSize:16,lineHeight:1.65,color:MT,maxWidth:480,margin:"0 0 34px"}}>We don't lock you to a chip. We certify the right endpoint for the job with our ODM partners — so hardware is a supply decision, never a rewrite.</p><div style={{display:"flex",gap:12,flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){scrollTo("endpoints")}}>See the endpoints</button></div></div><div><DeviceLineup /></div></div>
-    </section>
-    <section id="endpoints" style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}><Rv><Tg c={CY}>The endpoint family</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,margin:"0 0 14px",lineHeight:1.1}}>Nine endpoint classes.<br/>One intelligence layer.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:620,margin:"0 0 40px"}}>We don't sell spec sheets — there are many SKUs across our ODM partners. We sell what each endpoint <em>delivers</em>. Pick the bodies your environment needs; Cortex makes them one system.</p></Rv><EndpointCards /></div>
-    </section>
-    <section style={{borderTop:"1px solid "+BD,background:BG}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}><Rv><Tg c={MG}>Same endpoints · different environments</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,margin:"0 0 14px",lineHeight:1.1}}>The family flexes to the floor.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:620,margin:"0 0 40px"}}>The same endpoint classes compose differently for each environment — and the platform underneath never changes.</p></Rv><Rv d={0.1}><EnvComposer /></Rv></div>
-    </section>
-    <section style={{borderTop:"1px solid "+BD,background:B2}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"88px 40px"}}><div className="cx-grid2"><div><Rv><Tg>Any silicon · no lock-in</Tg><h2 style={{...hd,fontSize:38,fontWeight:600,margin:"0 0 18px",lineHeight:1.1}}>We don't make the chip.<br/>We make it not matter.</h2><p style={{fontSize:17,lineHeight:1.7,color:N3,maxWidth:460,margin:"0 0 16px"}}>HAL abstracts the silicon, so the same Cortex runs across NPU vendors and ODM designs. We certify the right endpoint for your job and budget — and you're never tied to one roadmap or price.</p><p style={{fontSize:16,lineHeight:1.7,color:MT,maxWidth:460,margin:0}}>When better silicon ships, you adopt it as a supply decision — not an engineering project.</p></Rv></div><Rv d={0.1}><svg viewBox="0 0 460 270" aria-hidden="true" style={{width:"100%",height:"auto"}}>{["NPU vendor A","NPU vendor B","ARM / x86","ODM design"].map(function(s,i){var y=32+i*56;return <g key={s}><rect x="10" y={y} width="150" height="38" rx="8" fill={BG} stroke={BD} /><text x="26" y={y+23} fill={N3} style={{...mono}} fontSize="11">{s}</text><line x1="160" y1={y+19} x2="250" y2="135" stroke={"rgba("+cR.neu+",.18)"} strokeWidth="1" /></g>})}<rect x="250" y="113" width="96" height="44" rx="10" fill={B3} stroke={"rgba("+cR.ion+",.6)"} strokeWidth="1.4" /><text x="298" y="140" textAnchor="middle" fill={T} style={{...mono}} fontSize="12" letterSpacing="2">HAL</text><line x1="346" y1="135" x2="400" y2="135" stroke={"rgba("+cR.ion+",.5)"} strokeWidth="1.2" /><g transform="translate(398,113)"><Device type="box" size={44} /></g></svg></Rv></div></div>
-    </section>
-    <section id="cta" style={{borderTop:"1px solid "+BD,background:BG}}>
-      <div style={{maxWidth:MW,margin:"0 auto",padding:"100px 40px",textAlign:"center"}}><Rv><h2 style={{...hd,fontSize:46,fontWeight:600,lineHeight:1.05,margin:"0 0 18px"}}>Pick the endpoints. We'll run the intelligence.</h2><p style={{fontSize:18,lineHeight:1.6,color:N3,maxWidth:560,margin:"0 auto 36px"}}>Tell us the environment and the outcomes you need. We'll spec the endpoint mix and prove it on your site in 60 days.</p><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("contact")}}>Talk to the team</button></div></Rv></div>
-    </section>
-  </div>);
-}
-
-/* ── Solutions (solutions + soldet-*) ── */
-var SOLS={
-  retail:{n:"Retail",accent:CY,lead:"Fuller shelves. Smarter layouts. More revenue.",h:"More revenue per visit — from planogram compliance to live heat maps.",d:"Out-of-stocks, planogram drift, and weak store layouts quietly bleed sales — and a manual shelf-walk finds them hours too late. Cortex turns the cameras you already run into continuous planogram compliance and live footfall heat maps, so shelves stay full, layouts get smarter, and every visit is worth more. Loss prevention comes along for the ride.",stats:[["$1T+","lost yearly to out-of-stocks (IHL est.)"],["3-4%","sales lift from better on-shelf availability"],["live","footfall & dwell heat maps"],["< 100ms","decisions on the device"]],scenarios:[{t:"The shelf · a gap",wo:"A top-seller sells out mid-afternoon; the gap sits until the evening shelf-walk — hours of lost sales.",w:"Shelf cameras read on-shelf availability continuously; staff restock within minutes, before the sales are gone."},{t:"The floor · a cold zone",wo:"A whole section underperforms and nobody knows why until the monthly sales review.",w:"Live heat maps show where shoppers go and stall; slow zones get re-merchandised while it still matters."},{t:"The planogram · drift",wo:"Promo and planogram compliance is checked by occasional store visits; most drift goes unseen.",w:"Cortex checks planogram and promo compliance on every camera, continuously — compliance becomes measurable."}],endpoints:[{id:"cam",name:"NPU-led cameras",role:"Planogram compliance, footfall heat maps, queues"},{id:"esl",name:"Electronic shelf labels",role:"Price integrity and the camera–ESL cross-check"},{id:"box",name:"Edge Box",role:"Runs Cortex in-store; decides fully offline"},{id:"acoustic",name:"Acoustic sensors",role:"After-hours intrusion and glass-break"}],changes:["Merchandising shifts from monthly reviews to real time — gaps and cold zones are fixed while they still cost sales.","On-shelf availability and planogram compliance become continuous measurements, not occasional audits.","Footfall and dwell become live heat maps that drive layout and staffing.","Every store inherits what the others learn about layout and demand."],ladder:["Start with one store. Connect the cameras and ESLs you already run to a single Edge Box; prove the outcomes on your real floor in 60 days.","Scale across the estate. The same platform rolls to every store — new endpoints are a supply decision, not a re-integration.","Compound. Fleet learning pushes every store's improvements to all the others over the air."]},
-  cold:{n:"Cold chain",accent:MG,lead:"Predict the breach before the loss.",h:"Predict the breach before the product is lost.",d:"Traditional cold-chain monitoring is reactive — data loggers and manual checks only tell you after spoilage. Cortex fuses temperature, humidity, and equipment signals on the device to forecast excursions before product crosses the threshold, and uses thermal vision to confirm equipment health.",stats:[["~20%","of vaccines lost to temp control"],["14%","of food lost post-harvest"],["~25 min","early breach warning"],["$50k","load saved by an $800 fix"]],scenarios:[{t:"The reefer · a drift",wo:"A reefer's temperature edges up in transit. The logger records it; the team finds out when the load is rejected at the dock.",w:"On-device sensor fusion projects the curve past the limit about 25 minutes early — reroute or cool before anything spoils."},{t:"The compressor · early wear",wo:"A compressor degrades silently until it fails overnight, and a freezer of product is gone by morning.",w:"Cortex reads the vibration signature and flags the failing part — an $800 fix instead of a $50k write-off."},{t:"The audit · compliance",wo:"Temperature logs are reconstructed by hand for the audit, hoping nothing was missed or mis-keyed.",w:"Every reading is logged continuously and tamper-evident on the device — the audit trail builds itself."}],endpoints:[{id:"env",name:"Environmental sensors",role:"Temperature, humidity, breach prediction"},{id:"thermal",name:"Thermal cameras",role:"Equipment health and cold-load integrity"},{id:"airq",name:"Air-quality & gas sensors",role:"Refrigerant-leak and air-quality detection"},{id:"box",name:"Edge Box",role:"Runs Cortex on-site; decides fully offline"}],changes:["Monitoring shifts from reactive logging to predictive intervention — you act before product is lost.","Equipment failures are forecast from their signatures, not discovered after a breakdown.","Compliance logging is continuous and tamper-evident, not reconstructed for the audit.","Every site inherits the failure patterns the others have already seen."],ladder:["Start with one cold store or fleet. Place environmental and thermal endpoints on a single Edge Box; prove early-warning on your real loads in 60 days.","Scale across sites and reefers. Same platform, same guarantees, wherever the cold chain runs.","Compound. Every breach and failure pattern learned anywhere is pushed to every site over the air."]},
-  logistics:{n:"Logistics",accent:T,lead:"The collision that never happens.",h:"The collision that never happens. The asset never lost.",d:"Yards and warehouses are dangerous and opaque — forklifts cause thousands of injuries a year, and assets vanish into the floor. Cortex runs on the cameras you already have, even when the network drops, to prevent incidents in real time — and on Channel-Sounding tags to keep every asset located.",stats:[["~101","forklift deaths a year (US)"],["95,000","forklift injuries a year (US)"],["< 100ms","proximity alerts"],["offline","keeps working, network or not"]],scenarios:[{t:"The aisle · a near-miss",wo:"A forklift rounds a blind corner as a worker steps in. The camera records the collision — for the incident report.",w:"Cortex reads the proximity breach in real time and triggers an alert and slowdown. The near-miss stays a near-miss."},{t:"The dock · a missing tote",wo:"A tote of high-value stock is misplaced in the yard; hours are lost searching, and it's eventually written off.",w:"Channel-Sounding tags keep every asset located, and flag dwell and loss the moment they happen."},{t:"The floor · PPE & zones",wo:"PPE and one-way zones are spot-checked occasionally; violations go unseen until an inspection.",w:"Cortex flags missing PPE and zone breaches continuously on existing cameras — even with the network down."}],endpoints:[{id:"cam",name:"NPU-led cameras",role:"Forklift-pedestrian safety, PPE, zones"},{id:"tag",name:"Channel-Sounding tags",role:"Asset and tote tracking, dwell, loss"},{id:"thermal",name:"Thermal cameras",role:"Cold-load integrity in transit"},{id:"box",name:"Edge Box",role:"Runs Cortex on-site; offline-safe"}],changes:["Safety shifts from incident reports to incident prevention — alerts fire before the collision.","Assets are located continuously instead of searched for and written off.","PPE and zone compliance are enforced in real time, on the cameras you already run.","Detection keeps working when the network doesn't — inference is on the device."],ladder:["Start with one yard or DC. Connect existing cameras to an Edge Box and add tags to high-value assets; prove safety and location in 60 days.","Scale across facilities. The same platform deploys to every site without replacing hardware.","Compound. Every near-miss pattern and loss signature is shared across the network over the air."]},
-  home:{n:"Smart home",accent:CY,lead:"Safety without the camera.",h:"Safety without the camera. Dignity by design.",d:"Falls are the leading cause of injury death over 65, but cameras feel invasive and wearables come off. Cortex uses mmWave presence to sense falls and anomalies through the dark — on the device, with no image ever captured — so safety never costs privacy.",stats:[["#1","cause of injury death over 65 (falls)"],["0","images ever captured"],["~4s","to caregiver alert"],["GDPR","& HIPAA-friendly by design"]],scenarios:[{t:"Night · a fall",wo:"An elderly resident falls in the bathroom at 2am, alone. A camera is too invasive to install; the pendant came off hours ago.",w:"mmWave senses the fall through the dark — no image, no wearable — and a caregiver is alerted in seconds."},{t:"Routine · an anomaly",wo:"A gradual change — less movement, more time in bed — goes unnoticed until it becomes a crisis.",w:"Cortex learns the household's normal and flags the drift early, privately, on the device."},{t:"Comfort · the environment",wo:"Air quality and temperature are managed reactively, one room and one complaint at a time.",w:"Environmental sensing keeps comfort and air quality right automatically — quietly, in the background."}],endpoints:[{id:"mmwave",name:"mmWave presence",role:"Presence and fall detection, no camera"},{id:"env",name:"Environmental sensors",role:"Temperature, humidity, comfort"},{id:"airq",name:"Air-quality & gas sensors",role:"Air quality and gas safety"},{id:"acoustic",name:"Acoustic sensors",role:"Distress and anomaly sounds"}],changes:["Safety no longer costs privacy — sensing captures motion, never images.","Care shifts from reacting to crises to noticing the drift that precedes them.","No wearables to charge, forget, or refuse — the room itself is the sensor.","Every home benefits from patterns learned across the fleet, privately."],ladder:["Start with one residence or ward. Place mmWave and environmental endpoints on an Edge Box; prove fall detection and privacy in 60 days.","Scale across units. The same platform fits homes, wards, and assisted-living rooms alike.","Compound. Anonymous motion patterns improve detection everywhere, over the air."]}
-};
-var soORDER=["retail","cold","logistics","home"];
-function SoSc(p){return <section style={{borderTop:p.bt?"1px solid "+BD:"none",background:p.alt?B2:BG}}><div style={{maxWidth:MW,margin:"0 auto",padding:"76px 40px"}}>{p.children}</div></section>}
-function SoScenarios(p){
-  var sol=p.sol;var motion=useMotion();var i2=useState(0),i=i2[0];
-  useEffect(function(){i2[1](0)},[sol]);
-  useEffect(function(){if(!motion)return;var id=setInterval(function(){i2[1](function(v){return (v+1)%sol.scenarios.length})},5200);return function(){clearInterval(id)}},[motion,sol]);
-  var S=sol.scenarios[i];
-  return (<div><div style={{display:"flex",gap:8,flexWrap:"wrap",marginBottom:26}}>{sol.scenarios.map(function(sc,k){return <button key={k} onClick={function(){i2[1](k)}} style={{...mono,fontSize:12.5,padding:"9px 16px",borderRadius:999,cursor:"pointer",fontFamily:"inherit",border:"1px solid "+(k===i?sol.accent:BD),background:k===i?"rgba("+crgb(sol.accent)+",.1)":"transparent",color:k===i?sol.accent:MT,transition:"all .3s"}}>{sc.t}</button>})}</div><div className="sl-2col"><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.mg+",.28)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:MG,marginBottom:12}}>Without Sevyn8</div><p style={{fontSize:16.5,lineHeight:1.7,color:TX,margin:0}}>{S.wo}</p></div><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.ion+",.4)",background:"rgba("+cR.ion+",.05)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:T,marginBottom:12}}>With Sevyn8</div><p style={{fontSize:16.5,lineHeight:1.7,color:TX,margin:0}}>{S.w}</p></div></div><div style={{display:"flex",justifyContent:"center",gap:5,marginTop:20}}>{sol.scenarios.map(function(_,k){return <div key={k} style={{width:k===i?26:8,height:4,borderRadius:2,background:k===i?sol.accent:BD,transition:"all .4s"}} />})}</div></div>);
-}
-function SoDetail(p){var sol=p.sol,go=p.go;return (<>
-  <SoSc><Rv><div style={{...mono,fontSize:13,color:MT,marginBottom:18}}><span style={{color:T,cursor:"pointer"}} onClick={function(){go("solutions")}}>Industries</span> / {sol.n}</div><Tg c={sol.accent}>Industries · {sol.n}</Tg><h1 style={{...hd,fontSize:48,fontWeight:600,lineHeight:1.08,maxWidth:720,margin:"0 0 22px"}}>{sol.h}</h1><p style={{fontSize:18.5,lineHeight:1.7,color:N3,maxWidth:660,margin:0}}>{sol.d}</p></Rv></SoSc>
-  <SoSc alt bt><div className="sl-stats">{sol.stats.map(function(s,i){return <Rv key={i} d={i*0.06}><div style={{padding:"24px 22px",borderRadius:12,border:"1px solid "+BD,background:BG,height:"100%"}}><div style={{...hd,fontSize:32,fontWeight:600,color:i<2?TX:T}}>{s[0]}</div><div style={{fontSize:13.5,color:MT,marginTop:6,lineHeight:1.45}}>{s[1]}</div></div></Rv>})}</div></SoSc>
-  <SoSc bt><Rv><Tg c={MG}>A day without vs. with</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,margin:"0 0 30px"}}>Same moment. Different outcome.</h2></Rv><Rv d={0.1}><SoScenarios sol={sol} /></Rv></SoSc>
-  <SoSc alt bt><Rv><Tg>The endpoint mix</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,margin:"0 0 12px"}}>What {sol.n.toLowerCase()} runs on.</h2><p style={{fontSize:16.5,lineHeight:1.7,color:N3,maxWidth:620,margin:"0 0 34px"}}>The endpoints this environment uses — the same family, composed for {sol.n.toLowerCase()}. All speak HAL; all run Cortex.</p></Rv><div className="sl-ep">{sol.endpoints.map(function(ep,i){return <Rv key={ep.id} d={i*0.06}><div style={{padding:"22px",borderRadius:12,border:"1px solid "+BD,borderTop:"2px solid "+epStroke(ep.id),background:BG,height:"100%"}}><div style={{width:56,height:56,borderRadius:11,background:B2,border:"1px solid "+BD,display:"flex",alignItems:"center",justifyContent:"center",marginBottom:14}}><Device type={ep.id} size={48} /></div><div style={{fontSize:15.5,fontWeight:600,color:TX,marginBottom:6}}>{ep.name}</div><div style={{fontSize:13.5,lineHeight:1.6,color:MT}}>{ep.role}</div></div></Rv>})}</div></SoSc>
-  <SoSc bt><Rv><Tg c={sol.accent}>What changes with Sevyn8</Tg></Rv>{sol.changes.map(function(c,i){var pp=c.split(" — ");return <Rv key={i} d={i*0.05}><div style={{display:"flex",gap:16,padding:"18px 0",borderBottom:"1px solid "+BD}}><div style={{width:7,height:7,borderRadius:"50%",background:T,marginTop:9,flexShrink:0}} /><div style={{fontSize:16.5,lineHeight:1.6}}><span style={{fontWeight:600,color:TX}}>{pp[0]}</span>{pp[1]&&<span style={{color:N3}}> — {pp[1]}</span>}</div></div></Rv>})}</SoSc>
-  <SoSc alt bt><Rv><Tg>Two ways in</Tg><h2 style={{...hd,fontSize:34,fontWeight:600,margin:"0 0 30px"}}>New intelligent endpoints, or the ones you have.</h2></Rv><div className="sl-2col"><Rv><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.cy+",.32)",background:"rgba("+cR.cy+",.04)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:CY,marginBottom:10}}>Greenfield</div><h4 style={{fontSize:18,fontWeight:600,margin:"0 0 8px"}}>Intelligent endpoints with AI built in</h4><p style={{fontSize:14.5,lineHeight:1.7,color:N3,margin:"0 0 16px"}}>Purpose-built cameras, sensors, and gateways with on-board NPU. The Cortex platform is embedded at the factory — AI runs natively on the endpoint, no separate box needed.</p><div style={{display:"flex",flexWrap:"wrap",gap:6}}>{["On-board NPU/CPU","AI at the endpoint","OEM white-label","Factory embedded"].map(function(t){return <span key={t} style={{...mono,fontSize:10.5,padding:"4px 10px",borderRadius:5,border:"1px solid rgba("+cR.cy+",.3)",color:CY}}>{t}</span>})}</div></div></Rv><Rv d={0.08}><div style={{padding:26,borderRadius:14,border:"1.5px solid rgba("+cR.ion+",.32)",background:"rgba("+cR.ion+",.04)",height:"100%"}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".14em",color:T,marginBottom:10}}>Brownfield</div><h4 style={{fontSize:18,fontWeight:600,margin:"0 0 8px"}}>Make your dumb devices intelligent</h4><p style={{fontSize:14.5,lineHeight:1.7,color:N3,margin:"0 0 16px"}}>Already have cameras, thermal sensors, IoT nodes, RFID readers installed? Add one Sevyn8 Hub or Edge AI Box to your network — it ingests feeds from every endpoint and runs Cortex locally.</p><div style={{display:"flex",flexWrap:"wrap",gap:6}}>{["Any existing device","One box per site","No rip-and-replace","60-day results"].map(function(t){return <span key={t} style={{...mono,fontSize:10.5,padding:"4px 10px",borderRadius:5,border:"1px solid rgba("+cR.ion+",.3)",color:T}}>{t}</span>})}</div></div></Rv></div></SoSc>
-  <SoSc bt><Rv><Tg>Your path to results</Tg></Rv><div className="sl-3">{["Start","Scale","Compound"].map(function(l,i){return <Rv key={l} d={i*0.08}><div style={{padding:26,borderRadius:12,border:"1px solid "+BD,background:BG,height:"100%"}}><div style={{display:"flex",alignItems:"center",gap:11,marginBottom:14}}><div style={{width:28,height:28,borderRadius:"50%",background:"rgba("+cR.ion+",.14)",border:"1.5px solid rgba("+cR.ion+",.4)",display:"flex",alignItems:"center",justifyContent:"center",...mono,fontSize:13,fontWeight:600,color:T}}>{i+1}</div><span style={{...mono,fontSize:12,textTransform:"uppercase",letterSpacing:".14em",color:T,fontWeight:600}}>{l}</span></div><p style={{fontSize:15,lineHeight:1.7,color:N3,margin:0}}>{sol.ladder[i]}</p></div></Rv>})}</div></SoSc>
-  <section style={{borderTop:"1px solid "+BD,background:B2}}><div style={{maxWidth:MW,margin:"0 auto",padding:"96px 40px",textAlign:"center"}}><Rv><h2 style={{...hd,fontSize:42,fontWeight:600,margin:"0 0 16px"}}>See it work in your {sol.n.toLowerCase()} operation.</h2><p style={{fontSize:18,lineHeight:1.6,color:N3,maxWidth:560,margin:"0 auto 34px"}}>60-day POC on your real site and your real data. New endpoints or the infrastructure you already run.</p><div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}><button style={bn} onClick={function(){go("contact")}}>Book a 60-day POC</button><button style={b2} onClick={function(){go("solutions")}}>Back to Industries</button></div></Rv></div></section>
-</>);}
-function SoLanding(p){var go=p.go;return (<>
-  <SoSc><Rv><Tg c={MG}>Industries · proven by industry</Tg><h1 style={{...hd,fontSize:52,fontWeight:600,lineHeight:1.06,maxWidth:760,margin:"0 0 22px"}}>One platform, shaped to your floor.</h1><p style={{fontSize:18.5,lineHeight:1.7,color:N3,maxWidth:660,margin:0}}>The same Cortex platform and the same endpoint family, composed for the outcomes each operation cares about. Pick your world.</p></Rv></SoSc>
-  <SoSc bt><div className="sl-cards">{soORDER.map(function(k,i){var s=SOLS[k];return <Rv key={k} d={i*0.07}><div onClick={function(){go("soldet-"+k)}} style={{padding:"30px 28px",borderRadius:16,border:"1px solid "+BD,borderTop:"2px solid "+s.accent,background:BG,cursor:"pointer",height:"100%",display:"flex",flexDirection:"column",transition:"border-color .25s, transform .25s"}} onMouseEnter={function(e){e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.borderColor="rgba(140,160,200,.28)"}} onMouseLeave={function(e){e.currentTarget.style.transform="none";e.currentTarget.style.borderColor=BD}}><div style={{...mono,fontSize:11,textTransform:"uppercase",letterSpacing:".16em",color:s.accent,marginBottom:12}}>{s.n}</div><h3 style={{...hd,fontSize:25,fontWeight:600,margin:"0 0 18px",letterSpacing:"-.015em"}}>{s.lead}</h3><div style={{display:"flex",gap:8,marginBottom:22}}>{s.endpoints.map(function(ep){return <div key={ep.id} style={{width:40,height:40,borderRadius:9,background:B2,border:"1px solid "+BD,display:"flex",alignItems:"center",justifyContent:"center"}}><Device type={ep.id} size={32} /></div>})}</div><span style={{fontSize:14.5,fontWeight:600,color:s.accent,marginTop:"auto"}}>Explore {s.n} →</span></div></Rv>})}</div></SoSc>
-  <section style={{borderTop:"1px solid "+BD,background:B2}}><div style={{maxWidth:MW,margin:"0 auto",padding:"90px 40px",textAlign:"center"}}><Rv><h2 style={{...hd,fontSize:40,fontWeight:600,margin:"0 0 16px"}}>Not sure where you fit?</h2><p style={{fontSize:18,lineHeight:1.6,color:N3,maxWidth:540,margin:"0 auto 32px"}}>Tell us your environment and the outcomes you need. We'll spec the endpoint mix and prove it in 60 days.</p><button style={bn} onClick={function(){go("contact")}}>Talk to the team</button></Rv></div></section>
-</>);}
-function SolutionsLanding(p){return <div style={{paddingTop:80}}><SoLanding go={p.go} /></div>}
-function SolutionsDetail(p){return <div style={{paddingTop:80}}><SoDetail sol={p.sol} go={p.go} /></div>}
-
-function Nav(p){
-  var pg=p.pg,go=p.go,s2=useState(false),d2=useState(null),mo=useState(false);
-  useEffect(function(){var h=function(){s2[1](window.scrollY>40)};window.addEventListener("scroll",h);return function(){window.removeEventListener("scroll",h)}},[]);
-  useEffect(function(){document.body.style.overflow=mo[0]?"hidden":"";return function(){document.body.style.overflow=""}},[mo[0]]);
-  var goc=function(t){mo[1](false);go(t)};
-  var nl=function(l,t){var a=pg===t;return <span onClick={function(){go(t)}} onMouseEnter={function(e){if(!a)e.currentTarget.style.color="#FFFFFF"}} onMouseLeave={function(e){if(!a)e.currentTarget.style.color="#D2D7E2"}} style={{fontSize:16,fontWeight:500,color:a?T:"#D2D7E2",cursor:"pointer"}}>{l}</span>};
-  var mrow=function(l,t,sub){var act=pg===t;return <div key={t} onClick={function(){goc(t)}} style={{padding:"16px 22px",borderBottom:"1px solid "+BD,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-    <div><div style={{fontSize:17,fontWeight:600,color:act?T:TX}}>{l}</div>{sub&&<div style={{fontSize:13,color:DM,marginTop:3,lineHeight:1.4}}>{sub}</div>}</div>
-    <span style={{color:act?T:DM,fontSize:18,marginLeft:12}}>{"\u203A"}</span>
-  </div>};
-  return <><nav style={{position:"fixed",top:0,left:0,right:0,zIndex:999,padding:0,background:s2[0]||mo[0]?"rgba(11,13,20,.96)":"transparent",backdropFilter:s2[0]||mo[0]?"blur(20px)":"none",borderBottom:s2[0]||mo[0]?"1px solid "+BD:"none",transition:"all .3s"}}>
-    <div style={{maxWidth:MW,margin:"0 auto",padding:"0 40px",display:"flex",alignItems:"center",justifyContent:"space-between",height:60}}>
-      <div onClick={function(){goc("home")}} role="link" aria-label="Sevyn8 — home" style={{cursor:"pointer"}}><Brand size={48} mark={56} gap={8} animated /></div>
-      <div style={{display:"flex",alignItems:"center",gap:26}}>
-        {nl("Home","home")}{nl("Cortex AI","cortex2")}{nl("AI Hardware","hardware")}
-        <div style={{position:"relative"}} onMouseEnter={function(){d2[1]("i")}} onMouseLeave={function(){d2[1](null)}}><span onClick={function(){go("solutions")}} onMouseEnter={function(e){if(!(pg==="solutions"||pg.indexOf("soldet-")===0||pg.indexOf("sol-")===0))e.currentTarget.style.color="#FFFFFF"}} onMouseLeave={function(e){if(!(pg==="solutions"||pg.indexOf("soldet-")===0||pg.indexOf("sol-")===0))e.currentTarget.style.color="#D2D7E2"}} style={{fontSize:16,fontWeight:500,color:(pg==="solutions"||pg.indexOf("soldet-")===0||pg.indexOf("sol-")===0)?T:"#D2D7E2",cursor:"pointer",padding:"8px 0"}}>Industries &#9662;</span>{d2[0]==="i"&&<div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:180,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{[["Retail","retail"],["Cold Chain","cold"],["Logistics","logistics"],["Smart Home","home"]].map(function(x){return <div key={x[0]} onClick={function(){go("soldet-"+x[1])}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{x[0]}</div>})}</div></div>}</div>
-        <div style={{position:"relative"}} onMouseEnter={function(){d2[1]("c")}} onMouseLeave={function(){d2[1](null)}}><span onMouseEnter={function(e){if(!["about","partners"].includes(pg))e.currentTarget.style.color="#FFFFFF"}} onMouseLeave={function(e){if(!["about","partners"].includes(pg))e.currentTarget.style.color="#D2D7E2"}} style={{fontSize:16,fontWeight:500,color:["about","partners"].includes(pg)?T:"#D2D7E2",cursor:"pointer",padding:"8px 0"}}>Company &#9662;</span>{d2[0]==="c"&&<div style={{position:"absolute",top:"100%",right:0,paddingTop:8,zIndex:100}}><div style={{background:B2,border:"1px solid "+BD,borderRadius:10,padding:6,minWidth:150,boxShadow:"0 16px 48px rgba(0,0,0,.5)"}}>{[["Our Story","about"],["Partners","partners"]].map(function(x){return <div key={x[0]} onClick={function(){go(x[1])}} style={{padding:"10px 16px",borderRadius:7,cursor:"pointer",fontSize:14,color:TX}}>{x[0]}</div>})}</div></div>}</div>
-        <button style={{...bn,padding:"8px 20px",fontSize:14}} onClick={function(){go("contact")}}>Contact</button>
-        <button className="nav-burger" aria-label={mo[0]?"Close menu":"Open menu"} onClick={function(){mo[1](!mo[0])}} style={{display:"none",alignItems:"center",justifyContent:"center",width:40,height:40,background:"transparent",border:"1px solid "+BD,borderRadius:8,cursor:"pointer",color:TX,padding:0}}>
-          {mo[0]
-            ? <span style={{fontSize:22,lineHeight:1,fontWeight:300}}>{"\u00D7"}</span>
-            : <div style={{display:"flex",flexDirection:"column",gap:4}}><div style={{width:18,height:2,background:TX,borderRadius:1}} /><div style={{width:18,height:2,background:TX,borderRadius:1}} /><div style={{width:18,height:2,background:TX,borderRadius:1}} /></div>}
-        </button>
-      </div>
-    </div>
-  </nav>
-  {mo[0] && <div className="nav-panel" style={{position:"fixed",top:60,left:0,right:0,bottom:0,background:BG,borderTop:"1px solid "+BD,overflowY:"auto",zIndex:998,WebkitOverflowScrolling:"touch"}}>
-    {mrow("Home","home")}
-    {mrow("Cortex AI","cortex2","The Physical AI platform")}
-    {mrow("AI Hardware","hardware","Edge endpoints")}
-    {mrow("Industries","solutions","By industry")}
-    {mrow("Our Story","about")}
-    {mrow("Partners","partners")}
-    {mrow("Contact","contact")}
-    <div style={{padding:"30px 22px 60px"}}><button style={{...bn,width:"100%",justifyContent:"center",padding:"14px 20px"}} onClick={function(){goc("contact")}}>Book a 60-day POC {"\u2192"}</button></div>
-  </div>}
-  </>;
-}
-
-function Ft(){return <footer style={{borderTop:"1px solid "+BD,background:B2,padding:"36px 40px"}}><div style={{maxWidth:MW,margin:"0 auto",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:13,color:DM,flexWrap:"wrap",gap:12}}><Brand size={26} mark={34} gap={8} /><div style={{display:"flex",alignItems:"center",gap:18,flexWrap:"wrap"}}><Link to="/privacy" style={{color:DM,textDecoration:"none"}}>Privacy</Link><Link to="/terms" style={{color:DM,textDecoration:"none"}}>Terms</Link><span>2026 Sevyn8 Private Limited &middot; New Delhi</span></div></div></footer>}
-
-/* ── SSG: routes + per-route head (react-router + vite-react-ssg) ── */
 var SITE="https://sevyn8.com";
-var META={
-  home:{p:"/",t:"Sevyn8 — Physical AI for retail, cold chain, logistics & the home",d:"Sevyn8 puts on-device edge AI across retail, cold chain, logistics, and the home — every camera, sensor, and device deciding in real time, fully offline, and getting smarter together."},
-  cortex2:{p:"/cortex-ai",t:"Sevyn8 — Cortex · the Physical AI platform",d:"Cortex is Sevyn8's Physical AI platform — it senses, understands, decides, and acts on-device in under 100ms, fully offline, then learns across the whole fleet. Seven capabilities, enterprise governance, any silicon."},
-  hardware:{p:"/ai-hardware",t:"Sevyn8 — AI Hardware · every endpoint, any silicon",d:"Nine Sevyn8 edge endpoint classes — cameras, thermal, Edge Box, shelf labels, environmental, air-quality, presence, acoustic, and asset tags — every body running the same Cortex brain on any silicon, certified with ODM partners."},
-  solutions:{p:"/industries",t:"Sevyn8 — Industries · one platform, shaped to your floor",d:"Sevyn8 Cortex shaped to your industry — retail, cold chain, logistics, and the home. The same platform and endpoint family, composed for the outcomes each operation cares about."},
-  about:{p:"/company/our-story",t:"Sevyn8 — Our Story",d:"Seven platform capabilities, an eighth that compounds, and the Motorola-forged team behind Sevyn8's Physical AI platform."},
-  partners:{p:"/company/partners",t:"Sevyn8 — Partners",d:"Sevyn8's silicon, sensor, and design partners — the intelligence infrastructure behind the Physical AI platform, plus the OEM licensing model."},
-  contact:{p:"/contact",t:"Sevyn8 — Contact",d:"Start the conversation — enterprise deployment, OEM integration, or a 60-day proof of concept on your real site and data."},
-  privacy:{p:"/privacy",t:"Sevyn8 — Privacy Policy",d:"How Sevyn8 handles data — consent-gated analytics, contact-form submissions, and your rights under India's DPDP Act 2023 and the GDPR."},
-  terms:{p:"/terms",t:"Sevyn8 — Terms of Use",d:"Terms governing use of the Sevyn8 marketing website — informational only; commercial engagements are covered by separate signed agreements. Governing law: India."}
-};
-var KEYPATH={home:"/",cortex2:"/cortex-ai",hardware:"/ai-hardware",solutions:"/industries","soldet-retail":"/industries/retail","soldet-cold":"/industries/cold-chain","soldet-logistics":"/industries/logistics","soldet-home":"/industries/smart-home",about:"/company/our-story",partners:"/company/partners",contact:"/contact",privacy:"/privacy",terms:"/terms"};
-var PATHKEY={};Object.keys(KEYPATH).forEach(function(k){PATHKEY[KEYPATH[k]]=k});
-function pathFor(key){if(KEYPATH[key])return KEYPATH[key];if(key&&key.indexOf("sol-")===0){var m={retail:"retail",home:"smart-home",fleet:"logistics",coldchain:"cold-chain"};var id=key.slice(4);return "/industries/"+(m[id]||id)}return "/"}
-function useGo(){var nav=useNavigate();return function(key){nav(pathFor(key));if(typeof window!=="undefined")window.scrollTo({top:0,behavior:"instant"})}}
+var CAL="https://calendly.com/amit-sevyn8/30min";
 var OGIMG=SITE+"/og-image.png";
-var LD_ORG={"@context":"https://schema.org","@type":"Organization",name:"Sevyn8",url:SITE,logo:SITE+"/sevyn8-mark.svg",description:"Sevyn8 builds on-device Physical AI — edge AI across retail, cold chain, logistics, and the home that senses, decides, and acts in real time, fully offline, and learns across the whole fleet.",address:{"@type":"PostalAddress",addressLocality:"New Delhi",addressCountry:"IN"}};
-var LD_CORTEX={"@context":"https://schema.org","@type":"SoftwareApplication",name:"Sevyn8 Cortex",applicationCategory:"BusinessApplication",operatingSystem:"On-device / edge",url:SITE+"/cortex-ai",description:"Cortex is Sevyn8's Physical AI platform — it senses, understands, decides, and acts on-device in under 100ms, fully offline, then learns across the whole fleet.",publisher:{"@type":"Organization",name:"Sevyn8",url:SITE}};
+
+var META={
+  home:{p:"/",t:"SEVYN8 \u00b7 Physical AI, without the robots",d:"SEVYN8's edge intelligence system runs on the devices you already have, acts on what they sense, and earns the metrics your business is chasing."},
+  how:{p:"/how-it-earns",t:"How it earns \u00b7 SEVYN8",d:"The loop behind SEVYN8: Know, Decide, Act, Earn. Your devices sense the floor, Cortex AI calls the move, your hardware acts, and the outcome is measured against a control."},
+  cortex:{p:"/cortex-ai",t:"Cortex AI, the engine \u00b7 SEVYN8",d:"Cortex AI is one edge intelligence engine that runs on any device and any silicon, turning what your sensors see into the action your hardware takes, in the moment."},
+  retail:{p:"/retail",t:"Retail \u00b7 SEVYN8",d:"Fuller shelves, smarter layouts, more revenue per visit. SEVYN8 senses the shelf, decides price and placement, acts on ESLs and screens, and earns the margin."},
+  realestate:{p:"/real-estate",t:"Real estate \u00b7 SEVYN8",d:"Lower operating cost, lower carbon, higher NOI. SEVYN8 senses occupancy and footfall, decides the operational move, acts on building systems, and earns on cost and carbon."},
+  company:{p:"/company",t:"Company \u00b7 SEVYN8",d:"SEVYN8 builds physical AI for the physical world: an edge intelligence system that sits between the sensing hardware you already run and the actuation hardware that acts on it."},
+  contact:{p:"/contact",t:"Discuss a pilot \u00b7 SEVYN8",d:"Talk to SEVYN8 about a pilot. Book a 30-minute call and see how the loop earns on your store floor or in your building."},
+  privacy:{p:"/privacy",t:"Privacy \u00b7 SEVYN8",d:"How SEVYN8 handles data across its website: consent-gated analytics, contact-form submissions, and your rights under India's DPDP Act 2023 and the GDPR."},
+  terms:{p:"/terms",t:"Terms \u00b7 SEVYN8",d:"The terms that govern use of the SEVYN8 website. Informational only; commercial engagements are covered by separate signed agreements."}
+};
+var LD_ORG={"@context":"https://schema.org","@type":"Organization",name:"SEVYN8",legalName:"SEVYN8 Private Limited",url:SITE,logo:SITE+"/sevyn8-mark.svg",description:"Physical AI for the physical world. SEVYN8 turns what your sensors see into the action your hardware takes, and measures the outcome.",address:{"@type":"PostalAddress",addressLocality:"New Delhi",addressCountry:"IN"}};
+var LD_CORTEX={"@context":"https://schema.org","@type":"SoftwareApplication",name:"Cortex AI",applicationCategory:"BusinessApplication",operatingSystem:"On-device / edge",url:SITE+"/cortex-ai",description:"Cortex AI is SEVYN8's edge intelligence engine: it senses, decides, and acts on-device, then measures the outcome against a control.",publisher:{"@type":"Organization",name:"SEVYN8",url:SITE}};
+
 var GA_ID="G-NLE0C6SFFJ";
-var TITLE_BY_PATH={};Object.keys(META).forEach(function(k){TITLE_BY_PATH[META[k].p]=META[k].t});["soldet-retail","soldet-cold","soldet-logistics","soldet-home"].forEach(function(k){var s=SOLS[k.slice(7)];TITLE_BY_PATH[KEYPATH[k]]="Sevyn8 — "+s.n+" · Physical AI"});
+var TITLE_BY_PATH={};Object.keys(META).forEach(function(k){TITLE_BY_PATH[META[k].p]=META[k].t});
 function titleFor(path){return TITLE_BY_PATH[path]||(typeof document!=="undefined"?document.title:"Sevyn8")}
 function gtagPush(){window.dataLayer.push(arguments)}
 function bootGtag(){if(window.__sv8boot)return;window.__sv8boot=true;window.dataLayer=window.dataLayer||[];gtagPush("consent","default",{analytics_storage:"denied",ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied"});gtagPush("js",new Date());var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id="+GA_ID;document.head.appendChild(s)}
@@ -426,156 +59,242 @@ function Analytics(){
   if(!mounted||consent!==null)return null;
   return <ConsentBanner accept={accept} reject={reject} />;
 }
-function PageHead(p){var m=p.m;return <Head><title>{m.t}</title><meta name="description" content={m.d} /><link rel="canonical" href={SITE+m.p} /><meta property="og:title" content={m.t} /><meta property="og:description" content={m.d} /><meta property="og:type" content="website" /><meta property="og:url" content={SITE+m.p} /><meta property="og:site_name" content="Sevyn8" /><meta property="og:image" content={OGIMG} /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={m.t} /><meta name="twitter:description" content={m.d} /><meta name="twitter:image" content={OGIMG} /></Head>}
-function Shell(){
-  var loc=useLocation();var go=useGo();var pg=PATHKEY[loc.pathname]||"home";
-  useEffect(function(){if(typeof window!=="undefined")window.scrollTo({top:0,behavior:"instant"})},[loc.pathname]);
-  return <div style={{minHeight:"100vh",background:BG,fontFamily:"'IBM Plex Sans',system-ui,sans-serif",WebkitFontSmoothing:"antialiased",color:TX,fontSize:16,lineHeight:1.65}}>
-    <Head><script type="application/ld+json">{JSON.stringify(LD_ORG)}</script></Head>
-    <Analytics />
-    <style dangerouslySetInnerHTML={{__html:"*{margin:0;padding:0;box-sizing:border-box}::selection{background:#414BF5;color:#0B0D14}html{scroll-behavior:smooth}img,canvas,svg{max-width:100%}@media (max-width:768px){[style*=\"1fr 1fr\"]{grid-template-columns:1fr !important}[style*=\"repeat(3,\"],[style*=\"repeat(3, \"]{grid-template-columns:1fr !important}[style*=\"repeat(4,\"],[style*=\"repeat(4, \"]{grid-template-columns:repeat(2,1fr) !important}main section[style*=\"100vh\"]{min-height:auto !important;padding:84px 20px 32px !important}main section[style*=\"100vh\"] > div{gap:32px !important}main section[style*=\"100vh\"] > div > div[style*=\"height:480\"],main section[style*=\"100vh\"] > div > div[style*=\"height: 480\"]{height:320px !important}section > div{padding-left:20px !important;padding-right:20px !important;padding-top:48px !important;padding-bottom:48px !important}h1{font-size:32px !important;line-height:1.1 !important}h2{font-size:24px !important;line-height:1.2 !important}h3{font-size:18px !important}nav > div{padding:0 14px !important}nav > div > div:last-child{gap:8px !important}nav > div > div:last-child > span,nav > div > div:last-child > div{display:none !important}nav > div > div:last-child > button{display:inline-flex !important;padding:7px 14px !important;font-size:12px !important}nav button.nav-burger{display:inline-flex !important;width:40px !important;height:40px !important;padding:0 !important}}@media (max-width:480px){h1{font-size:28px !important}h2{font-size:22px !important}main section[style*=\"100vh\"] > div > div[style*=\"height:480\"],main section[style*=\"100vh\"] > div > div[style*=\"height: 480\"]{height:260px !important}}.cx-grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}.rw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@keyframes scdinf{0%,100%{opacity:.5}50%{opacity:1}}@keyframes feedin{from{opacity:0}to{opacity:1}}@keyframes livedot{0%,100%{opacity:.4}50%{opacity:1}}@media (max-width:880px){.cx-grid2{grid-template-columns:1fr;gap:34px}.cx-hero-anim{height:340px !important}.rw-grid{grid-template-columns:repeat(2,1fr)}}@media (max-width:520px){.rw-grid{grid-template-columns:1fr}}.hm-spine{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.wk-tabs{display:flex;gap:14px;margin-bottom:28px}.wk-stage{display:grid;grid-template-columns:1.35fr 1fr;gap:40px;align-items:center}@keyframes wkgrow{from{width:0}to{width:100%}}@keyframes wkscene{from{opacity:0;transform:scale(.99)}to{opacity:1;transform:none}}@keyframes wkfade{from{opacity:0}to{opacity:1}}@keyframes wkfovp{0%,100%{opacity:.3}50%{opacity:.6}}.wkfov{animation:wkfovp 2s ease-in-out infinite}.ee-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.ee-env-row{display:grid;grid-template-columns:repeat(9,1fr);gap:12px}.sl-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.sl-2col{display:grid;grid-template-columns:1fr 1fr;gap:18px}.sl-ep{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.sl-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.sl-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.hw-lineup{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.cx-how{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}@media (max-width:980px){.cx-how{grid-template-columns:repeat(3,1fr)}}@media (max-width:560px){.cx-how{grid-template-columns:repeat(2,1fr)}}@media (max-width:880px){.hm-spine{grid-template-columns:1fr}.wk-stage{grid-template-columns:1fr;gap:28px}.wk-tabs{gap:8px}.ee-cards{grid-template-columns:repeat(2,1fr)}.ee-env-row{grid-template-columns:repeat(5,1fr)}}@media (max-width:820px){.sl-stats{grid-template-columns:repeat(2,1fr)}.sl-2col{grid-template-columns:1fr}.sl-ep{grid-template-columns:repeat(2,1fr)}.sl-3{grid-template-columns:1fr}.sl-cards{grid-template-columns:1fr}}@media (max-width:560px){.ee-cards{grid-template-columns:1fr}.ee-env-row{grid-template-columns:repeat(3,1fr)}}"}} />
-    <Nav pg={pg} go={go}/><main key={loc.pathname}><Outlet /></main><Ft />
-  </div>;
+function PageHead(p){var m=p.m;return <Head><title>{m.t}</title><meta name="description" content={m.d} /><link rel="canonical" href={SITE+m.p} /><meta property="og:title" content={m.t} /><meta property="og:description" content={m.d} /><meta property="og:type" content="website" /><meta property="og:url" content={SITE+m.p} /><meta property="og:site_name" content="SEVYN8" /><meta property="og:image" content={OGIMG} /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={m.t} /><meta name="twitter:description" content={m.d} /><meta name="twitter:image" content={OGIMG} /></Head>}
+
+/* ---- legal pages (carried verbatim) ---- */
+var PRIVACY_HTML = `<p class="leyebrow">Legal</p>
+<h1>Privacy Policy</h1>
+<p class="lmeta">Last updated 15 June 2026</p>
+<p>This policy explains what limited data the Sevyn8 website (sevyn8.com) collects, why, and the choices you have. Privacy is a design principle for us, not an afterthought.</p>
+<p class="leyebrow">Who we are</p>
+<h2>The data controller.</h2>
+<p>This website is operated by <strong>Sevyn8 Private Limited</strong>, New Delhi, India ("Sevyn8", "we", "us"). For any privacy question, contact <a href="mailto:rahul@sevyn8.com">rahul@sevyn8.com</a>.</p>
+<p class="leyebrow">Important scope</p>
+<h2>This policy covers the website, not the product.</h2>
+<p>Sevyn8 Cortex runs <strong>on-device, at the edge</strong>. Any data captured or processed by deployed Sevyn8 products stays on customer infrastructure and is governed by the <strong>separate commercial agreement</strong> for that deployment, not by this website policy. This document is solely about your use of sevyn8.com.</p>
+<p class="leyebrow">What we collect</p>
+<h2>Two things, both minimal.</h2>
+<p><strong>Analytics, only with your consent.</strong> If you accept analytics in the cookie banner, we use Google Analytics 4 to understand aggregate usage: pages viewed, approximate region, and device/browser type. Storage is denied by default and nothing is sent until you accept. If you reject or ignore the banner, no analytics cookies are set and no analytics data is collected.</p>
+<p><strong>Contact-form submissions.</strong> If you send a message via the contact page, the details you provide (such as name, email, organisation, and message) <strong>trigger an email to us only</strong>. They are not stored in any CRM, database, or third-party system, we simply receive the email and reply.</p>
+<p>We do not sell personal data and do not use it for advertising. Ad-related storage is denied at all times.</p>
+<p class="leyebrow">How &amp; why</p>
+<h2>Purpose and legal bases.</h2>
+<p>Analytics data is used in aggregate to measure how the site performs and to improve it. Contact details are used only to reply to your enquiry and progress any conversation you start.</p>
+<p>Our legal bases are your <strong>consent</strong> for analytics, and our <strong>legitimate interest</strong> (and taking steps at your request prior to any agreement) in responding to enquiries you initiate.</p>
+<p class="leyebrow">Cookies &amp; consent</p>
+<h2>Denied by default.</h2>
+<p>We load analytics under Google Consent Mode v2 with <code>analytics_storage</code> and <code>ad_storage</code> set to <em>denied</em> until you choose otherwise. Your choice is stored locally in your browser so you are not asked again. You can change it any time by clearing this site's storage, which brings the banner back.</p>
+<p class="leyebrow">Processors</p>
+<h2>Who processes data for us.</h2>
+<ul><li><strong>Google</strong> (Google Analytics), processes analytics data on our behalf when you consent, subject to Google's terms and privacy practices.</li><li><strong>Vercel</strong>, hosts the website and processes the standard request/server logs needed to serve and secure it.</li></ul>
+<p class="leyebrow">Retention</p>
+<h2>How long we keep it.</h2>
+<p>Analytics data is retained for the period configured in Google Analytics (by default up to 14 months), then deleted or anonymised. Contact emails are kept only as long as needed to handle your enquiry and any resulting relationship, after which they are deleted.</p>
+<p class="leyebrow">International transfers</p>
+<h2>Where data may go.</h2>
+<p>Our processors (Google, Vercel) may process data on infrastructure outside India or your country. Where data is transferred internationally, it remains subject to appropriate safeguards and the processor's commitments.</p>
+<p class="leyebrow">Your rights</p>
+<h2>You're in control.</h2>
+<ul><li><strong>Access</strong>, ask what personal data we hold about you.</li><li><strong>Correction</strong>, ask us to correct inaccurate data.</li><li><strong>Erasure</strong>, ask us to delete your data.</li><li><strong>Withdraw consent</strong>, turn off analytics any time, with no effect on prior lawful processing.</li></ul>
+<p>These rights reflect India's <strong>Digital Personal Data Protection Act, 2023</strong> and, for visitors in the EU/EEA and the UK, the <strong>GDPR</strong>. To exercise any of them, email <a href="mailto:rahul@sevyn8.com">rahul@sevyn8.com</a>.</p>
+<p class="leyebrow">Children</p>
+<h2>Not directed at children.</h2>
+<p>This website is intended for businesses and professional audiences. We do not knowingly collect personal data from children. If you believe a child has provided data, contact us and we will delete it.</p>
+<p class="leyebrow">Security</p>
+<h2>How we protect it.</h2>
+<p>We apply reasonable technical and organisational measures appropriate to a marketing website and the limited data it handles. No method of transmission or storage is perfectly secure, but we minimise what we collect in the first place.</p>
+<p class="leyebrow">Changes &amp; contact</p>
+<h2>Staying current.</h2>
+<p>We may update this policy from time to time; the "last updated" date above reflects the current version. Questions about this policy or your data? Email <a href="mailto:rahul@sevyn8.com">rahul@sevyn8.com</a>.</p>`;
+
+var TERMS_HTML = `<p class="leyebrow">Legal</p>
+<h1>Terms of Use</h1>
+<p class="lmeta">Last updated 15 June 2026</p>
+<p>These terms govern your use of the Sevyn8 website at sevyn8.com, operated by <strong>Sevyn8 Private Limited</strong>, New Delhi, India ("Sevyn8", "we", "us").</p>
+<p class="leyebrow">Acceptance</p>
+<h2>By using the site, you agree.</h2>
+<p>By accessing or using this website, you agree to these Terms of Use. If you do not agree, please do not use the site.</p>
+<p class="leyebrow">What this site is</p>
+<h2>An informational marketing site, not the product.</h2>
+<p>This website is an informational and marketing resource about Sevyn8 and its Cortex platform. It is <strong>not the product itself</strong> and provides no access to deployed Sevyn8 systems. Information here is general and may change without notice.</p>
+<p class="leyebrow">Acceptable use</p>
+<h2>Permitted and prohibited.</h2>
+<p>You may view and share this site for lawful, informational purposes. You must not:</p>
+<ul><li>attempt to disrupt, attack, or gain unauthorised access to the site or its infrastructure;</li><li>scrape, copy, or reuse content other than as permitted by law or with our written consent;</li><li>misrepresent your affiliation with Sevyn8 or use the site to mislead others;</li><li>use the site in violation of any applicable law.</li></ul>
+<p class="leyebrow">Intellectual property</p>
+<h2>All rights reserved.</h2>
+<p>The content of this site, the <strong>Sevyn8</strong> name and marks, and <strong>Cortex</strong> are the property of Sevyn8 Private Limited and are protected by applicable intellectual-property laws. All rights reserved. No licence to any trademark, logo, or content is granted except as expressly stated in writing.</p>
+<p class="leyebrow">Disclaimer</p>
+<h2>Provided "as is".</h2>
+<p>This website and its content are provided <strong>"as is" and "as available"</strong>, without warranties of any kind, express or implied, including fitness for a particular purpose, accuracy, or non-infringement. We do not warrant that the site will be uninterrupted or error-free.</p>
+<p class="leyebrow">Liability</p>
+<h2>Limitation of liability.</h2>
+<p>To the maximum extent permitted by law, Sevyn8 is not liable for any indirect, incidental, special, or consequential damages, or any loss arising from your use of (or inability to use) this website.</p>
+<p class="leyebrow">Third-party links</p>
+<h2>We don't control them.</h2>
+<p>The site may link to third-party websites or services. We are not responsible for their content, practices, or availability, and links do not imply endorsement.</p>
+<p class="leyebrow">Commercial engagements</p>
+<h2>Governed by separate agreements.</h2>
+<p>Any proof of concept, pilot, evaluation, licensing, or other commercial engagement with Sevyn8 is governed by a <strong>separate signed agreement</strong> between the parties, not by these Terms. Nothing on this website constitutes an offer, warranty, or contractual commitment.</p>
+<p class="leyebrow">Changes</p>
+<h2>We may update these terms.</h2>
+<p>We may revise these Terms from time to time. Continued use of the site after changes take effect constitutes acceptance of the revised Terms. The "last updated" date above reflects the current version.</p>
+<p class="leyebrow">Governing law</p>
+<h2>India · courts of New Delhi.</h2>
+<p>These Terms are governed by the laws of India, and the courts of New Delhi have exclusive jurisdiction over any dispute arising from them or from your use of this website.</p>
+<p class="leyebrow">Contact</p>
+<h2>Questions?</h2>
+<p>Questions about these Terms? Email <a href="mailto:rahul@sevyn8.com">rahul@sevyn8.com</a>.</p>`;
+
+function LegalPage(p){return <div className="page active"><div className="legal" dangerouslySetInnerHTML={{__html:p.html}} /></div>;}
+function PgPrivacy(){return <><PageHead m={META.privacy} /><LegalPage html={PRIVACY_HTML} /></>;}
+function PgTerms(){return <><PageHead m={META.terms} /><LegalPage html={TERMS_HTML} /></>;}
+
+/* ---- brand mark (animated convergence lockup) ---- */
+var LKPATHS=[
+  "M50 50 C28 28 28 12 50 12 C72 12 72 28 50 50 C28 72 28 88 50 88 C72 88 72 72 50 50 Z",
+  "M50 50 C30.5 30.5 30.5 16.5 50 16.5 C69.5 16.5 69.5 30.5 50 50 C30.5 69.5 30.5 83.5 50 83.5 C69.5 83.5 69.5 69.5 50 50 Z",
+  "M50 50 C33 33 33 21 50 21 C67 21 67 33 50 50 C33 67 33 79 50 79 C67 79 67 67 50 50 Z",
+  "M50 50 C35.5 35.5 35.5 25.5 50 25.5 C64.5 25.5 64.5 35.5 50 50 C35.5 64.5 35.5 74.5 50 74.5 C64.5 74.5 64.5 64.5 50 50 Z",
+  "M50 50 C38 38 38 30 50 30 C62 30 62 38 50 50 C38 62 38 70 50 70 C62 70 62 62 50 50 Z",
+  "M50 50 C40.5 40.5 40.5 34.5 50 34.5 C59.5 34.5 59.5 40.5 50 50 C40.5 59.5 40.5 65.5 50 65.5 C59.5 65.5 59.5 59.5 50 50 Z"
+];
+function GradientDef(){return <svg width="0" height="0" style={{position:"absolute"}} aria-hidden="true"><defs><linearGradient id="spectrum" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#19D3E0"/><stop offset="0.5" stopColor="#414BF5"/><stop offset="1" stopColor="#E63DCB"/></linearGradient></defs></svg>;}
+function S8Lock(p){var od=p&&p.onDark;return <svg className={"s8lock"+(od?" on-dark":"")} viewBox="0 0 360 120" aria-label="SEVYN8"><g className="lk-track" transform="translate(8,10)">{LKPATHS.map(function(d,i){return <path key={i} d={d}/>;})}</g><g className="lk-comet" transform="translate(8,10)">{LKPATHS.map(function(d,i){return <path key={i} pathLength="100" d={d}/>;})}</g><circle className="lk-core" cx="58" cy="60" r="3.2"/><text className="lk-wm" x="132" y="78">SEVYN8</text></svg>;}
+function ThemeToggle(){
+  var s=useState(false),dark=s[0],setDark=s[1];
+  useEffect(function(){try{setDark(document.documentElement.getAttribute("data-theme")==="dark");}catch(e){}},[]);
+  function toggle(){var d=document.documentElement;var isDark=d.getAttribute("data-theme")==="dark";if(isDark){d.removeAttribute("data-theme");}else{d.setAttribute("data-theme","dark");}try{localStorage.setItem("s8theme",isDark?"light":"dark");}catch(e){}setDark(!isDark);}
+  return <button className="theme-toggle" id="themeToggle" onClick={toggle} aria-label="Toggle dark mode" title="Toggle light and dark">
+    <svg className="ico ico-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3.2a6.6 6.6 0 0 0 9.8 9.6z" fill="currentColor"/></svg>
+    <svg className="ico ico-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.4" fill="currentColor"/><g stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"><line x1="12" y1="2.6" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.4"/><line x1="2.6" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.4" y2="12"/><line x1="5.4" y1="5.4" x2="7.1" y2="7.1"/><line x1="16.9" y1="16.9" x2="18.6" y2="18.6"/><line x1="5.4" y1="18.6" x2="7.1" y2="16.9"/><line x1="16.9" y1="7.1" x2="18.6" y2="5.4"/></g></svg>
+  </button>;
 }
-function PgHome(){var go=useGo();return <><PageHead m={META.home} /><Home2Page go={go} /></>}
-function PgCortex(){var go=useGo();return <><PageHead m={META.cortex2} /><Head><script type="application/ld+json">{JSON.stringify(LD_CORTEX)}</script></Head><CortexPage go={go} /></>}
-function PgHardware(){var go=useGo();return <><PageHead m={META.hardware} /><HardwarePage go={go} /></>}
-function PgIndustries(){var go=useGo();return <><PageHead m={META.solutions} /><SolutionsLanding go={go} /></>}
-function PgDetail(p){var go=useGo();var sol=SOLS[p.k];var m={p:"/industries/"+p.slug,t:"Sevyn8 — "+sol.n+" · Physical AI",d:sol.d};return <><PageHead m={m} /><SolutionsDetail sol={sol} go={go} /></>}
-function PgAbout(){return <><PageHead m={META.about} /><AboutPg /></>}
-function PgPartners(){var go=useGo();return <><PageHead m={META.partners} /><PartPg go={go} /></>}
-function PgContact(){return <><PageHead m={META.contact} /><ContactPg /></>}
-function PrivacyPage(){var pp={fontSize:16,lineHeight:1.8,color:N3,margin:"0 0 14px",maxWidth:680};var h2={...hd,fontSize:24,fontWeight:600,margin:"0 0 14px"};var li={fontSize:16,lineHeight:1.8,color:N3,marginBottom:8};var em=function(c){return {fontFamily:"'IBM Plex Mono',monospace",color:c||CY,textDecoration:"underline"}};return <div style={{paddingTop:80}}>
-  <Sc><Rv><Tg>Legal</Tg><h1 style={{...hd,fontSize:42,fontWeight:600,lineHeight:1.08,marginBottom:14,maxWidth:560}}>Privacy Policy</h1><p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,color:MT,margin:"0 0 18px"}}>Last updated 15 June 2026</p><p style={pp}>This policy explains what limited data the Sevyn8 website (sevyn8.com) collects, why, and the choices you have. Privacy is a design principle for us, not an afterthought.</p></Rv></Sc>
+function Nav(){return <nav className="nav">
+  <Link className="brand" to="/"><S8Lock/></Link>
+  <div className="nav-links">
+    <Link to="/">Home</Link>
+    <Link to="/how-it-earns">How it earns</Link>
+    <Link to="/cortex-ai">Cortex AI</Link>
+    <div className="drop"><button aria-haspopup="true">Industries <span aria-hidden="true">&#9662;</span></button><div className="drop-menu"><Link to="/retail">Retail <span className="tag-live">live</span></Link><Link to="/real-estate">Real estate <span className="tag-live">live</span></Link></div></div>
+    <Link to="/company">Company</Link>
+  </div>
+  <div className="nav-right">
+    <ThemeToggle/>
+    <a className="nav-cta" href={CAL} target="_blank" rel="noopener">Discuss a pilot</a>
+  </div>
+</nav>;}
+function Ft(){return <footer>
+  <div className="wrap">
+    <div className="cols">
+      <div>
+        <Link className="brand" to="/" style={{display:"flex",alignItems:"center"}}><S8Lock onDark/></Link>
+        <p style={{color:"#8f99ad",marginTop:14,fontSize:14,maxWidth:300}}>Physical AI, without the robots. Where sensing becomes earning.</p>
+      </div>
+      <div><h5>Product</h5><Link to="/how-it-earns">How it earns</Link><Link to="/cortex-ai">Cortex AI</Link><Link to="/retail">Retail</Link><Link to="/real-estate">Real estate</Link></div>
+      <div><h5>Company</h5><Link to="/company">Our story</Link><Link to="/contact">Contact</Link><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
+    </div>
+    <div className="fine"><span>&copy; 2026 SEVYN8 Private Limited, New Delhi.</span><span>Where sensing becomes earning.</span></div>
+  </div>
+</footer>;}
+function Page(p){return <div className="page active" dangerouslySetInnerHTML={{__html:p.html}} />;}
 
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Who we are</Tg><h2 style={h2}>The data controller.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>This website is operated by <strong style={{color:TX}}>Sevyn8 Private Limited</strong>, New Delhi, India ("Sevyn8", "we", "us"). For any privacy question, contact <a href="mailto:rahul@sevyn8.com" style={em()}>rahul@sevyn8.com</a>.</p></Rv>
-  </Sc>
+/* ---- ported behaviors (flow, stepper, story cycle, silicon wave) ---- */
+function wireBehaviors(){
+  var timers=[];
+  (function(){
+    var flow=document.getElementById("flowwrap"); if(!flow) return;
+    var scen=[
+      {ev:"A customer waits in an unattended aisle",k:"Sees a customer waiting, no staff near",d:"Works out who is free and nearest",a:"The nearest associate is sent over",e:"a sale that won't walk out"},
+      {ev:"A whole floor sits empty after hours",k:"Occupancy on level 3 drops to zero",d:"Sets back HVAC and lighting to match",a:"Building systems dial themselves down",e:"energy and carbon you don't spend"}
+    ];
+    var fEvent=document.getElementById("fEvent"),fEarn=document.getElementById("fEarn"),fEarnT=document.getElementById("fEarnT"),fKnowP=document.getElementById("fKnowP"),fDecideP=document.getElementById("fDecideP"),fActP=document.getElementById("fActP");
+    var fKnow=document.getElementById("fKnow"),fDecide=document.getElementById("fDecide"),fAct=document.getElementById("fAct"),fDown=document.getElementById("fDown"),fUp=document.getElementById("fUp");
+    var all=[fEvent,fEarn,fKnow,fDecide,fAct,fDown,fUp];
+    function setScen(x){var s2=scen[x];fEvent.textContent=s2.ev;fKnowP.textContent=s2.k;fDecideP.textContent=s2.d;fActP.textContent=s2.a;fEarnT.textContent=s2.e;}
+    var si=0,beat=0;
+    function fstep(){
+      if(beat===0){all.forEach(function(el){el.classList.remove("on");});setScen(si);fEvent.classList.add("on");}
+      else if(beat===1){fDown.classList.add("on");fKnow.classList.add("on");}
+      else if(beat===2){fDecide.classList.add("on");}
+      else if(beat===3){fAct.classList.add("on");}
+      else if(beat===4){fUp.classList.add("on");fEarn.classList.add("on");}
+      beat++;if(beat>5){beat=0;si=(si+1)%scen.length;}
+    }
+    if(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches){setScen(0);all.forEach(function(el){el.classList.add("on");});}
+    else{setScen(0);fstep();timers.push(setInterval(fstep,1250));}
+  })();
+  (function(){
+    var snodes=document.querySelectorAll(".snode"); if(!snodes.length) return;
+    var tracks=document.querySelectorAll(".strack"); var sdH=document.getElementById("sd-h"),sdP=document.getElementById("sd-p");
+    var det=[
+      ["Know","Cortex AI reads what your cameras and sensors already see, in real time. Not a chart, the live state of the floor."],
+      ["Decide","It turns that live state into a specific call, priced to your goals and guardrails, in the moment it matters."],
+      ["Act","The call is pushed to the hardware that acts: shelf labels reprice, screens change, building systems adjust, staff get the pick."],
+      ["Earn","The outcome is measured against a control and banked, and it retrains the next loop."]
+    ];
+    var j=0;
+    function sstep(){snodes.forEach(function(n,k){n.classList.toggle("active",k===j);});tracks.forEach(function(t,k){t.classList.toggle("on",k<j);});if(sdH)sdH.textContent=det[j][0];if(sdP)sdP.textContent=det[j][1];j=(j+1)%snodes.length;}
+    sstep();timers.push(setInterval(sstep,2200));
+  })();
+  (function(){
+    document.querySelectorAll(".story").forEach(function(story){
+      var steps=story.querySelectorAll(".step"); if(!steps.length) return;
+      var r=0; function rstep(){steps.forEach(function(el,k){el.classList.toggle("active",k===r);});r=(r+1)%steps.length;}
+      rstep();timers.push(setInterval(rstep,2400));
+    });
+  })();
+  (function(){
+    var htiles=document.querySelectorAll(".htile"); if(!htiles.length) return;
+    var h=0; function hwave(){htiles.forEach(function(t,k){t.classList.toggle("on",k===h);});h=(h+1)%htiles.length;} hwave();timers.push(setInterval(hwave,780));
+  })();
+  return function(){timers.forEach(function(t){clearInterval(t);});};
+}
 
-  <Sc bt><Rv><Tg c={MG}>Important scope</Tg><h2 style={h2}>This policy covers the website — not the product.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Sevyn8 Cortex runs <strong style={{color:TX}}>on-device, at the edge</strong>. Any data captured or processed by deployed Sevyn8 products stays on customer infrastructure and is governed by the <strong style={{color:TX}}>separate commercial agreement</strong> for that deployment — not by this website policy. This document is solely about your use of sevyn8.com.</p></Rv>
-  </Sc>
+function Shell(){
+  var loc=useLocation();var nav=useNavigate();
+  useEffect(function(){if(typeof window!=="undefined")window.scrollTo({top:0,behavior:"instant"});},[loc.pathname]);
+  useEffect(function(){
+    function onClick(e){
+      if(e.defaultPrevented) return;
+      if(e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button!==0) return;
+      var a=e.target.closest?e.target.closest('a[href^="/"]'):null;
+      if(!a) return;
+      if(a.target==="_blank"||a.hasAttribute("download")) return;
+      var href=a.getAttribute("href");
+      if(!href||href.charAt(0)!=="/") return;
+      e.preventDefault();nav(href);window.scrollTo({top:0,behavior:"instant"});
+    }
+    document.addEventListener("click",onClick);
+    return function(){document.removeEventListener("click",onClick);};
+  },[nav]);
+  useEffect(function(){var cleanup=wireBehaviors();return cleanup;},[loc.pathname]);
+  return <>
+    <GradientDef/>
+    <Head><script type="application/ld+json">{JSON.stringify(LD_ORG)}</script></Head>
+    <Analytics/>
+    <Nav/>
+    <main key={loc.pathname}><Outlet/></main>
+    <Ft/>
+  </>;
+}
 
-  <Sc bg={B2} bt><Rv><Tg c={CY}>What we collect</Tg><h2 style={h2}>Two things, both minimal.</h2></Rv>
-    <Rv d={0.1}><p style={pp}><strong style={{color:TX}}>Analytics — only with your consent.</strong> If you accept analytics in the cookie banner, we use Google Analytics 4 to understand aggregate usage: pages viewed, approximate region, and device/browser type. Storage is denied by default and nothing is sent until you accept. If you reject or ignore the banner, no analytics cookies are set and no analytics data is collected.</p></Rv>
-    <Rv d={0.15}><p style={pp}><strong style={{color:TX}}>Contact-form submissions.</strong> If you send a message via the contact page, the details you provide (such as name, email, organisation, and message) <strong style={{color:TX}}>trigger an email to us only</strong>. They are not stored in any CRM, database, or third-party system — we simply receive the email and reply.</p></Rv>
-    <Rv d={0.2}><p style={pp}>We do not sell personal data and do not use it for advertising. Ad-related storage is denied at all times.</p></Rv>
-  </Sc>
+function PgHome(){return <><PageHead m={META.home} /><Page html={HOME} /></>;}
+function PgHow(){return <><PageHead m={META.how} /><Page html={HOW} /></>;}
+function PgCortex(){return <><PageHead m={META.cortex} /><Head><script type="application/ld+json">{JSON.stringify(LD_CORTEX)}</script></Head><Page html={CORTEX} /></>;}
+function PgRetail(){return <><PageHead m={META.retail} /><Page html={RETAIL} /></>;}
+function PgRealEstate(){return <><PageHead m={META.realestate} /><Page html={REALESTATE} /></>;}
+function PgCompany(){return <><PageHead m={META.company} /><Page html={COMPANY} /></>;}
+function PgContact(){return <><PageHead m={META.contact} /><Page html={CONTACT} /></>;}
 
-  <Sc bt><Rv><Tg>How &amp; why</Tg><h2 style={h2}>Purpose and legal bases.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Analytics data is used in aggregate to measure how the site performs and to improve it. Contact details are used only to reply to your enquiry and progress any conversation you start.</p></Rv>
-    <Rv d={0.15}><p style={pp}>Our legal bases are your <strong style={{color:TX}}>consent</strong> for analytics, and our <strong style={{color:TX}}>legitimate interest</strong> (and taking steps at your request prior to any agreement) in responding to enquiries you initiate.</p></Rv>
-  </Sc>
 
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Cookies &amp; consent</Tg><h2 style={h2}>Denied by default.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>We load analytics under Google Consent Mode v2 with <code style={em()}>analytics_storage</code> and <code style={em()}>ad_storage</code> set to <em>denied</em> until you choose otherwise. Your choice is stored locally in your browser so you are not asked again. You can change it any time by clearing this site's storage, which brings the banner back.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Processors</Tg><h2 style={h2}>Who processes data for us.</h2></Rv>
-    <Rv d={0.1}><div style={{maxWidth:680}}>
-      <p style={li}>• <strong style={{color:TX}}>Google</strong> (Google Analytics) — processes analytics data on our behalf when you consent, subject to Google's terms and privacy practices.</p>
-      <p style={li}>• <strong style={{color:TX}}>Vercel</strong> — hosts the website and processes the standard request/server logs needed to serve and secure it.</p>
-    </div></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Retention</Tg><h2 style={h2}>How long we keep it.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Analytics data is retained for the period configured in Google Analytics (by default up to 14 months), then deleted or anonymised. Contact emails are kept only as long as needed to handle your enquiry and any resulting relationship, after which they are deleted.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>International transfers</Tg><h2 style={h2}>Where data may go.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Our processors (Google, Vercel) may process data on infrastructure outside India or your country. Where data is transferred internationally, it remains subject to appropriate safeguards and the processor's commitments.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Your rights</Tg><h2 style={h2}>You're in control.</h2></Rv>
-    <Rv d={0.1}><div style={{maxWidth:680}}>
-      <p style={li}>• <strong style={{color:TX}}>Access</strong> — ask what personal data we hold about you.</p>
-      <p style={li}>• <strong style={{color:TX}}>Correction</strong> — ask us to correct inaccurate data.</p>
-      <p style={li}>• <strong style={{color:TX}}>Erasure</strong> — ask us to delete your data.</p>
-      <p style={li}>• <strong style={{color:TX}}>Withdraw consent</strong> — turn off analytics any time, with no effect on prior lawful processing.</p>
-    </div></Rv>
-    <Rv d={0.15}><p style={pp}>These rights reflect India's <strong style={{color:TX}}>Digital Personal Data Protection Act, 2023</strong> and, for visitors in the EU/EEA and the UK, the <strong style={{color:TX}}>GDPR</strong>. To exercise any of them, email <a href="mailto:rahul@sevyn8.com" style={em()}>rahul@sevyn8.com</a>.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Children</Tg><h2 style={h2}>Not directed at children.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>This website is intended for businesses and professional audiences. We do not knowingly collect personal data from children. If you believe a child has provided data, contact us and we will delete it.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Security</Tg><h2 style={h2}>How we protect it.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>We apply reasonable technical and organisational measures appropriate to a marketing website and the limited data it handles. No method of transmission or storage is perfectly secure, but we minimise what we collect in the first place.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Changes &amp; contact</Tg><h2 style={h2}>Staying current.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>We may update this policy from time to time; the "last updated" date above reflects the current version. Questions about this policy or your data? Email <a href="mailto:rahul@sevyn8.com" style={em()}>rahul@sevyn8.com</a>.</p></Rv>
-  </Sc>
-</div>}
-function PgPrivacy(){return <><PageHead m={META.privacy} /><PrivacyPage /></>}
-function TermsPage(){var pp={fontSize:16,lineHeight:1.8,color:N3,margin:"0 0 14px",maxWidth:680};var h2={...hd,fontSize:24,fontWeight:600,margin:"0 0 14px"};var li={fontSize:16,lineHeight:1.8,color:N3,marginBottom:8};var em=function(c){return {fontFamily:"'IBM Plex Mono',monospace",color:c||CY,textDecoration:"underline"}};return <div style={{paddingTop:80}}>
-  <Sc><Rv><Tg>Legal</Tg><h1 style={{...hd,fontSize:42,fontWeight:600,lineHeight:1.08,marginBottom:14,maxWidth:560}}>Terms of Use</h1><p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,color:MT,margin:"0 0 18px"}}>Last updated 15 June 2026</p><p style={pp}>These terms govern your use of the Sevyn8 website at sevyn8.com, operated by <strong style={{color:TX}}>Sevyn8 Private Limited</strong>, New Delhi, India ("Sevyn8", "we", "us").</p></Rv></Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Acceptance</Tg><h2 style={h2}>By using the site, you agree.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>By accessing or using this website, you agree to these Terms of Use. If you do not agree, please do not use the site.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg c={MG}>What this site is</Tg><h2 style={h2}>An informational marketing site — not the product.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>This website is an informational and marketing resource about Sevyn8 and its Cortex platform. It is <strong style={{color:TX}}>not the product itself</strong> and provides no access to deployed Sevyn8 systems. Information here is general and may change without notice.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Acceptable use</Tg><h2 style={h2}>Permitted and prohibited.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>You may view and share this site for lawful, informational purposes. You must not:</p></Rv>
-    <Rv d={0.15}><div style={{maxWidth:680}}>
-      <p style={li}>• attempt to disrupt, attack, or gain unauthorised access to the site or its infrastructure;</p>
-      <p style={li}>• scrape, copy, or reuse content other than as permitted by law or with our written consent;</p>
-      <p style={li}>• misrepresent your affiliation with Sevyn8 or use the site to mislead others;</p>
-      <p style={li}>• use the site in violation of any applicable law.</p>
-    </div></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Intellectual property</Tg><h2 style={h2}>All rights reserved.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>The content of this site, the <strong style={{color:TX}}>Sevyn8</strong> name and marks, and <strong style={{color:TX}}>Cortex</strong> are the property of Sevyn8 Private Limited and are protected by applicable intellectual-property laws. All rights reserved. No licence to any trademark, logo, or content is granted except as expressly stated in writing.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Disclaimer</Tg><h2 style={h2}>Provided "as is".</h2></Rv>
-    <Rv d={0.1}><p style={pp}>This website and its content are provided <strong style={{color:TX}}>"as is" and "as available"</strong>, without warranties of any kind, express or implied, including fitness for a particular purpose, accuracy, or non-infringement. We do not warrant that the site will be uninterrupted or error-free.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Liability</Tg><h2 style={h2}>Limitation of liability.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>To the maximum extent permitted by law, Sevyn8 is not liable for any indirect, incidental, special, or consequential damages, or any loss arising from your use of (or inability to use) this website.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Third-party links</Tg><h2 style={h2}>We don't control them.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>The site may link to third-party websites or services. We are not responsible for their content, practices, or availability, and links do not imply endorsement.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg c={MG}>Commercial engagements</Tg><h2 style={h2}>Governed by separate agreements.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Any proof of concept, pilot, evaluation, licensing, or other commercial engagement with Sevyn8 is governed by a <strong style={{color:TX}}>separate signed agreement</strong> between the parties — not by these Terms. Nothing on this website constitutes an offer, warranty, or contractual commitment.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Changes</Tg><h2 style={h2}>We may update these terms.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>We may revise these Terms from time to time. Continued use of the site after changes take effect constitutes acceptance of the revised Terms. The "last updated" date above reflects the current version.</p></Rv>
-  </Sc>
-
-  <Sc bt><Rv><Tg>Governing law</Tg><h2 style={h2}>India · courts of New Delhi.</h2></Rv>
-    <Rv d={0.1}><p style={pp}>These Terms are governed by the laws of India, and the courts of New Delhi have exclusive jurisdiction over any dispute arising from them or from your use of this website.</p></Rv>
-  </Sc>
-
-  <Sc bg={B2} bt><Rv><Tg c={CY}>Contact</Tg><h2 style={h2}>Questions?</h2></Rv>
-    <Rv d={0.1}><p style={pp}>Questions about these Terms? Email <a href="mailto:rahul@sevyn8.com" style={em()}>rahul@sevyn8.com</a>.</p></Rv>
-  </Sc>
-</div>}
-function PgTerms(){return <><PageHead m={META.terms} /><TermsPage /></>}
 export var routes=[{path:"/",element:<Shell />,children:[
   {index:true,element:<PgHome />},
+  {path:"how-it-earns",element:<PgHow />},
   {path:"cortex-ai",element:<PgCortex />},
-  {path:"ai-hardware",element:<PgHardware />},
-  {path:"industries",children:[
-    {index:true,element:<PgIndustries />},
-    {path:"retail",element:<PgDetail k="retail" slug="retail" />},
-    {path:"cold-chain",element:<PgDetail k="cold" slug="cold-chain" />},
-    {path:"logistics",element:<PgDetail k="logistics" slug="logistics" />},
-    {path:"smart-home",element:<PgDetail k="home" slug="smart-home" />}
-  ]},
-  {path:"company/our-story",element:<PgAbout />},
-  {path:"company/partners",element:<PgPartners />},
+  {path:"retail",element:<PgRetail />},
+  {path:"real-estate",element:<PgRealEstate />},
+  {path:"company",element:<PgCompany />},
   {path:"contact",element:<PgContact />},
   {path:"privacy",element:<PgPrivacy />},
   {path:"terms",element:<PgTerms />}
